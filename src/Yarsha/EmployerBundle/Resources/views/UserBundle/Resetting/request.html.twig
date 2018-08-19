@@ -1,0 +1,52 @@
+{% extends "@YarshaFrontend/frontend_layout.html.twig" %}
+{% trans_default_domain 'FOSUserBundle' %}
+{% block content %}
+    <!-- navigation bottom background section -->
+    <style>
+        label {
+            color: #000;
+        }
+    </style>
+    <section class="navigation-btm-sec login-reg-bg-wrap">
+        <div class="container">
+            <div class="row">
+                <h2>Reset Password</h2>
+                {#<span class="login-register-quote">Et omnis referrentur conclusionemque eos</span>#}
+                <div class="col-md-12 login-reg-wrap">
+
+                    <div class="login-reg-blk">
+
+
+                        <form action="{{ path('yarsha_employer_email-send') }}"
+                              method="POST" class="fos_user_resetting_request">
+                            <div>
+                                {% if invalid_username is defined %}
+                                    <p>{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}</p>
+                                {% endif %}
+
+                                {% if app.session.flashbag.has('error') %}
+                                    <div class="alert alert-success alert-dissmisible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        {% for errorMessage in app.session.flashbag.get('error') %}
+                                            <p>{{ errorMessage }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+
+                                {#<label for="username">{{ 'resetting.request.username'|trans }}</label>#}
+                                <label for="username">Username/Email</label>
+                                <input type="text" id="username" name="username" required="required"/>
+                            </div>
+                            <div>
+                                <input type="submit" value="{{ 'resetting.request.submit'|trans }}"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

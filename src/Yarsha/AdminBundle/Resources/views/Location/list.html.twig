@@ -1,0 +1,185 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+{% block page_title %}Country{% endblock %}
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+    {{ render_show_filter_button() }}
+    <a href="" data-toggle="modal" data-target="#addCountry" data-title="ADD COUNTRY" class="btn btn-xs btn-primary">
+        <i class="fa fa-plus"></i> Add Country
+    </a>
+{% endblock %}
+
+{% block filter %}
+    <div class="row">
+        <div class="col-md-12 form-group">
+            <label for="name">Country Name</label>
+            <input type="text" name="name" value="{{ app.request.get('name') }}" placeholder="Country Name" class="form-control">
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                {% if countries|length %}
+
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name
+                                <th>Nationality</th>
+                                <th>ISO2</th>
+                                <th>ISO3</th>
+                                <th>Zip Code</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% set count = pager_first_index(countries) %}
+                        {% for country in countries %}
+                            <tr id="country_{{ country.id }}">
+                                <td>{{ count }}</td>
+                                <td>{{ country.name }}</td>
+                                <td>{{ country.nationality }}</td>
+                                <td>{{ country.iso2 }}</td>
+                                <td>{{ country.iso3 }}</td>
+                                <td>{{ country.zipCode }}</td>
+                                <td>
+                                    <a href="" class="btn btn-xs btn-primary"
+                                       data-toggle="modal"
+                                       data-target="#addCountry"
+                                       data-title="UPDATE COUNTRY"
+                                       data-country-id="{{ country.id }}">
+                                        <i class="fa fa-pencil"></i> Edit
+                                    </a>
+                                    <a
+                                            href="{{ path('yarsha_admin_location_list', {'id':country.id}) }}"
+                                            class="btn btn-xs btn-warning"
+                                    >
+                                        <i class="fa fa-list"></i> Locations
+                                    </a>
+
+                                    <button class="btn btn-xs btn-danger deleteButton" data-country="{{ country.id }}">
+                                        <i class="fa fa-times"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            {% set count = count + 1 %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% if countries.haveToPaginate %}
+                        {{ pagerfanta(countries, 'twitter_bootstrap3') }}
+                    {% endif %}
+
+                {% else %} {{ ys_no_contents('No countries added.') }} {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addCountry" role="dialog" arial-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" class="close">&times</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body" id="detail"></div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+
+{% block scripts %}
+    <script>
+
+        $('.deleteButton').on('click', function(e){
+            if( confirm('Are you sure to delete?') ){
+                var obj = $(this),
+                    country = obj.data('country')
+                ;
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{ path('yarsha_admin_ajax_country_delete') }}',
+                    data: {country:country},
+                    success: function(res){
+                        window.location = window.location;
+                    },
+                    error: function(xhr){
+                        alert('Something went wrong. Please try again later.');
+                    },
+                    complete: function(xhr){}
+                });
+            }
+        });
+
+        $('#addCountry').on('show.bs.modal', function (e) {
+            var modal = $(this);
+            var button = $(e.relatedTarget);
+            var title = button.data('title');
+            var countryId = button.attr('data-country-id');
+
+            if (countryId) {
+                var url = "{{ path('yarsha_admin_ajax_add_country', {'id':'COUNTRY_ID'}) }}";
+                var url = url.replace('COUNTRY_ID', countryId);
+            } else {
+                var url = "{{ path('yarsha_admin_ajax_add_country') }}";
+
+            }
+
+
+            modal.find('.modal-title').html(title);
+
+            $.ajax({
+                type: 'get',
+                url: url,
+                data: '',
+                success: function (res) {
+                    modal.find('.modal-body').html(res.template);
+                },
+                error: function (res) {
+                    alert(res.message);
+                }
+            });
+        });
+        function submitAddCountryForm(obj) {
+            var form = $(obj),
+                    countryId = form.data('id');
+            var dataToSend = form.serialize();
+
+
+            if (countryId) {
+                var url = "{{ path('yarsha_admin_ajax_add_country', {'id':'COUNTRY_ID'}) }}";
+                var url = url.replace('COUNTRY_ID', countryId);
+            } else {
+                var url = "{{ path('yarsha_admin_ajax_add_country') }}";
+
+            }
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: dataToSend,
+                success: function (res) {
+                    window.location = window.location;
+                },
+                error: function (res) {
+                }
+            });
+
+
+            return false;
+
+        }
+    </script>
+{% endblock %}

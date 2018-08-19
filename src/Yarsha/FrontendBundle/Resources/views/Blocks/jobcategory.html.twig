@@ -1,0 +1,42 @@
+<div class="col-md-9 col-sm-12 ">
+    <div class="job-category-tab-sec">
+        <ul class="nav nav-tabs">
+            <li><a data-toggle="tab" href="#jobsbyindustry">Jobs by industry</a></li>
+            <li class="active"><a data-toggle="tab" href="#jobsbyfunction">Jobs by function</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="jobsbyindustry" class="tab-pane fade">
+                <div class="row">
+                    <div class="">
+                        <ul>
+                            {% for j in jobsByIndustry %}
+                                <li class="col-md-4 col-sm-6">
+                                    <a href="{{ path('yarsha_frontend_jobs_search') }}?industry={{ j.id }}">{{ j.title }} {{ '(' ~ j.jobsCount ~ ')' }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <div id="seeMoreJbi" data-expanded="0"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="jobsbyfunction" class="tab-pane fade in active">
+                <div class="row">
+                    <div class="">
+                        <ul>
+                            {% for j in jobsByFunction %}
+                                <li class="col-md-4 col-sm-6">
+                                    <a href="{{ path('yarsha_frontend_jobs_search') }}?category={{ j.id }}">{{ j.title }} {{ '(' ~ j.jobsCount ~ ')' }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <div id="seeMoreJbf" data-expanded="0"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

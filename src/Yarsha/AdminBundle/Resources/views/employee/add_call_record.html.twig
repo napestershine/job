@@ -1,0 +1,25 @@
+{{ form_start(form, {'attr':{ 'onsubmit':'return submitSeekerCallRecord(this)','data-id':id}}) }}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+
+<div class="row">
+    <div class="col-md-12">
+        {{ form_row(form.name) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.calledDate) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.followUpDate) }}
+    </div>
+    <div class="col-md-12">
+        {{ form_row(form.remark) }}
+    </div>
+</div>
+{{ form_widget(form.seeker,{value: id }) }}
+<input type="submit" name="send" value="Save" class="btn btn-primary">
+
+{{ form_end(form) }}
+
+
+

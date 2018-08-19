@@ -1,0 +1,27 @@
+yarsha_job_seeker_security_login:
+    path: /seeker/login
+    defaults: { _controller: "FOSUserBundle:Security:login" }
+
+yarsha_job_seeker_security:
+    resource: "@YarshaJobSeekerBundle/Resources/config/routing/security.yml"
+    prefix: /seeker
+
+yarsha_job_seeker_profile:
+    resource: "@YarshaJobSeekerBundle/Resources/config/routing/profile.yml"
+    prefix: /seeker/profile
+
+yarsha_job_seeker_register:
+    resource: "@YarshaJobSeekerBundle/Resources/config/routing/registration.yml"
+    prefix: /seeker/register
+
+yarsha_job_seeker_resetting:
+    resource: "@YarshaJobSeekerBundle/Resources/config/routing/resetting.yml"
+    prefix: /seeker/resetting
+
+yarsha_job_seeker_change_password:
+    resource: "@YarshaJobSeekerBundle/Resources/config/routing/change_password.yml"
+    prefix: /seeker/profile
+
+yarsha_job_seeker_controllers:
+    resource: "@YarshaJobSeekerBundle/Controller"
+    type: annotation

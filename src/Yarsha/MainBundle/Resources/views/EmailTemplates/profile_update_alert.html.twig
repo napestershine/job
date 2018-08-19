@@ -1,0 +1,22 @@
+{% extends "@YarshaMain/EmailTemplates/email_template_layout.html.twig" %}
+
+{% block header_right_image %}
+    <a href="#"><img src="{{ absolute_url(asset('bundles/yarshamain/images/email/1.jpg')) }}"></a>
+{% endblock %}
+
+{% block email_body %}
+
+    <!-- saluation section -->
+    <section style="background:#F2652A; padding: 1%;">
+        <div style="width: 80%; float: left;">
+            <span style="font-weight: 600;">Dear {{ seeker.firstName|capitalize }},</span> Your profile not updated in kantipur.com from {{ seeker.lastProfileUpdate | date('F j, Y') }}
+        </div>
+        <div style="text-align: right; width: 20%; float: right;">
+            <a href="{{ url('yarsha_job_seeker_profile_detail_view') }}" style="color: #fff;">(Update Profile)</a>
+        </div>
+        <div class="clear"></div>
+    </section>
+
+    {{ include('@YarshaMain/EmailTemplates/profile_detail_section.html.twig') }}
+
+{% endblock %}

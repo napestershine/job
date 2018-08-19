@@ -1,0 +1,4 @@
+services:
+#    yarsha_agency.example:
+#        class: Yarsha\AgencyBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

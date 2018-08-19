@@ -1,0 +1,22 @@
+{% macro registerSectionIndex() %}
+    <section class="job-seeker-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 job-seeker-section-left">
+                    <h1><i class="fa fa-briefcase" aria-hidden="true"></i>&nbsp; employer </h1>
+                    <p>Register an employer account, create your company's profile and start publish awesome job
+                        offers.</p>
+                    <a href="{{ path('yarsha_frontend_register_employer') }}"><input type="submit"
+                                                                                     value="REGISTER ACCOUNT"></a>
+                </div>
+                <div class="col-md-6 col-sm-6 job-seeker-section-right">
+                    <h1>&nbsp;<i class="fa fa-user" aria-hidden="true"></i>&nbsp; jobseeeker </h1>
+                    <p>Register a jobseeker account, fill in your resume and increase your chances to get your dream
+                        job.</p>
+                    <a href="{{ path('yarsha_frontend_register_as_seeker') }}"><input type="submit"
+                                                                                      value="REGISTER ACCOUNT"></a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endmacro %}

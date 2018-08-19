@@ -1,0 +1,121 @@
+<div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix" id="profile_{{ setting.section }}">
+    <div class="title">
+        <div class="row">
+            <div class="col-md-10 col-sm-10">Experience</div>
+            {% if setting.employer == false %}
+                <div class="col-md-2 col-sm-2 right">
+                    <input value="+ Add Experience" type="submit" href="" data-toggle="modal"
+                           class="btn btn-xs btn-primary"
+                           data-target="#addExperience"
+                           data-experienceId=""
+                           data-user="{{ user }}"
+                           data-title="Add Experience">
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div class="posted-jobs-blk-list-blk">
+        {% if data | length %}
+            <table class="table">
+
+                {% for experience in data %}
+                    {% set fromTime = '' %}
+                    {% if experience.fromDay and experience.fromMonth %}
+                        {% set fromTime = experience.fromMonth ~ ' ' ~ experience.fromDay ~ ', ' %}
+                    {% else %}
+                        {% if experience.fromMonth %}
+                            {% set fromTime = experience.fromMonth ~ ', ' %}
+                        {% endif %}
+                    {% endif %}
+
+                    {% set fromTime = fromTime ~ experience.fromYear %}
+
+                    {% set toTime = '' %}
+                    {% if experience.toDay and experience.toMonth %}
+                        {% set toTime = experience.toMonth ~ ' ' ~ experience.toDay ~ ', ' %}
+                    {% else %}
+                        {% if experience.toMonth %}
+                            {% set toTime = experience.toMonth ~ ', ' %}
+                        {% endif %}
+                    {% endif %}
+
+                    {% set toTime = toTime ~ experience.toYear %}
+
+
+                    {% if experience.currentlyWorking %}
+                        {% set currwork = 'Currently Working ' %}
+                    {% else %}
+                        {% set currwork = toTime ? toTime : 'Currently Working' %}
+                    {% endif %}
+
+
+                    <tr>
+                        <td style="width:25%;">
+                        <span><strong> {{ experience.designation }}
+
+                            </strong></span>
+                            <br>
+                            <span style="text-align: center;">{{ experience.employmentType|capitalize }} Time</span>
+                            <br>
+                        <span>
+                            {#{{ fromTime }} - {{ toTime ? toTime : 'currently working' }}#}
+                            {{ fromTime }} - {{ currwork }}
+                        </span>
+                        </td>
+                        <td>
+                            <strong>{{ experience.organizationName }}</strong> <br>
+                        <span><strong>Job By Function
+                                : </strong>{{ experience.organizationType ? experience.organizationType.title : '' }}</span>
+                            <br>
+                        <span><strong>Country
+                                : </strong>{{ experience.country ? experience.country.name : '' }}</span>
+                            <p>
+                                <strong>Duties and Responsibility: </strong>{{ experience.roles | raw }}
+                            </p>
+
+                        </td>
+                        {% if setting.employer == false %}
+                            <td style="width:10%;text-align: center;">
+                                <a href="" data-toggle="modal"
+                                   data-target="#addExperience"
+                                   data-experienceId="{{ experience.id }}"
+                                   data-title="Update Experience"
+                                   data-user="{{ user }}"
+                                   data-toggle="tooltip" title="Edit">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a href="#" data-experience-id="{{ experience.id }}"
+                                   onclick="deleteExperience(event, this)"
+                                   data-toggle="tooltip" title="Delete"
+                                >
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            {{ ys_no_contents('No experience added.') }}
+        {% endif %}
+
+    </div>
+    <div class="modal fade" id="addExperience" role="dialog" arial-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" class="close">&times</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

@@ -1,0 +1,50 @@
+yarsha_frontend:
+    resource: "@YarshaFrontendBundle/Controller"
+    type: annotation
+
+yarsha_frontend_about_us:
+    path: /about-us
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: "@YarshaFrontend/Static/about-us.html.twig"
+
+yarsha_frontend_career:
+    path: /career
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: "@YarshaFrontend/Static/career-resources.html.twig"
+
+yarsha_frontend_services:
+    path: /services
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: "@YarshaFrontend/Static/services.html.twig"
+
+yarsha_frontend_trainings:
+    path: /trainings
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: "@YarshaFrontend/Static/trainings.html.twig"
+
+yarsha_frontend_faq:
+    path: /faq
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: "@YarshaFrontend/Static/faq.html.twig"
+
+yarsha_frontend_contact:
+    path: /contact
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: "@YarshaFrontend/Static/contact.html.twig"
+
+yarsha_frontend_terms:
+    path: /terms
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: "@YarshaFrontend/Static/terms.html.twig"
+yarsha_frontend_privacy:
+    path: /privacy_policy
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: "@YarshaFrontend/Static/privacy.html.twig"

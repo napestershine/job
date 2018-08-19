@@ -1,0 +1,178 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Employer{% endblock %}
+
+{% block page_description %}{{ organization.name }}{% endblock %}
+
+{% block action_block %}
+    <a href="{{ path('yarsha_admin_organization_edit', {'id':organization.id}) }}" class="btn btn-primary btn-xs">
+        <i class="fa fa-pencil"></i> EDIT EMPLOYER
+    </a>
+    <a href="{{ path('yarsha_admin_job_add', {'ref':organization.id}) }}" class="btn btn-success btn-xs">
+        <i class="fa fa-plus"></i> POST NEW JOB
+    </a>
+    <a href="{{ path('yarsha_admin_organization_job_list', {'id':organization.id}) }}" class="btn btn-warning btn-xs">
+        <i class="fa fa-list"></i> POSTED JOBS
+    </a>
+
+    <a href="{{ path('yarsha_admin_organization_banners', {'id':organization.id}) }}" class="btn btn-primary btn-xs">
+        <i class="fa fa-image"></i> BANNER MANAGEMENT
+    </a>
+    <a href="{{ path('yarsha_admin_applicants_list', {'organization':organization.id}) }}" class="btn btn-warning btn-xs">
+        <i class="fa fa-users"></i> APPLICANTS
+    </a>
+    <a href="#" class="btn btn-danger btn-xs">
+        <i class="fa fa-times"></i> DELETE
+    </a>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% set
+                    imagePath = organization.path
+                    ? 'uploads/employers/'~organization.path
+                    : 'images/company_logo_default.jpg' %}
+                    <img
+                            src="{{ asset(imagePath)|imagine_filter('company_profile_pic_large') }}"
+                            alt="{{ organization.name }}" width="100%"
+                    >
+                    <h4>{{ organization.name }}</h4>
+                    {{ org_status_label(organization.status) }}
+                    <hr>
+                    <p><i class="fa fa-map-marker"></i> {{ organization.address }}</p>
+                    <p><i class="fa fa-mobile"></i> {{ organization.phone }}</p>
+                    <p><i class="fa fa-at"></i> {{ organization.email }}</p>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4 class="panel-title">Account Manager</h4></div>
+                <div class="panel-body text-center">
+                    {% if organization.accountManager %}
+                        {% set photoPath = organization.accountManager.photo
+                        ? 'uploads/users/' ~ organization.accountManager.photo
+                        : 'images/avatar_default.png' %}
+                        <img src="{{ asset(photoPath)|imagine_filter('thumb_medium') }}"
+                             alt="{{ organization.accountManager.name }}">
+                        <p>{{ organization.accountManager.name }}</p>
+                        <p>{{ organization.accountManager.contactEmail }}</p>
+                        <p>{{ organization.accountManager.phone }}</p>
+                    {% else %}
+                        {{ ys_no_contents('No account manager is assigned.') }}
+                        {#<div class="text-center">#}
+                        {#<button#}
+                        {#class="btn btn-xs btn-primary"#}
+                        {#data-toggle="modal"#}
+                        {#data-target="#accountManagerModal"#}
+                        {#>#}
+                        {#Assign Account Manager#}
+                        {#</button>#}
+                        {#</div>#}
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-9">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#company-profile" data-toggle="tab">Company Profile</a></li>
+                <li><a href="#company-head" data-toggle="tab">Company Head</a></li>
+                <li><a href="#company-contact" data-toggle="tab">Company Contact</a></li>
+                <li><a href="#company-settings" data-toggle="tab">Settings</a></li>
+
+            </ul>
+
+            <div class="tab-content" style="background: #FFF; padding: 10px; border: 1px solid #CCC; border-top: 0;">
+                <div class="tab-pane active" id="company-profile">{{ _self.company_profile(organization) }}</div>
+                <div class="tab-pane" id="company-head">{{ _self.company_contact(contactPersonTypeHead) }}</div>
+                <div class="tab-pane" id="company-contact">{{ _self.company_contact(contactPersonTypeContact) }}</div>
+                <div class="tab-pane" id="company-settings"></div>
+            </div>
+        </div>
+    </div>
+
+    {% macro company_profile(organization) %}
+        <div class="row">
+
+            <div class="col-md-12">
+                {% set details = {
+                'Name':organization.name,
+                'Ownership':organization.ownershipType ? organization.ownershipType.name : '',
+                'Size':organization.size ? organization.size.name,
+                'Nature':organization.nature ? : 'N/A',
+                'Type': organization.type ? organization.type.name : '',
+                'Org Category':organization.category ? organization.category.title : '',
+                'Email':organization.email ? : 'N/A',
+                'Secondary Email':organization.secondaryEmail ? : 'N/A',
+                'Phone':organization.phone ? : 'N/A',
+                'Fax':organization.fax ? : 'N/A',
+                'Website':organization.website ? : 'N/A',
+                'Post Box':organization.postBox ? : 'N/A'
+                } %}
+
+                {% for k,v in details %}
+                    <div class="col-md-6 form-group info">
+                        <label>{{ k }}</label>
+                        <span class="form-control">{{ v }}</span>
+                    </div>
+                {% endfor %}
+
+                <div class="col-md-12 form-group info">
+                    <label>Address</label>
+                    <span class="form-control">{{ organization.address ? : 'N/A' }}</span>
+                </div>
+
+                <div class="col-md-12 form-group info">
+                    <label>Profile</label>
+                    <span class="form-control">{{ organization.profile ? organization.profile|raw : 'N/A' }}</span>
+                </div>
+
+                <div class="col-md-12 form-group info">
+                    <label>Description</label>
+                    <span class="form-control">{{ organization.description ? organization.description|raw : 'N/A' }}</span>
+                </div>
+
+            </div>
+
+        </div>
+    {% endmacro %}
+
+    {% macro company_contact(person) %}
+
+        {% if person %}
+            {% set contactDetail = {
+            'Designation':person.designation ? : 'N/A',
+            'Name':person.firstName ~ ' ' ~ person.lastName,
+            'Phone':person.phone ? : 'N/A',
+            'Email':person.email ? : 'N/A',
+            } %}
+
+            <div class="row">
+                <div class="col-md-12">
+                    {% for k,v in contactDetail %}
+                        <div class="col-md-6 form-group info">
+                            <label>{{ k }}</label>
+                            <span class="form-control">{{ v }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">
+                No contact person.
+            </div>
+        {% endif %}
+
+    {% endmacro %}
+
+{% endblock content %}
+
+
+{% block script %}
+
+
+{% endblock %}

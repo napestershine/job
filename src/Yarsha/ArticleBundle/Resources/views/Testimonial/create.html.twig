@@ -1,0 +1,64 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Testimonials{% endblock %}
+{% block page_description %}{{ updating?'Edit':'New' }}{% endblock %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block content %}
+    {#<div class="col-md-12 col-sm-12 col-xs-12">#}
+
+    {{ form_start(form) }}
+
+    {#<div class="x_panel">#}
+
+    <div class="row">
+        <div class="col-md-8 col-xs-12 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.company) }}
+                    {{ form_row(form.message) }}
+                    {{ form_row(form.sortOrder) }}
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12 col-sm-12">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ form_row(form.status) }}
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ form_row(form.file) }}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="clearfix"></div>
+
+
+        <div class="col-md-12">
+            <div class="x_panel">
+                <input type="submit" class="btn btn-primary" value="Save">
+            </div>
+        </div>
+    </div>
+
+    {#</div>#}
+    {{ form_end(form) }}
+    {#</div>#}
+
+{% endblock content %}
+
+
+{% block scripts %}
+
+
+{% endblock %}

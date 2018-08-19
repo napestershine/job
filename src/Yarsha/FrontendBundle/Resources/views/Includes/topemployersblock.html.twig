@@ -1,0 +1,91 @@
+<style>
+    .top-emp-wrap-sb {
+        font-size: 12px;
+        line-height: 20px;
+        padding-left: 0
+    }
+
+    .top-emp-wrap-sb .title a {
+        color: #0b93d5 !important;
+    }
+
+    .top-emp-wrap-sb .followers-count {
+        color: #31708f !important
+    }
+
+    .top-em-sb-detail {
+        padding: 0
+    }
+
+    .top-em-sb-img {
+        padding-right: 5px !important;
+        padding-left: 0 !important
+    }
+
+    .top-emp-wrap-sb .article-wrap {
+        background: none;
+        border: none;
+        margin-bottom: 0;
+        /* padding: 0; */
+        margin-top: 10px;
+    }
+
+
+</style>
+
+<div class="dashboard-section-dropdown dashboard-bg-color job-detail-blk job-detail-related-com-blk {{ settings.additionalClass }}">
+    <h1 class="show-hide-blk dropdown-h1-title untoggable-title"><i class="fa fa-asterisk"
+                                                                    aria-hidden="true"></i> &nbsp;top
+        employers
+
+    </h1>
+    <ul class=" profile-below-blk">
+        <div class="cntc-acc-manager-blk job-detail-company-blk clearfix">
+            <div class="col-md-12 col-sm-12">
+                <div class="row top-emp-wrap-sb">
+                    {% if(topEmployers) %}
+                        {% for org in topEmployers %}
+
+                            <div class="row top-em-sb-item">
+                                <div class="col-md-3 col-xs-3 top-em-sb-img">
+                                    <img src="{{ organization_profile_image(org)|imagine_filter('thumb_small') }}" alt="con">
+                                </div>
+                                <div class="col-md-9 col-xs-9 top-em-sb-detail">
+                                    <div class="title">
+                                        <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':org.slug}) }}">
+                                            <strong>{{ org.name }}</strong>
+                                        </a>
+                                    </div>
+                                    <div class="text-sm">
+                                        {{ org.address }}
+                                    </div>
+                                    <div class="">
+                                                <span class="followers-count">
+                                                    <strong>{{ org.followers|length }} &nbsp; Followers</strong> |
+                                                </span>
+                                        <span class="text-danger">
+                                                    <strong>
+                                                        {{ render_follow_button(org, app.user, 'text-danger text-bold') }}
+                                                    </strong>
+                                                </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ ys_no_contents('Top employer does not exist.') }}
+                    {% endif %}
+                    <span class="view-more-news-blk article-wrap">
+                <p class="text-right">
+                    {% if topEmployersLength|length > 10 %}
+                        <a href="{{ path('yarsha_frontend_employers_list') }}#topEmployers" class="browse-all"
+                           data-target="#topEmployers">View All</a>
+                    {% endif %}
+                </p>
+                <div class="clearfix"></div>
+            </span>
+                </div>
+            </div>
+        </div>
+    </ul>
+</div>

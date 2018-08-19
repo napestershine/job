@@ -1,0 +1,252 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Employee{% endblock %}
+
+{% block page_description %}{{ seeker.firstName~' '~ seeker.lastName }}{% endblock %}
+
+{% block action_block %}
+    <a href="{{ path('yarsha_admin_jobseeker_edit', {'id':seeker.id}) }}" class="btn btn-primary btn-xs">
+        <i class="fa fa-pencil"></i> EDIT Employee
+    </a>
+
+    <a href="{{ path('yarsha_admin_jobseekers_appliedjobs', {'id':seeker.id}) }}" class="btn btn-warning btn-xs">
+        <i class="fa fa-list"></i> Applied Job
+    </a>
+    <a href="{{ path('yarsha_admin_jobseekers_appliedcompany', {'id':seeker.id}) }}"
+       class="btn btn-info btn-xs">
+        <i class="fa fa-list"></i>
+        Applied Company
+    </a>
+
+
+    <a href="{{ path('yarsha_admin_jobseekers_followedcompany', {'id':seeker.id}) }}" class="btn btn-warning btn-xs">
+        <i class="fa fa-users"></i> Followed Company
+    </a>
+    {#<a href="#" class="btn btn-danger btn-xs">#}
+    {#<i class="fa fa-times"></i> DELETE#}
+    {#</a>#}
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12 col-sm-12 dashboard-section-right">
+        <div class="search-job-filter-wrap profile-detail-resume">
+            <div class="clearfix">
+                <div class="row">
+                    <div class="profile-detail-resume-cover">
+                        <div class="circle-img">
+                            {% if(seeker.path) %}
+                                {% set proImg = check_path(seeker.path) %}
+                            {% else %}
+                                {% set proImg = asset('bundles/yarshaadmin/images/user.png') %}
+                            {% endif %}
+                            <img src="{{ proImg }}"/>
+                        </div>
+                    </div>
+                    <h2>{{ seeker.firstName }}{{ seeker.middleName }} {{ seeker.lastName }}</h2>
+                    <h3>{{ seeker.currentAddress }}</h3>
+
+                    {% if(seeker.hasExperience) %}
+
+                        <span>
+                            Experience: {{ seeker.noOfYear? seeker.noOfYear~'Y,':'' }} {{ seeker.noOfMonth?seeker.noOfMonth~'M':'' }}
+                         </span>
+
+                    {% endif %}
+
+
+                    {% if(seeker.curriculumVitaePath) %}
+
+                        {% set cvFile = asset('uploads/seekers/'~seeker.curriculumVitaePath) %}
+
+                        <a target="_blank" href="{{ path('yarsha_admin_seeker_cv_download',{'id':seeker.id}) }}"
+                           class="btn btn-default">Download CV</a>
+                        <a target="_blank" href="{{ cvFile }}" class="btn btn-default">View Uploaded CV</a>
+                    {% else %}
+                        {{ ys_no_contents('No cv uploaded yet.') }}
+                    {% endif %}
+
+                    <p>{{ seeker.objectives }}</p>
+
+                    <div class="profile-detail-resume-brm-bar">
+                        Mobile No: {{ seeker.mobile }} | Home Phone: 01 {{ seeker.phone }} | Email
+                        Address: {{ seeker.contactEmail }}<br/>
+                        {% if(seeker.facebookId) %}
+                            {% set username = 'Login with Facebook' %}
+                        {% elseif(seeker.googleId) %}
+                            {% set username = 'Login with Google Plus' %}
+                        {% elseif(seeker.linkedinId) %}
+                            {% set username = 'Login with Linked In' %}
+                        {% else %}
+                            {% set username = 'Username: '~seeker.username %}
+                        {% endif %}
+
+                        {{ username }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        {% set profileInfos = [
+        'personal_information',
+        'education_information',
+        'trainings'
+        ] %}
+
+        {% for p in profileInfos %}
+            {% set template = 'YarshaJobSeekerBundle:Blocks/Profile:'~p~'.html.twig' %}
+            {{ sonata_block_render({'type':'yarsha.block.seeker_profile'}, {'section':p,'template':template, 'seeker':seeker, 'employer':true}) }}
+        {% endfor %}
+
+        <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+            <div class="title">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">Experiences</div>
+                </div>
+            </div>
+
+            <div class="posted-jobs-blk-list-blk">
+                {% if(seeker.experiences|length > 0) %}
+                    <table class="table table-stripe">
+
+
+                        {% for experience in seeker.experiences %}
+                            <tr>
+                                <td style="width: 20%">
+                                    <b>{{ experience.designation }}</b><br>
+                                    {{ experience.employmentType|title }} Time<br>
+                                    {{ experience.fromDay }} {{ experience.fromMonth~',' }} {{ experience.fromYear }} -
+                                    {{ experience.toDay }} {{ experience.toMonth~',' }} {{ experience.toYear }}
+
+                                </td>
+                                <td>
+                                    <b>{{ experience.organizationName }}</b>
+                                    <p class="subDetails">
+                                    <p><b>Job by
+                                            function:</b> {{ experience.organizationType ? experience.organizationType.title : '' }}
+                                    </p>
+                                    <p><b>Country:</b> {{ experience.country ? experience.country.name : '' }}</p>
+
+                                    </p>
+                                    <p><strong>Duties and Responsibilities:</strong> {{ experience.roles }}</p>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+
+                    </table>
+                {% else %}
+                    {{ ys_no_contents('No Experiences added.') }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+            <div class="title">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">Languages</div>
+                </div>
+            </div>
+
+            <div class="posted-jobs-blk-list-blk">
+
+
+                <div class="row">
+
+                    {% if(seeker.languages|length > 0) %}
+
+                        {% for language in seeker.languages %}
+
+
+                            <div class="col-md-6 lng-rating-blk">
+                                <table>
+                                    <tr>
+                                        <th style="width: 20%">Language</th>
+                                        <th>{{ language.language }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Reading</td>
+                                        <td>
+
+                                            {% if(language.reading == 'poor') %}
+                                                {% set width1 = '25%' %}
+                                            {% elseif(language.reading == 'average') %}
+                                                {% set width1 = '50%' %}
+                                            {% elseif(language.reading == 'good') %}
+                                                {% set width1 = '75%' %}
+                                            {% else %}
+                                                {% set width1 = '100%' %}
+                                            {% endif %}
+
+                                            <div style="background: #0495D4; width: {{ width1 }}; color: #fff; text-align: center;">
+                                                {{ language.reading | title }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Writing</td>
+                                        <td>
+
+                                            {% if(language.writing == 'poor') %}
+                                                {% set width2 = '25%' %}
+                                            {% elseif(language.writing == 'average') %}
+                                                {% set width2 = '50%' %}
+                                            {% elseif(language.writing == 'good') %}
+                                                {% set width2 = '75%' %}
+                                            {% else %}
+                                                {% set width2 = '100%' %}
+                                            {% endif %}
+
+                                            <div style="background: #0495D4; width: {{ width2 }}; color: #fff; text-align: center;">
+                                                {{ language.writing | title }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Speaking</td>
+                                        <td>
+                                            {% if(language.speaking == 'poor') %}
+                                                {% set width3 = '25%' %}
+                                            {% elseif(language.speaking == 'average') %}
+                                                {% set width3 = '50%' %}
+                                            {% elseif(language.speaking == 'good') %}
+                                                {% set width3 = '75%' %}
+                                            {% else %}
+                                                {% set width3 = '100%' %}
+                                            {% endif %}
+                                            <div style="background: #0495D4; width: {{ width3 }}; color: #fff; text-align: center;">
+                                                {{ language.speaking | title }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+
+                        {{ ys_no_contents('No languages added.') }}
+
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        {{ sonata_block_render({'type':'yarsha.block.seeker_followed_companies'},{'title':'Companies Followed', 'seeker':seeker}) }}
+
+    </div>
+    {#<div class="col-md-3 col-sm-12 dashboard-section-right">#}
+        {#{{ sonata_block_render({'type':'yarsha.block.super_employer'}, {}) }}#}
+        {#{{ sonata_block_render({ 'type': 'yarsha.block.hirig_company' }) }}#}
+    {#</div>#}
+    <div class="clearfix"></div>
+{% endblock content %}
+
+
+        {% block script %}
+
+
+        {% endblock %}

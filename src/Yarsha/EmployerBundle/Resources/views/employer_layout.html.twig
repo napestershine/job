@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- meta viewport -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- title -->
+    <title> kantipurjob.com | Jobs in Nepal | Recruitment | Post Job | Vacancies | Search Jobs in Nepal | Outsourcing |
+        Human Resource | </title>
+
+    <meta name="description"
+          content="Jobs in Nepal- www.kantipurjob.com is the continuously updated online job site in Nepal where you can post job, vacancies and requirements for free. Being an innovative human resource consulting company, we provide staffing service solutions, recruitment and selection process outsourcing, and call center management services. Job seekers can post their resume for free and explore career opportunities across Nepal."/>
+
+
+    {% include "@YarshaFrontend/Includes/styles.html.twig" %}
+
+    {% block styles %} {% endblock %}
+
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+
+<style>
+    .breadcrumb {
+        padding: 8px 15px;
+        margin-bottom: 0px;
+        list-style: none;
+        background-color: #fff;
+        border-radius: 4px;
+    }
+
+
+</style>
+
+<body>
+<!--[if lt IE 9]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your browsing experience.</p>
+<![endif]-->
+
+{% include "@YarshaFrontend/Includes/navigation_bar.html.twig" %}
+
+<section class="breadcrumb-wrap-section">
+    <div class="container">
+        <div class="breadcrumb-section">
+            {{ apy_breadcrumb_trail_render('YarshaEmployerBundle::Includes/breadcrumb.html.twig') }}
+        </div>
+    </div>
+</section>
+
+
+{% set company = app.user.organization %}
+
+{% set loggedInUsername = app.user.id %}
+
+
+<!-- dashboard wrap section -->
+<section class="dashboard-section">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-3 col-sm-3 dashboard-section-left">
+                <div class="dashboard-section-dp dashboard-bg-color">
+
+                    <div id="crop-avatar">
+                        <div class="dashboard-section-img-blk avatar-view" title="Change profile picture">
+                            {% if company %}
+                            <img src="{{ organization_profile_image(company)|imagine_filter('company_profile_pic_large') }}"
+                                 id="profilePictureImage">
+                            <h2>{{ company.name| title }}</h2>
+                            {% endif %}
+                        </div>
+
+                        <!-- Cropping modal -->
+                        <div class="modal fade" id="avatar-modal" aria-hidden="true"
+                             aria-labelledby="avatar-modal-label"
+                             role="dialog"
+                             tabindex="-1">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <form class="avatar-form"
+                                          action="{{ path('yarsha_employer_ajax_upload_profile_pic') }}"
+                                          enctype="multipart/form-data"
+                                          method="post">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title" id="avatar-modal-label">Change Avatar</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="avatar-body">
+
+                                                <!-- Upload image and data -->
+                                                <div class="avatar-upload">
+                                                    <input type="hidden" class="avatar-src" name="avatar_src">
+                                                    <input type="hidden" class="avatar-data" name="avatar_data">
+                                                    <label for="avatarInput">Profile Picture</label>
+                                                    <input type="file" class="avatar-input" id="avatarInput"
+                                                           name="avatar_file">
+                                                </div>
+
+                                                <!-- Crop and preview -->
+                                                <div class="row">
+                                                    <div class="col-md-9">
+                                                        <div class="avatar-wrapper"></div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="avatar-preview preview-lg"></div>
+                                                        <div class="avatar-preview preview-md"></div>
+                                                        <div class="avatar-preview preview-sm"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row avatar-btns">
+                                                    <div class="col-md-9">
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-primary"
+                                                                    data-method="rotate"
+                                                                    data-option="-90" title="Rotate -90 degrees">Rotate
+                                                                Left
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary"
+                                                                    data-method="rotate"
+                                                                    data-option="-15">-15deg
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary"
+                                                                    data-method="rotate"
+                                                                    data-option="-30">-30deg
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary"
+                                                                    data-method="rotate"
+                                                                    data-option="-45">-45deg
+                                                            </button>
+                                                        </div>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-primary"
+                                                                    data-method="rotate"
+                                                                    data-option="90" title="Rotate 90 degrees">Rotate
+                                                                Right
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary"
+                                                                    data-method="rotate"
+                                                                    data-option="15">15deg
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary"
+                                                                    data-method="rotate"
+                                                                    data-option="30">30deg
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary"
+                                                                    data-method="rotate"
+                                                                    data-option="45">45deg
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <button type="submit"
+                                                                class="btn btn-primary btn-block avatar-save"
+                                                                name="btnSubmit" value="crop">Done
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="modal-footer">
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div> -->
+                                    </form>
+                                </div>
+                            </div>
+                        </div><!-- /.modal -->
+
+                        <!-- Loading state -->
+                        <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
+                    </div>
+
+                    <div class="dashboard-section-img-blk-btm">
+                        {% if company %}
+                        {% set contactInfo = get_contact_information(company) %}
+                        <ul>
+                            <li class="address">  {{ company.address }} </li>
+                            <li class="phone">{{ contactInfo.mobile }}</li>
+                            <li class="email">{{ contactInfo.email }}</li>
+                        </ul>
+                        {% endif %}
+                        <div class="clearfix"></div>
+
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-7 col-sm-7">
+                                <a href="{{ path('yarsha_employer_profile_view') }}"
+                                   class="btn btn-primary form-control"><i class="fa fa-user"> VIEW PROFILE</i> </a>
+                            </div>
+                            <div class="col-md-5 col-sm-5">
+                                <a href="{{ path('yarsha_employer_job_post') }}" class="btn btn-success form-control"
+                                   style="font-size: 14px">
+                                    <i class="fa fa-briefcase"> POST JOB</i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                {#<div class="dashboard-section-dropdown dashboard-bg-color">#}
+                    {#<h1 class="show-hide-blk dropdown-h1-title" data-toggle="collapse" data-target="#demo2">Menu#}
+                    {#</h1>#}
+                    {#<ul id="demo2" class="profile-below-blk1">#}
+                        {#<li><a href="{{ path('yarsha_employer_homepage') }}">Dashboard</a></li>#}
+                        {#<li><a href="{{ path('yarsha_employer_job_list') }}">My Posted Job</a></li>#}
+                        {#<li><a href="{{ path('yarsha_employer_testimonial_list') }}">Post Your Story</a></li>#}
+                        {#<li><a href="{{ path('yarsha_employer_banner_images') }}">Banner Management</a></li>#}
+                    {#</ul>#}
+                {#</div>#}
+
+                {#<div class="dashboard-section-dropdown dashboard-bg-color">#}
+                    {#<h1 class="show-hide-blk dropdown-h1-title" data-toggle="collapse" data-target="#demo">User#}
+                        {#Settings</h1>#}
+                    {#<ul id="demo" class="">#}
+
+                        {#<li>#}
+                            {#<a href="{{ path('yarsha_employer_reset_password',{'id':loggedInUsername}) }}">Change#}
+                                {#Password</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="{{ path('yarsha_employer_profile_view') }}">Change Contact Email</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="{{ path('yarsha_employer_notice_list') }}">Notice Management</a>#}
+                        {#</li>#}
+                        {#<li style="display:none;">#}
+                            {#<a href="{{ path('yarsha_employer_account_deactivate',{'id':loggedInUsername}) }}">Delete#}
+                                {#Account</a>#}
+                        {#</li>#}
+                    {#</ul>#}
+                {#</div>#}
+
+                {#<div class="dashboard-section-dropdown dashboard-bg-color">#}
+                    {#<h1 class="show-hide-blk dropdown-h1-title" data-toggle="collapse" data-target="#demo3">Job Seeker#}
+                    {#</h1>#}
+                    {#<ul id="demo3" class="profile-below-blk1">#}
+                        {#<li><a href="{{ path('yarsha_employer_shortlisted',{'name':'shortlisted'}) }}">Shortlisted#}
+                                {#Candidates</a></li>#}
+                        {#<li><a href="{{ path('yarsha_employer_shortlisted',{'name':'pending'}) }}">Resume Basket</a>#}
+                        {#</li>#}
+                        {#<li><a href="{{ path('yarsha_employer_shortlisted',{'name':'save'}) }}">Saved Candidates</a>#}
+                        {#</li>#}
+
+                    {#</ul>#}
+                {#</div>#}
+
+                {#<div class="dashboard-section-dropdown dashboard-bg-color ">#}
+                    {#<h1 class="show-hide-blk dropdown-h1-title" data-toggle="collapse" data-target="#demo1">cv#}
+                        {#search</h1>#}
+                    {#<ul id="demo1" class="collapse cv-search-blk">#}
+                        {#<li>#}
+                            {#<form action="{{ path('yarsha_employer_resume_search') }}" method="get">#}
+
+                                {#{{ display_categories_by_section(app.request.get('category'), '','category','Jobs By Function','Jobs Category') }}#}
+                                {#{{ display_categories_by_section(app.request.get('industry'), '','industry','Jobs By Industry','Jobs Industry') }}#}
+                                {#{{ display_job_locations(app.request.get('location'), '') }}#}
+                                {#{{ display_education_degrees(app.request.get('education'), '') }}#}
+                                {#{{ gender_type(app.request.get('gender'), ' ') }}#}
+                                {#{{ marital_status(app.request.get('marital_status'), ' ') }}#}
+                                {#{{ experience_year(app.request.get('year'), ' ') }}#}
+                                {#<div class="clearfix">#}
+                                    {#<div class="row">#}
+                                        {#<div class="col-md-4 col-sm-4 search-left-blk"><input type="submit"#}
+                                                                                              {#name=""#}
+                                                                                              {#value="Search">#}
+                                        {#</div>#}
+                                        {#<div class="col-md-8 col-sm-8"><input type="submit" name="" value="Advance Search">#}
+                                        {#</div>#}
+                                    {#</div>#}
+                                {#</div>#}
+                            {#</form>#}
+                        {#</li>#}
+                    {#</ul>#}
+                {#</div>#}
+
+                {#{% if company %}#}
+                {#{{ sonata_block_render({"type":"yarsha.block.employer_contact_person"}) }}#}
+                {#{% endif %}#}
+            </div>
+
+            <div class="col-md-9 col-sm-12 dashboard-section-right">
+                {% for message in app.session.flashBag.get('success') %}
+                    {{ bootstrap_alert_message(message, 'success') | raw }}
+                {% endfor %}
+                {% for message in app.session.flashBag.get('errorMessage') %}
+                    {{ bootstrap_alert_message(message, 'danger') | raw }}
+                {% endfor %}
+
+                {% block content %}
+
+
+                {% endblock %}
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+{% include "@YarshaFrontend/Includes/footer.html.twig" %}
+
+{% include "@YarshaFrontend/Includes/employer-scripts.html.twig" %}
+
+{% block scripts %}
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //console.log('docready');
+
+            $('#coverPicUpload').on('change', function (e) {
+
+                if ($(this).val() == "") return;
+
+                var form = $(this).parent('form');
+
+
+                var dataToSend = form.get(0);
+
+                var url = '{{ path('yarsha_employer_ajax_upload_cover_pic') }}';
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: new FormData(dataToSend),
+                    processData: false,
+                    contentType: false,
+                    success: function (res) {
+
+                        if (res.image) {
+                            var imagePath = '{{ asset('uploads/employers/IMAGE_PATH') }}';
+                            imagePath = imagePath.replace('IMAGE_PATH', 'resize' + res.image);
+                            $('#coverPictureImage').attr('src', imagePath);
+                            $('#msg').val(res.status);
+                        } else {
+                            alert(res.status);
+                            $('#msg').html(res.status);
+                        }
+                    },
+                    error: function (res) {
+                        alert('The file is too large. Allowed maximum size is 2 MiB.');
+                        console.log(res);
+                    }
+                });
+
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            size_li = $(".company #company-blk").size();
+            //alert(size_li);
+            x = 16;
+            $('.company #company-blk:lt(' + x + ')').show();
+
+
+            $('#loadMore').click(function () {
+                x = (x + 16 <= size_li) ? x + 16 : size_li;
+                $('.company #company-blk:lt(' + x + ')').show();
+                if (x >= size_li) {
+                    $('#loadMore').hide()
+                }
+            });
+
+            $('#showLess').click(function () {
+                x = (x - 5 < 0) ? 3 : x - 5;
+                $('.company #company-blk').not(':lt(' + x + ')').hide();
+            });
+        });
+    </script>
+    <style>
+        .company #company-blk {
+            display: none;
+        }
+
+        #loadMore {
+            /*//color: green;*/
+            cursor: pointer;
+        }
+
+    </style>
+
+
+
+{% endblock %}
+
+<!-- Start Alexa Certify Javascript -->
+<script>
+    _atrk_opts =
+        { atrk_acct:"peBLp1IW1d10em", domain:"kantipurjob.com",dynamic: true};
+    (function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+
+<noscript>
+    <img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=peBLp1IW1d10em" style="display:none" height="1" width="1" alt="" />
+</noscript>
+<!-- End Alexa Certify Javascript -->
+
+</body>
+</html>

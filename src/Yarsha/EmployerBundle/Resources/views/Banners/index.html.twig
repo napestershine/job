@@ -1,0 +1,120 @@
+{% extends "@YarshaEmployer/employer_layout.html.twig" %}
+
+{% block content %}
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-10 col-sm-10">Banner List</div>
+                <div class="col-md-2 col-sm-2 right"><a href="{{ path('yarsha_employer_banner_images_add') }}"><input
+                                type="submit" value="+ Add banner"></a></div>
+            </div>
+        </div>
+        <div class="posted-jobs-blk-list-blk">
+            {% if banners | length %}
+                <table class="table">
+                    <tr>
+
+                        <th>Banner</th>
+                        <th>Caption</th>
+                        <th>Status</th>
+                        <th>Is Featured</th>
+                        <th>Order</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                    {% for banner in banners %}
+                        {% set imgSrc = asset('uploads/employers/')~banner.path %}
+                        {% if(banner.status == 1) %}
+                            {% set sts = '<span class="label label-success">Active</span>' %}
+                        {% else %}
+                            {% set sts = '<span class="label label-primary">Inactive</span>' %}
+                        {% endif %}
+                        {% if(banner.isFeatured == 1) %}
+                            {% set check = 'checked' %}
+                        {% else %}
+                            {% set check = '' %}
+                        {% endif %}
+
+
+                        <tr id="tr_{{ banner.id }}">
+
+                            <td><img src="{{ imgSrc }}" style="width: 100px;"></td>
+                            <td>{{ banner.caption }}</td>
+                            <td>{{ sts |raw }}</td>
+                            <td>
+                                <input type="checkbox" id="feature-{{ banner.id }}" {{ check }}
+                                       onclick="update_featured({{ banner.id }})"/></td>
+                            <td>{{ banner.order }}</td>
+                            <td>
+                                <a href="{{ path('yarsha_employer_banner_images_edit', {'id' : banner.id}) }}"><i
+                                            class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                |
+                                <a href="#"
+                                   onclick="deleteBanner({{ banner.id }})"><i class="fa fa-times"
+                                                                              aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+
+            {% else %}
+                {{ ys_no_contents('No Banner added yet. Start Adding banner by clicking on Add Banner Image.') }}
+            {% endif %}
+
+
+        </div>
+    </div>
+
+{% endblock %}
+
+ {% block scripts %}
+
+     <script type="text/javascript">
+         function deleteBanner(id) {
+             var trId = 'tr_' + id;
+             var result = confirm('Are you sure ?');
+             if (result) {
+                 var remoteUrl = "{{ url('yarsha_employer_banner_images_delete', {'id': 'USERID'}) }}";
+                 var remoteUrl = remoteUrl.replace('USERID', id);
+
+                 $.ajax({
+                     type: 'post',
+
+                     url: remoteUrl,
+                     success: function (res) {
+                         if (res && res.status == 'success') {
+                             $("#" + trId).remove();
+                         }
+                     }
+                 });
+             }
+         }
+
+         function update_featured(id) {
+
+             var trId = 'tr_' + id;
+             var result = confirm('Are you sure ?');
+             if (result) {
+                 var remoteUrl = "{{ url('yarsha_employer_banner_images_feature', {'id': 'USERID'}) }}";
+                 var remoteUrl = remoteUrl.replace('USERID', id);
+
+                 $.ajax({
+                     type: 'post',
+
+                     url: remoteUrl,
+                     success: function (res) {
+                         if (res && res.status == 'success') {
+                             window.location.reload();
+                         }
+                     }
+                 });
+             }
+
+         }
+
+
+     </script>
+ {% endblock %}

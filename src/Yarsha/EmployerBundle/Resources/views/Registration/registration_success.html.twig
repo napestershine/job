@@ -1,0 +1,37 @@
+{% extends "@YarshaFrontend/frontend_layout.html.twig" %}
+
+{% block content_title %}Registration Submitted{% endblock %}
+
+{% block content %}
+
+    <style>
+        .messageBody p{font-size: 16px; font-weight:100; color: #2b542c}
+    </style>
+
+    <div class="col-md-12">
+        <div class="col-md-12">
+
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+
+            <blockquote style="float: left">
+                <i class="fa fa-check-circle fa-4x  text-success"></i> &nbsp; &nbsp;
+            </blockquote>
+
+            <div class="messageBody">
+                <br>
+                <p>You have successfully Registered as an Employer.</p>
+                <p>An activation link has been sent to your email {{ email ? '('~email~')' : '' }}. Please check your email and follow the instructions to activate your account.</p>
+            </div>
+
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+        </div>
+
+    </div>
+
+    <br><br><br>
+
+    <div class="clearfix"></div>
+{% endblock %}

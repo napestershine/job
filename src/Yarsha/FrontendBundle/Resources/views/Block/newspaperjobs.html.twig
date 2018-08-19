@@ -1,0 +1,64 @@
+<section class="hot-job-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"><h2><i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                    &nbsp;{{ settings.title }}</h2>
+            </div>
+            {% set totalBlocks = 0 %}
+            {% for k, employer in organizations  %}
+
+                {{ _self.headerPart(employer.organization) }}
+
+                {% set count = 0 %}
+                {% for job in employer.jobs %}
+
+                    {% if count > 1 and count % 2 == 0 %}
+                        {% set count = 0 %}
+                        {{ _self.footerPart() }}
+                        {{ _self.headerPart(employer.organization) }}
+                    {% endif %}
+
+                    <span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i> &nbsp;
+                        {% set path = path('yarsha_frontend_job_detail_view', {'slug':job.slug}) %}
+                        {{ set_total_link_content(path, job.title, 20) }}
+                        {#<a href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}" title="{{ job.title }}">#}
+                            {#{{ set_total_content(job.title, 21) }}#}
+                        {#</a>#}
+                    </span>
+                    {% set count = count + 1 %}
+                {% endfor %}
+                {% set totalBlocks = totalBlocks + 1 %}
+                {{ _self.footerPart() }}
+
+            {% endfor %}
+
+            {% set overFlow = totalBlocks > 4 ? totalBlocks % 4 : 4 - (totalBlocks % 4) %}
+            {%  if overFlow > 0 %}
+                {{ render_ads('newspaper', overFlow) }}
+            {% endif %}
+
+            {% macro headerPart(e) %}
+                <div class="col-md-3 col-sm-6">
+                    <div class="hot-job-sec-blk newspaper-all-blk clearfix">
+                        <div class="col-md-3 col-sm-3 col-xs-3 hot-job-sec-blk-img-blk newspaper-img-blk-wrap">
+                            <img src="{{ organization_profile_image(e)|imagine_filter('thumb_small') }}">
+                        </div>
+                        <div class="col-md-9 col-sm-9 col-xs-9 hot-job-blk-cnt newspaper-right-side-cnt">
+                            <h1 style="" class="newspaper-right-side-cnt-h1" title="{{ e.name | title }}">
+                                {{ set_total_content(e.name,25) | title }}
+                                {#{% set path = path('yarsha_frontend_employer_detail_by_slug', {'slug':e.slug}) %}#}
+                                {#{{ set_total_link_content(path, e.name, 25) }}#}
+                                {#<a href="{{ path('yarsha_frontend_employer_detail_by_slug', {'slug':e.slug}) }}" title="{{ e.name }}">{{ set_total_content(e.name, 25) }}</a>#}
+                            </h1>
+            {% endmacro %}
+
+            {% macro footerPart() %}
+                        </div>
+                    </div>
+                </div>
+            {% endmacro %}
+
+        </div>
+    </div>
+</section>

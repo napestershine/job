@@ -1,0 +1,46 @@
+{% extends "@YarshaEmployer/employer_layout.html.twig" %}
+
+
+{% block content %}
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">Email Auto Responder</div>
+
+            </div>
+        </div>
+        <p>*This is an auto response email which will be sent to the applicant if you select Enable Autoresponder. If
+            you wish the applicant to receive automated email response for the application, please edit the message you
+            wish to send in the Autoresponse text box below.
+            The message you create will be valid to all the applicants who apply to any of your job posts. We suggest
+            you to create message that fits for all the job positions.
+        </p>
+        <p>For effective communication and to make the applicant aware of successful application submission, we suggest
+            you to keep the auto response email enabled. If you wish not to send automated emails, you can disable
+            it.*</p>
+
+        <div class="table-listing-page-wrap">
+            <div class="row">
+
+                {{ form_start(form) }}
+                <div class="col-md-12 col-sm-12"><h3>Auto Respnse Text</h3></div>
+                <div class="col-md-12 col-sm-12">
+                    {{ form_widget(form.autoresponsetext) }}
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    {{ form_row(form.autoresponse) }}
+                </div>
+                <div class="col-md-2 col-sm-2">
+                    <input type="submit" value="Save Changes">
+                </div>
+                {{ form_end(form) }}
+
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}

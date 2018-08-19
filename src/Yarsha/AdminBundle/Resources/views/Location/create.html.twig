@@ -1,0 +1,32 @@
+{{ form_start(form, {'attr':{'id':'addCountryForm', 'onsubmit':'return submitAddCountryForm(this)','data-id':id}}) }}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+<div class="col-xs-12">
+    <div class="col-md-12 ">
+        {{ form_row(form.name) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.iso2) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.iso3) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.zipCode) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.nationality) }}
+    </div>
+</div>
+
+<div class="modal-footer">
+    <input type="submit" class="btn btn-primary add-button" value="SAVE">
+
+    <button type="button" class="btn btn-danger add-button" data-dismiss="modal">
+        CANCEL
+    </button>
+</div>
+{{ form_end(form) }}
+
+<div class="clearfix"></div>
+{% block scripts %}
+{% endblock scripts %}

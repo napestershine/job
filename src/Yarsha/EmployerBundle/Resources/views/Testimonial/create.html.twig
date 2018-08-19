@@ -1,0 +1,73 @@
+{% extends 'YarshaEmployerBundle::employer_layout.html.twig' %}
+
+{% block page_title %}Testimonials{% endblock %}
+{% block page_description %}New{% endblock %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block content %}
+
+    <style>
+       
+        .table-listing-page-wrap input[type="radio"]:first-child, .table-listing-page-wrap input[type="checkbox"]:first-child {
+            margin-left: -18px;
+        }
+
+    </style>
+
+
+
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">Post Your Story</div>
+            </div>
+        </div>
+
+
+        <div class="table-listing-page-wrap">
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    {{ form_row(form.title) }}
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    {{ form_row(form.company) }}
+
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    {{ form_row(form.message) }}
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    Upload Image:<br> {{ form_row(form.file) }}
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    Sort Order:<br> {{ form_row(form.sortOrder) }}
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    Status:<br> {{ form_row(form.status) }}
+                </div>
+                <div class="col-md-2 col-sm-2">
+                    <input type="submit" value="Submit">
+                </div>
+
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+
+
+
+    {{ form_start(form) }}
+
+    {{ form_end(form) }}
+
+{% endblock content %}
+
+
+{% block scripts %}
+
+
+{% endblock %}

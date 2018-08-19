@@ -1,0 +1,130 @@
+{% extends "@YarshaFrontend/frontend_layout.html.twig" %}
+
+{% block content_title %}Employer Registration Form{% endblock %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block content %}
+
+    <section class="navigation-btm-sec login-reg-bg-wrap">
+        <div class="container">
+            <div class="row">
+                <h2>Create Kantipur Jobs Account As Employer </h2>
+                <span class="login-register-quote">
+                    Already have an account? <a href="{{ path('yarsha_employer_security_login') }}">Login</a>
+                </span>
+                <div class="col-md-12 login-reg-wrap">
+
+                    <div class="login-reg-blk">
+
+                        {% if errorMessage is defined %}
+                            <div class="text-center text-danger alert">
+                                {{ errorMessage }}
+                            </div>
+                        {% endif %}
+
+                        {{ form_start(form) }}
+
+                        <h4 class="block-title">Organization Information</h4>
+
+                        <div class="row">
+                            <div class="col-md-6">{{ form_row(form.organization.name) }}</div>
+                            <div class="col-md-6">{{ form_row(form.organization.nature) }}</div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">{{ form_row(form.organization.category) }}</div>
+                            <div class="col-md-6">{{ form_row(form.organization.industry) }}</div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">{{ form_row(form.organization.ownershipType) }}</div>
+                            <div class="col-md-6">{{ form_row(form.organization.size) }}</div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">{{ form_row(form.organization.phone) }}</div>
+                            <div class="col-md-6">{{ form_row(form.organization.website) }}</div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+                            <div class="col-md-12">{{ form_row(form.organization.address) }}</div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+                            <div class="col-md-12">{{ form_row(form.organization.profile) }}</div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <h4 class="block-title">Contact Person</h4>
+
+                        <div class="row">
+                            <div class="col-md-12">{{ form_row(form.organization_contact_person.designation) }}</div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">{{ form_row(form.organization_contact_person.firstName) }}</div>
+                            <div class="col-md-6">{{ form_row(form.organization_contact_person.lastName) }}</div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">{{ form_row(form.organization_contact_person.phone) }}</div>
+                            <div class="col-md-6">{{ form_row(form.organization_contact_person.mobile) }}</div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="row">
+                            <div class="col-md-12">{{ form_row(form.organization_contact_person.email) }}</div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        {{ form_row(form.organization_contact_person) }}
+
+                        <h4 class="block-title">Login Credentials</h4>
+
+                        {{ form_row(form.user_login_credential.username) }}
+                        {{ form_row(form.user_login_credential.password) }}
+
+                        {#<div class="panel panel-default">#}
+                        {#<div class="panel-heading">#}
+                        {#<h4 class="panel-title">Organization Head</h4>#}
+                        {#</div>#}
+                        {#<div class="panel-body">#}
+                        {#{{ form_row(form.organization_head) }}#}
+                        {#</div>#}
+                        {#</div>#}
+
+                        <input type="submit" value="REGISTER">
+
+                        {{ form_end(form) }}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,108 @@
+{% set seeker = data %}
+<div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix" id="profile_{{ setting.section }}">
+    <div class="title">
+        <div class="row posted-jobs-blk">
+            <div class="col-md-9 col-sm-9">Profile Detail</div>
+            {% if setting.employer == false %}
+                <div class="col-md-3 col-sm-3 right">
+                    <input type="submit" data-toggle="modal"
+                           data-target="#updateProfile"
+                           data-educationId=""
+                           data-title="Update Profile"
+                           value="Update profile">
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="posted-jobs-blk-list-blk">
+        <table>
+            <tr>
+                <td><b>Name</b></td>
+                <td>{{ seeker.firstName|title ~' '~seeker.middleName|title~' '~ seeker.lastName|title }}</td>
+                <td><b>Date of birth</b></td>
+                <td>{{ seeker.dob | date('Y-m-d') }}</td>
+            </tr>
+            {% if setting.employer == false %}
+                <tr>
+                    <td><b>Contact Email</b></td>
+                    <td>{{ seeker.contactEmail }}</td>
+                    <td><b>Mobile</b></td>
+                    <td>{{ seeker.mobile }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td><b>Gender</b></td>
+                <td>{{ seeker.gender|title }}</td>
+                <td><b>Nationality</b></td>
+                <td>{{ seeker.nationality }}</td>
+            </tr>
+            <tr>
+                <td><b>Current address</b></td>
+                <td>{{ seeker.currentAddress }}</td>
+                <td><b>Permanent Address</b></td>
+                <td>{{ seeker.permanentAddress }}</td>
+            </tr>
+            <tr>
+                <td><b>Religion</b></td>
+                <td>{{ seeker.religion }}</td>
+                <td><b>Marital Status</b></td>
+                <td>{{ seeker.maritalStatus|title }}</td>
+            </tr>
+            {% if setting.employer == false %}
+                <tr>
+                    <td><b>Permanent Address</b></td>
+                    <td>{{ seeker.permanentAddress }}</td>
+                    <td><b>Religion</b></td>
+                    <td>{{ seeker.religion }}</td>
+                </tr>
+            {% endif %}
+            {% if setting.employer == true %}
+                <tr>
+                    <td><b>Expected Salary</b></td>
+                    <td>{% set hasMin = false %}
+
+                        {% if seeker.minExpectedSalary %}
+                            {{ seeker.maxExpectedSalary ? '' : 'Starting From ' }}
+                            {{ seeker.minExpectedSalary }}
+                            {% set hasMin = true %}
+                        {% endif %}
+
+                        {% if seeker.maxExpectedSalary %}
+                            {{ hasMin ? ' - ' : 'Upto ' }}
+                            {{ seeker.maxExpectedSalary }}
+                        {% endif %}</td>
+                    <td><b>Preferred Locations</b></td>
+                    <td>
+                        {{ seeker.preferredLocations?seeker.preferredLocations | first :'None' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Preferred Categories</b></td>
+                    <td>
+                        {{ seeker.preferredCategories?seeker.preferredCategories | first :'None' }}
+                    </td>
+                    <td><b>Preferred Industries</b></td>
+                    <td>
+                        {{ seeker.preferredIndustries?seeker.preferredIndustries | first :'None' }}
+                    </td>
+                </tr>
+            {% endif %}
+
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="updateProfile" role="dialog" arial-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" class="close">&times</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+
+</div>

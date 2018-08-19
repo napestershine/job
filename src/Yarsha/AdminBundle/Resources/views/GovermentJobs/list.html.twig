@@ -1,0 +1,121 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Government Jobs{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>
+    </button>
+
+    {#<a href="#" class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i> Export</a>#}
+
+    <a href="{{ path('yarsha_admin_goverment_job_new') }}" class="btn btn-info btn-xs">
+        <i class="fa fa-plus"></i> Add New
+    </a>
+
+{% endblock %}
+
+
+
+{% block filter %}
+    <div class="row">
+        <div class="form-group-sm col-md-3">
+            <label for="name">Job Title</label>
+            <input type="text" name="job_title" value="{{ app.request.get('job_title') }}" placeholder="Job Title"
+                   class="form-control">
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+
+                {% if jobs | length %}
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% set count = pager_first_index(jobs) %}
+                        {% for job in jobs %}
+                            <tr id="tr_{{ job.id }}">
+                                <td>{{ count }}</td>
+                                <td>{{ job.title }}</td>
+                                <td>{{ render_employer_job_status(job.status) }}</td>
+                                <td>
+                                    {% set status = job.status %}
+                                    <a href="{{ path('yarsha_admin_approve_goverment_job', {'id':job.id}) }}"
+                                       class="btn btn-xs btn-warning" title="Change Status">
+                                        <i class="fa fa-exchange"></i> {{ change_job_status(status) }}
+                                    </a>
+                                    <a href="{{ path('yarsha_admin_goverment_job_update', {'id':job.id}) }}"
+                                       class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                                    <a href="{{ path('yarsha_admin_goverment_job_detail', {'id':job.id}) }}"
+                                       class="btn btn-xs btn-info"><i class="fa fa-eye"></i> View</a>
+                                    <a href="#" class="btn btn-xs btn-danger"
+                                       onclick="deleteGovermentJob({{ job.id }})"
+                                    >
+                                        <i class="fa fa-times"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            {% set count = count + 1 %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    {{ ys_no_contents('No goverment jobs added.') }}
+                {% endif %}
+
+                <div class="clearfix"></div>
+
+                {% if jobs.haveToPaginate %}
+                    {{ pagerfanta(jobs, 'twitter_bootstrap3') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock content %}
+
+{% block scripts %}
+
+    <script type="text/javascript">
+        function deleteGovermentJob(id) {
+            var trId = 'tr_' + id;
+            var result = confirm('Are you sure ?');
+            if (result) {
+                var remoteUrl = "{{ url('yarsha_admin_goverment_job_delete', {'id': 'JOBID'}) }}";
+                var remoteUrl = remoteUrl.replace('JOBID', id);
+
+                $.ajax({
+                    type: 'post',
+
+                    url: remoteUrl,
+                    success: function (res) {
+                        if (res && res.status == 'success') {
+                            $("#" + trId).remove();
+                        }
+                    }
+                });
+            }
+        }
+
+
+    </script>
+{% endblock %}

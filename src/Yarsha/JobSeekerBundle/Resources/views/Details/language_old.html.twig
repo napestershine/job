@@ -1,0 +1,48 @@
+{{ form_start(form, {'attr':{'id':'addLanguage', 'onsubmit':'return submitLanguage(this)'}}) }}
+{#{{ form_start(form, {'attr':{'id':'addLanguage', 'action':path('yarsha_job_seeker_ajax_add_language')}}) }}#}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+<div id="seekerLanguagesWrapper" data-prototype="{{ _self.renderAddLanguageForm(form.languages.vars.prototype) | e('html_attr') }}">
+    {% for language in form.languages %}
+        {{ _self.renderAddLanguageForm(language) }}
+    {% endfor %}
+</div>
+<div class="modal-footer">
+    <a href="#" id="addLanguageBtn" class="btn btn-primary pull-left">Add more</a>
+    <input type="submit" class="btn btn-primary" value="SAVE">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">
+        CANCEL
+    </button>
+</div>
+{{ form_end(form) }}
+
+<style>
+    .modal-dialog{
+        width: 80%;
+    }
+    .delete-language-btn{
+        margin-top: 25px;
+    }
+
+</style>
+
+{% macro renderAddLanguageForm(form) %}
+    <div class="row">
+        <div class="col-md-11">
+            <div class="col-md-3">
+                {{ form_row(form.language) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.reading) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.writing) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_row(form.speaking) }}
+            </div>
+        </div>
+        <div class="col-md-1">
+            <a href="#" class="btn btn-danger btn-xs delete-language-btn">Delete</a>
+        </div>
+    </div>
+{% endmacro %}

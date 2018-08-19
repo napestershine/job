@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col-md-12">
+        {#{% form_theme form 'bootstrap_3_layout.html.twig' %}#}
+        {#{{ form_start(form, {'attr':{'onsubmit':'sendMessageToSeeker(event,this)'}}) }}#}
+        {#{{ form_widget(form) }}#}
+        {#{{ form_end(form) }}#}
+        <form action="#" onsubmit="sendMessageToSeeker(event,this)">
+            <label for="message">Message</label>
+            <textarea name="message" id="" cols="30" rows="10" class="form-control"></textarea>
+            <br>
+            <input type="submit" class="btn btn-primary" value="send">
+        </form>
+    </div>
+</div>

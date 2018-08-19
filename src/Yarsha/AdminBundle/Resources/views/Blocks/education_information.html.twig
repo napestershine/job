@@ -1,0 +1,91 @@
+<div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix" id="profile_{{ setting.section }}">
+    <div class="title">
+        <div class="row">
+            <div class="col-md-10 col-sm-10">Education</div>
+            {% if setting.employer == false %}
+                <div class="col-md-2 col-sm-2 right">
+                    <input type="submit" data-toggle="modal" class="btn btn-xs btn-primary"
+                           data-target="#addEducation"
+                           data-educationId=""
+                           data-title="Add Education"
+                           data-user="{{ user }}"
+                           value="+ Add Or Edit Education">
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div class="posted-jobs-blk-list-blk">
+        {% if data | length %}
+            <table class="table table-condensed">
+                <tr>
+
+                    <th>Degree Name</th>
+                    <th>School/College</th>
+                    <th>Board</th>
+                    <th>%/CGPA/Grade</th>
+                    <th>Pass Year</th>
+                    <th>Country</th>
+                    {#{% if setting.employer == false %}#}
+                        {#<th>Action</th>#}
+                    {#{% endif %}#}
+                </tr>
+                {% for education in data %}
+                    <tr id="row-{{ education.id }}">
+                        <td>{{ education.degreeName == '' ? education.degree : education.degreeName }}</td>
+                        <td>{{ education.institution }}</td>
+                        <td>{{ education.board }}</td>
+                        {#<td>{{ education.markSystem }}</td>#}
+                        <td>{{ education.percentage }}</td>
+                        <td>{{ education.year }}</td>
+                        <td>{{ education.country ? education.country.name : '' }}</td>
+                        {#{% if setting.employer == false %}#}
+                            {#<td style="width:10%;text-align: center;">#}
+                                {#<a href="" data-toggle="modal"#}
+                                   {#data-target="#addEducation"#}
+                                   {#data-educationId="{{ education.id }}"#}
+                                   {#data-title="Update Education"#}
+                                   {#data-user="{{ user }}"#}
+                                   {#data-toggle="tooltip" title="Edit">#}
+
+                                    {#<i class="fa fa-edit"></i>#}
+
+                                {#</a>#}
+
+                                {#<a href="#" data-educationId="{{ education.id }}" onclick="deleteEducation(event, this)"#}
+                                   {#data-toggle="tooltip" title="Delete">#}
+
+                                    {#<i class="fa fa-trash"></i>#}
+
+                                {#</a>#}
+                            {#</td>#}
+                        {#{% endif %}#}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            {{ ys_no_contents('No education added.') }}
+        {% endif %}
+
+    </div>
+
+    <div class="modal fade" id="addEducation" role="dialog" arial-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" class="close">&times</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+

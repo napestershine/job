@@ -1,0 +1,173 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Education Degree{% endblock %}
+
+{% block action_block %}
+    <a href="#"
+       class="btn btn-primary btn-xs"
+       data-toggle="modal"
+       data-target="#educationDegreeAdd"
+       data-id=""
+    >
+        <i class="fa fa-plus"></i> &nbsp; Add New
+    </a>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                {% if degrees|length %}
+                    <table class="table sortable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Slug</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="sortableEducationDegree">
+                        {% for degree in degrees %}
+                            <tr draggable="true" id="item_{{ degree.id }}">
+                                <td>
+                                    <i class="fa fa-arrows"></i>
+                                </td>
+                                <td>{{ degree.name }}</td>
+                                <td>{{ degree.slug }}</td>
+                                <td>{{ degree.description }}</td>
+                                <td>
+                                    <a href="#"
+                                       data-toggle="modal"
+                                       data-target="#educationDegreeAdd"
+                                       class="btn btn-info btn-xs"
+                                       data-id="{{ degree.id }}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="#"
+                                       class="btn btn-danger btn-xs"
+                                       data-degree-id="{{ degree.id }}"
+                                       onclick="deleteEducationDegree(this)">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    {{ ys_no_contents('No degrees added.') }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="educationDegreeAdd">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" class="close">&times</button>
+                    <h4 class="modal-title">Education Degree</h4>
+                </div>
+                <div class="modal-body"></div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+
+        $( "#sortableEducationDegree" ).sortable({
+            axis:'y',
+            update: function (event, ui) {
+                var data = $("#sortableEducationDegree").sortable('serialize');
+                $.ajax({
+                    data: data,
+                    type: 'POST',
+                    url: '{{ path('yarsha_admin_ajax_education_sort') }}',
+                    success: function(data){
+                        console.log(data);
+                    }
+                });
+            }
+        });
+
+        $('#educationDegreeAdd').on('show.bs.modal', function(e){
+            var modal = $(this);
+            var button = $(e.relatedTarget);
+            var degreeId = button.data('id');
+
+            $.ajax({
+                url: '{{ path('yarsha_admin_ajax_education_degree_create') }}',
+                data: {'id':degreeId},
+                type: 'get',
+                success: function(res){modal.find('.modal-body').html(res.template)},
+                error: function(err){}
+            });
+        });
+
+        function submitEducationDegreeForm(_obj)
+        {
+            var form = $(_obj);
+            id = $(_obj).data('id');
+            if(typeof id == 'number'){
+                url = "{{ path('yarsha_admin_ajax_education_degree_update',{'id':'DEGREE_ID'}) }}";
+                url = url.replace('DEGREE_ID',id);
+            }   else    {
+                url = "{{ path('yarsha_admin_ajax_education_degree_create') }}";
+            }
+            $.ajax({
+                url: url,
+                data: form.serialize(),
+                type: 'post',
+                success: function(res){
+                    if(res.status == true)
+                    {
+                        window.location = "";
+                    }else{
+                        $('#educationDegreeForm').find('modal-body').html(res.template);
+                    }
+                },
+                error: function(err){}
+            });
+            return false;
+        }
+
+        function deleteEducationDegree(obj){
+            c = confirm('Are you sure?');
+            id = $(obj).data('degree-id');
+            url = "{{ path('yarsha_admin_ajax_education_degree_delete', {'id':'DEGREE_ID'}) }}";
+            url = url.replace('DEGREE_ID', id);
+            modal = $("#myModal");
+            if(c){
+                $.ajax({
+                    url:url,
+                    method:'GET',
+                    success:function(res){
+                        if(res.success){
+                            modal.find('.modal-title').html('Message');
+                            modal.find('.modal-body').html(res.message);
+                            $(obj).parent().parent().remove();
+                        }   else    {
+                            modal.find('.modal-title').html('Error Message');
+                            modal.find('.modal-body').html("Unable to delete education degree.");
+                        }
+                        modal.modal('show');
+                    },
+                    error:function(res){
+                        modal.find('.modal-title').html('Error Message');
+                        modal.find('.modal-body').html("Unable to delete education degree.");
+                        modal.modal('show');
+                    }
+                });
+            }
+        }
+
+    </script>
+{% endblock %}

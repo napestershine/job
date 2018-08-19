@@ -1,0 +1,79 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Banners{% endblock %}
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+    <button class="btn btn-xs btn-primary" data-toggle="collapse" data-target="#addBannerForm">
+        <i class="fa fa-plus"></i> Add Banner
+    </button>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+
+        <div class="col-md-12 collapse {{ gotError is defined and gotError == true ? 'in' : '' }}" id="addBannerForm">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% form_theme form "bootstrap_3_layout.html.twig" %}
+                    {{ form_start(form) }}
+                    {{ form_row(form.caption) }}
+                    {{ form_row(form.file) }}
+                    {{ form_row(form.isFeatured) }}
+                    <div>
+                        <input type="submit" class="btn btn-xs btn-success" value="SAVE">
+                        <input type="reset" class="btn btn-xs btn-danger" value="CANCEL">
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="row">
+                {% for banner in banners %}
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-body {{ banner.isFeatured ? 'bg-navy' : '' }}">
+
+                                <div class="row">
+
+                                    <div class="col-md-12 img-responsive">
+                                        <img src="{{ asset('uploads/banners/'~banner.path)|imagine_filter('banner_thumb') }}" alt="name">
+                                        <p>{{ banner.caption }}</p>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        {% if banner.isFeatured %}
+                                            <span class="label label-success">Featured</span>
+                                        {% endif %}
+                                    </div>
+
+
+
+                                    <div class="col-md-9 text-right">
+                                        {% if banner.isFeatured != true %}
+                                            <a href="{{ path('yarsha_admin_banner_make_featured', {'id':banner.id}) }}" class="btn btn-xs btn-warning">
+                                                <i class="fa fa-star"></i> Mark As Featured
+                                            </a>
+                                        {% endif %}
+                                        <a href="{{ path('yarsha_admin_banner_delete', {'id':banner.id}) }}" onclick="return confirm('Are you sure to delete?')" class="btn btn-xs btn-danger">
+                                            <i class="fa fa-times"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">{{ ys_no_contents('No banners added.') }}</div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

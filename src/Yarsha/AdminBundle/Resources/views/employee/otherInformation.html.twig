@@ -1,0 +1,479 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Employee{% endblock %}
+
+{% block content %}
+
+
+    {% set profileInfos = [
+
+    'education_information',
+    'trainings',
+    'professional_information',
+    'other_information'
+    ] %}
+
+    {% for p in profileInfos %}
+        {% set template = 'YarshaAdminBundle:Blocks:'~p~'.html.twig' %}
+        {{ sonata_block_render({'type':'yarsha.block.admin_seeker_profile'}, {'section':p,'template':template, 'seeker':seeker}) }}
+
+
+    {% endfor %}
+
+
+{% endblock %}
+
+
+
+{% block scripts %}
+    <script>
+
+        $('#addEducation').on('show.bs.modal', function (e) {
+            var modal = $(this);
+            var button = $(e.relatedTarget);
+            var companyId = button.attr('data-companyId');
+            var title = button.attr('data-title');
+            var educationId = button.attr('data-educationId');
+            var user = button.attr('data-user');
+
+            if (educationId != '') {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_update_education', {'educationId':'EDUCATION_ID'}) }}";
+                var url = url.replace('EDUCATION_ID', educationId);
+            } else {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_add_education', {'seekerId':'SEEKER_ID'}) }}";
+                var url = url.replace('SEEKER_ID', user);
+            }
+
+            modal.find('.modal-title').html(title);
+
+            $.ajax({
+                type: 'get',
+                url: url,
+                data: {
+                    'educationId': educationId,
+                    'seekerId': user
+                },
+                success: function (res) {
+                    modal.find('.modal-body').html(res.template);
+                },
+                error: function (res) {
+                    alert(res.message);
+                }
+            });
+        });
+        function submitEducation(obj) {
+            //  $.LoadingOverlay('show');
+            var form = $(obj),
+                    educationid = form.data('id'),
+                    user = form.data('user'),
+                    dataToSend = form.serialize();
+
+            if (educationid == '') {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_add_education',{'seekerId':'SEEKER_ID'}) }}"
+                var url = url.replace('SEEKER_ID', user);
+            } else {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_update_education', {'educationId':'EDUCATION_ID'}) }}";
+                var url = url.replace('EDUCATION_ID', educationid);
+            }
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: dataToSend,
+                success: function (res) {
+                    //  alert(true);
+                    //  $.LoadingOverlay('hide');
+                    window.location = ''
+                },
+                error: function (res) {
+                    alert('fail');
+                    $.LoadingOverlay('hide');
+                }
+            });
+            return false;
+        }
+
+        function deleteEducation(e, obj) {
+            e.preventDefault();
+            c = confirm('Are you sure ? ');
+            if (c) {
+                // $.LoadingOverlay('show');
+                id = $(obj).attr('data-educationId');
+                url = "{{ path('yarsha_admin_ajax_seeker_education_delete',{'id':'EDUCATION_ID'}) }}";
+                url = url.replace('EDUCATION_ID', id);
+                console.log(url)
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (data) {
+                        $.LoadingOverlay('hide');
+                        if (data.success) {
+                            $(obj).parent().parent().remove();
+                        }
+                    },
+                    error: function (res) {
+                        //  $.LoadingOverlay('hide');
+                        alert('Fail');
+                    }
+                })
+            }
+
+        }
+
+        $('#addTraining').on('show.bs.modal', function (e) {
+            var modal = $(this);
+            var button = $(e.relatedTarget);
+            var companyId = button.attr('data-companyId');
+            var title = button.attr('data-title');
+            var trainingId = button.attr('data-trainingId');
+            var user = button.attr('data-user');
+
+            if (trainingId != '') {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_update_training', {'trainingId':'TRAINING_ID'}) }}";
+                var url = url.replace('TRAINING_ID', trainingId);
+            } else {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_add_training', {'seekerId':'SEEKER_ID'}) }}";
+                var url = url.replace('SEEKER_ID', user);
+            }
+
+            modal.find('.modal-title').html(title);
+
+            $.ajax({
+                type: 'get',
+                url: url,
+                data: {
+                    'trainingId': trainingId,
+                    'seekerId': user
+                },
+                success: function (res) {
+                    modal.find('.modal-body').html(res.template);
+//                    modal.find('.modal-body form').on('submit', function () {
+//                        for (instance in CKEDITOR.instances) {
+//                            CKEDITOR.instances[instance].updateElement();
+//                        }
+//                        submitTraining(url, $(this));
+//                    });
+                },
+                error: function (res) {
+                    alert(res.message);
+                }
+            });
+        });
+
+        function submitTraining(url, _obj) {
+            // $.LoadingOverlay('show');
+            var form = $(_obj);
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                success: function (res) {
+                    window.location = ''
+                },
+                error: function (res) {
+
+                },
+                then: function (res) {
+                    // $.LoadingOverlay('hide');
+                }
+            });
+
+
+            return false;
+        }
+
+        function deleteTraining(e, obj) {
+            e.preventDefault();
+            c = confirm('Are you sure ? ');
+            if (c) {
+                // $.LoadingOverlay('show');
+                var button = $(obj);
+                id = button.attr('data-id');
+                url = "{{ path('yarsha_admin_ajax_job_seeker_delete_training', {'id':'TRAINING_ID'}) }}";
+                url = url.replace('TRAINING_ID', id);
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (data) {
+                        // $.LoadingOverlay('hide');
+                        if (data.success) {
+                            button.parent().parent().remove();
+                        }
+                    },
+                    error: function (res) {
+                        //$.LoadingOverlay('hide');
+                        alert('Fail');
+                    }
+                });
+            }
+
+        }
+
+        $('#addExperience').on('show.bs.modal', function (e) {
+            var modal = $(this);
+            var button = $(e.relatedTarget);
+            var title = button.attr('data-title');
+            var experienceId = button.attr('data-experienceId');
+            var seekerId = button.attr('data-user');
+
+            if (experienceId != '') {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_update_experience', {'experienceId':'EXPERIENCE_ID'}) }}";
+                var url = url.replace('EXPERIENCE_ID', experienceId);
+            } else {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_add_experience', {'seekerId':'SEEKER_ID'}) }}";
+                var url = url.replace('SEEKER_ID', seekerId);
+            }
+
+            modal.find('.modal-title').html(title);
+
+            $.ajax({
+                type: 'get',
+                url: url,
+                data: {
+                    'experienceId': experienceId,
+                    'seekerId': seekerId
+                },
+                success: function (res) {
+                    modal.find('.modal-body').html(res.template);
+                    modal.find('.modal-body form').on('submit', function (e) {
+                        e.preventDefault();
+                        for (instance in CKEDITOR.instances) {
+                            CKEDITOR.instances[instance].updateElement();
+                        }
+                        submitSeekerProfile(url, $(this), modal);
+                    });
+
+                },
+                error: function (res) {
+                    alert(res.message);
+                }
+            });
+        });
+
+        function submitSeekerProfile(url, _obj, modal) {
+            // $.LoadingOverlay('show');
+            var form = $(_obj);
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                success: function (res) {
+                    window.location = ''
+                },
+                error: function (res) {
+                },
+                then: function (res) {
+                    // $.LoadingOverlay('hide');
+                }
+            });
+            return false;
+        }
+
+        function deleteExperience(e, obj) {
+            e.preventDefault();
+            var c = confirm('Are you sure ? ');
+            if (c) {
+                // $.LoadingOverlay('show');
+                id = $(obj).attr('data-experience-id');
+                url = "{{ path('yarsha_admin_ajax_job_seeker_experience_delete', {'id':'EXPERIENCE_ID'}) }}";
+                url = url.replace('EXPERIENCE_ID', id);
+                console.log(url)
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (data) {
+                        // $.LoadingOverlay('hide');
+                        if (data.success) {
+                            $(obj).parent().parent().remove();
+                        }
+                    }
+                });
+            }
+
+        }
+
+
+        $('#addLanguage').on('show.bs.modal', function (e) {
+            var modal = $(this);
+            var button = $(e.relatedTarget);
+            var title = button.attr('data-title');
+            var languageId = button.attr('data-languageId');
+            var seekerId = button.attr('data-user');
+            var url = "{{ path('yarsha_admin_job_seeker_ajax_add_language', {'seekerId':'SEEKER_ID'}) }}";
+            var url = url.replace('SEEKER_ID', seekerId);
+            {#if (languageId != '') {#}
+                {#var url = "{{ path('yarsha_admin_job_seeker_ajax_update_language', {'languageId':'LANGUAGE_ID'}) }}";#}
+                {#var url = url.replace('LANGUAGE_ID', languageId);#}
+            {#} else {#}
+                {#var url = "{{ path('yarsha_admin_job_seeker_ajax_add_language', {'seekerId':'SEEKER_ID'}) }}";#}
+                {#var url = url.replace('SEEKER_ID', seekerId);#}
+            {#}#}
+
+            modal.find('.modal-title').html(title);
+
+            $.ajax({
+                type: 'get',
+                url: url,
+                data: {
+                    'languageId': languageId,
+                    'seekerId': seekerId
+                },
+                success: function (res) {
+                    modal.find('.modal-body').html(res.template);
+
+                },
+                error: function (res) {
+                    alert(res.message);
+                }
+            });
+        });
+        function submitLanguage(obj) {
+            // $.LoadingOverlay('show');
+            var form = $(obj),
+                    languageId = form.data('id'),
+                    seekerId = form.data('user'),
+                    dataToSend = form.serialize();
+
+            if (languageId == '') {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_add_language', {'seekerId':'SEEKER_ID'}) }}";
+                var url = url.replace('SEEKER_ID', seekerId);
+            } else {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_update_language', {'languageId':'LANGUAGE_ID'}) }}";
+                var url = url.replace('LANGUAGE_ID', languageId);
+            }
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: dataToSend,
+                success: function (res) {
+                    //$.LoadingOverlay('hide');
+                    window.location = ''
+                },
+                error: function (res) {
+                    //  $.LoadingOverlay('hide');
+                    alert('Fail');
+                }
+            });
+            return false;
+        }
+
+        $('#addReference').on('show.bs.modal', function (e) {
+            var modal = $(this);
+            var button = $(e.relatedTarget);
+            var title = button.attr('data-title');
+            var referenceId = button.attr('data-referenceId');
+            var seekerId = button.attr('data-user');
+
+            if (referenceId != '') {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_update_reference', {'referenceId':'REFERENCE_ID'}) }}";
+                var url = url.replace('REFERENCE_ID', referenceId);
+            } else {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_add_reference', {'seekerId':'SEEKER_ID'}) }}";
+                var url = url.replace('SEEKER_ID', seekerId);
+            }
+
+            modal.find('.modal-title').html(title);
+
+            $.ajax({
+                type: 'get',
+                url: url,
+                data: {'referenceId': referenceId, 'seekerId': seekerId},
+                success: function (res) {
+                    modal.find('.modal-body').html(res.template);
+
+                },
+                error: function (res) {
+                    alert(res.message);
+                }
+            });
+        });
+        function submitReference(obj) {
+            //  $.LoadingOverlay('show');
+            var form = $(obj),
+                    referenceId = form.data('id'),
+                    seekerId = form.data('user'),
+                    dataToSend = form.serialize();
+
+            if (referenceId == '') {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_add_reference', {'seekerId':'SEEKER_ID'}) }}";
+                var url = url.replace('SEEKER_ID', seekerId);
+            } else {
+                var url = "{{ path('yarsha_admin_job_seeker_ajax_update_reference', {'referenceId':'REFERENCE_ID'}) }}";
+                var url = url.replace('REFERENCE_ID', referenceId);
+            }
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: dataToSend,
+                success: function (res) {
+                    // $.LoadingOverlay('hide');
+                    window.location.href = ''
+                },
+                error: function (res) {
+                    // $.LoadingOverlay('hide');
+                    alert('Fail');
+                }
+            });
+            return false;
+        }
+
+        function deleteSeekerLanguage(e, obj) {
+            e.preventDefault();
+            c = confirm('Are you sure ? ');
+            if (c) {
+                //$.LoadingOverlay('show');
+                var button = $(obj);
+                id = button.attr('data-languageId');
+                url = "{{ path('yarsha_admin_ajax_job_seeker_delete_language', {'id':'LANGUAGE_ID'}) }}";
+                url = url.replace('LANGUAGE_ID', id);
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (data) {
+                        // $.LoadingOverlay('hide');
+                        if (data.success) {
+                            button.parent().parent().remove();
+                        }
+                    },
+                    error: function (res) {
+                        //$.LoadingOverlay('hide');
+                        alert('Fail');
+                    }
+                });
+            }
+
+        }
+
+        function deleteReference(e, obj) {
+            e.preventDefault();
+            c = confirm('Are you sure ? ');
+            if (c) {
+                //$.LoadingOverlay('show');
+                var button = $(obj);
+                id = button.attr('data-referenceId');
+                url = "{{ path('yarsha_admin_ajax_job_seeker_delete_reference', {'id':'REFERENCE_ID'}) }}";
+                url = url.replace('REFERENCE_ID', id);
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (data) {
+                        //$.LoadingOverlay('hide');
+                        if (data.success) {
+                            button.parent().parent().remove();
+                        }
+                    },
+                    error: function (res) {
+                        //$.LoadingOverlay('hide');
+                        alert('Fail');
+                    }
+                });
+            }
+
+        }
+
+
+    </script>
+{% endblock %}
+
+

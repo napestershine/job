@@ -1,0 +1,39 @@
+<h2><i class="fa fa-history" aria-hidden="true"></i>
+    &nbsp;recent jobs</h2>
+<ul class="recent-jobs-wrapper hot-job-list clearfix">
+    <div class="row row1">
+
+        {% set count = 0 %}
+        {% set rowCount = 0 %}
+        {% for job in recentJobs %}
+            <li class="col-md-4 col-sm-6">
+                <div class="row">
+                    <div class="col-md-2 col-sm-2 col-xs-2 recent-job-icon-left-wrap">
+                        <div class="recent-job-icon">
+                            {{ render_job_type_icon(job) }}
+                        </div>
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-10 recent-job-cnt-blk">
+                        <h1>
+                            {% set path = path('yarsha_frontend_job_detail_view', {'slug':job.slug}) %}
+                            {{ set_total_link_content(path,job.title,26) }}
+                        </h1>
+                        <span title="{{ job.organization.name }}">{{ set_total_content(job.organization.name, 32) }}</span>
+                    </div>
+                </div>
+            </li>
+            {% set count = count + 1 %}
+            {% set rowCount = rowCount + 1 %}
+            {% if count % 3 == 0 %} <div class="clearfix"></div> {% endif %}
+            {% if rowCount % 3 == 0 %} {% set rowCount = 0 %} {% endif %}
+
+        {% endfor  %}
+
+        {% set adCount = 3 - rowCount %}
+
+        {% if adCount < 3 %}
+            {{ render_ads('recent',adCount) }}
+        {% endif %}
+
+    </div>
+</ul>

@@ -1,0 +1,30 @@
+<!-- Suggest to Friend Modal -->
+<div class="modal fade" id="shareJobModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     style="z-index:99999;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Suggest Job</h4>
+            </div>
+            <form action="#" onsubmit="suggestToFriend(event, this)" id="shareJobForm">
+                <div class="modal-body">
+                    <span id="successMessage" class="text-success"></span>
+                    <label for="name">Sender Name</label>
+                    <input type="text" name="name" class="form-control" required="required">
+                    <label for="to">Email of receiver</label>
+                    <input type="email" name="email" required="required" class="form-control" onkeyup="validateEmail(this.value)">
+                    <span id="emailErrorMessage" class="text-danger"></span>
+                    <label for="message">Message</label>
+                    <textarea name="message" id="message" required="required" cols="30" rows="10" class="form-control"></textarea>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

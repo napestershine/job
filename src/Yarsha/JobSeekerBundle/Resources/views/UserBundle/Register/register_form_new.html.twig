@@ -1,0 +1,394 @@
+{% extends "@YarshaFrontend/frontend_layout.html.twig" %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ asset('bundles/yarshamain/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/yarshamain/datepicker/datepicker3.css') }}">
+    <style>
+        .has-experience {
+            display: none;
+        }
+
+        #fos_user_yarsha_jobseekerbundle_user_dob_year, #fos_user_yarsha_jobseekerbundle_user_dob_month, #fos_user_yarsha_jobseekerbundle_user_dob_day {
+            width: 33.333333333333%;
+
+        }
+
+        /*#previewImage {*/
+        /*height: 100px;*/
+        /*width: auto;*/
+        /*}*/
+
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <section class="navigation-btm-sec login-reg-bg-wrap registration-new-wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Create Your Job Account !</h2>
+                    <span class="login-register-quote">
+                        <a href="{{ path('yarsha_job_seeker_security_login') }}">
+                            <button>Already have an account? Login</button>
+                        </a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="new-register-form-blk">
+                <div class="row">
+                    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+                    {{ form_start(form, {'attr':{'id':'seekerform','data-id':'0'}}) }}
+                    {#{{ form_start(form, {'attr':{'onsubmit':'return checkForm(this)','id':'seekerform','data-id':"0"}}) }}#}
+                    <div class="col-md-9 new-register-form-blk-left col-centered">
+                        {% if errorMessage is defined %}
+                            <div class="text-center text-danger alert">
+                                {{ errorMessage }}
+                            </div>
+                        {% endif %}
+                        <div class="new-register-form-blk-left-ind clearfix">
+                            <div class="col-md-12 new-register-form-blk-left-title">Personal Information</div>
+
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">First Name: <sup
+                                            style="color:red">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                    {{ form_widget(form.firstName) }}
+                                </div>
+                                {{ form_errors(form.firstName) }}
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Middle Name: </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                    {{ form_widget(form.middleName) }}
+                                </div>
+                                {{ form_errors(form.middleName) }}
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Last Name: <sup
+                                            style="color:red">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                    {{ form_widget(form.lastName) }}
+                                </div>
+                                {{ form_errors(form.lastName) }}
+                            </div>
+
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Current Address: <sup
+                                            style="color:red">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-globe"
+                                                                       aria-hidden="true"></i></span>
+                                    {{ form_widget(form.currentAddress) }}
+                                </div>
+                                {{ form_errors(form.currentAddress) }}
+                            </div>
+
+
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Contact Email: <sup
+                                            style="color:red">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i></span>
+                                    {{ form_widget(form.contactEmail) }}
+                                </div>
+                                {{ form_errors(form.contactEmail) }}
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Mobile Number: <sup
+                                            style="color:red">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-mobile"
+                                                                       aria-hidden="true"></i></span>
+                                    {{ form_widget(form.mobile) }}
+                                </div>
+                                {{ form_errors(form.mobile) }}
+                            </div>
+
+
+                            <div class="col-sm-6 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Gender: <sup
+                                            style="color:red">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-male" aria-hidden="true"></i></span>
+                                    {{ form_widget(form.gender) }}
+                                </div>
+                                {{ form_errors(form.gender) }}
+                            </div>
+
+                            <div class="col-md-6 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Date Of Birth: <sup
+                                            style="color:red">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-birthday-cake"
+                                                                       aria-hidden="true"></i></span>
+                                    {{ form_widget(form.dob) }}
+                                </div>
+                                {{ form_errors(form.dob) }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="new-register-form-blk-left-ind clearfix">
+                            <div class="col-md-12 new-register-form-blk-left-title">Career &amp; Application
+                                Information
+                            </div>
+                            <div class="col-md-12 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Preferred Locations:
+                                    <cite class="text-success">(Please Select 3 Locations)</cite></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-location-arrow"
+                                                                       aria-hidden="true"></i></span>
+                                    {{ form_widget(form.preferredLocations) }}
+                                </div>
+                                {{ form_errors(form.preferredLocations) }}
+                            </div>
+                            <div class="col-md-12 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Preferred Categories: <sup
+                                            style="color:red">*</sup> <cite class="text-success">(Please Select 3
+                                        Categories)</cite></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-bars" aria-hidden="true"></i></span>
+                                    {{ form_widget(form.preferredCategories) }}
+                                </div>
+                                {{ form_errors(form.preferredCategories) }}
+                            </div>
+                            <div class="col-md-12 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Preferred Industries: <sup
+                                            style="color:red">*</sup> <cite class="text-success">(Please Select 3
+                                        Industries)</cite></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-industry"
+                                                                       aria-hidden="true"></i></span>
+                                    {{ form_widget(form.preferredIndustries) }}
+                                </div>
+                                {{ form_errors(form.preferredIndustries) }}
+                            </div>
+
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Minimum Expected Salary: </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-money"
+                                                                       aria-hidden="true"></i></span>
+                                    {{ form_widget(form.minExpectedSalary) }}
+                                </div>
+                                {{ form_errors(form.minExpectedSalary) }}
+                            </div>
+                            <div class="col-md-4  new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Maximum Expected Salary: </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-money"
+                                                                       aria-hidden="true"></i></span>
+                                    {{ form_widget(form.maxExpectedSalary) }}
+                                </div>
+                                {{ form_errors(form.maxExpectedSalary) }}
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label for="reg_title" class="control-label">Education: <sup
+                                            style="color:red">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-graduation-cap"
+                                                                       aria-hidden="true"></i></span>
+                                    {{ form_widget(form.degree) }}
+                                </div>
+                                {{ form_errors(form.degree) }}
+                            </div>
+
+
+                            <div class="col-md-6 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Curriculum vitae file (pdf / word
+                                    document): </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-file" aria-hidden="true"></i>
+                                    </span>
+                                    {{ form_widget(form.curriculumVitaeFile) }}
+                                </div>
+                                {{ form_errors(form.curriculumVitaeFile) }}
+                            </div>
+
+                            {#<div class="col-md-6 new-reg-form-blk">#}
+                            {#<label class="control-label" for="reg_title">#}
+                            {#Profile picture <cite class="text-success">(JPG, PNG file only)</cite>#}
+                            {#</label>#}
+                            {#<div class="input-group">#}
+                            {#<span class="input-group-addon">#}
+                            {#<i class="fa fa-picture-o"></i>#}
+                            {#</span>#}
+                            {#{{ form_widget(form.file) }}#}
+                            {#</div>#}
+                            {#{{ form_errors(form.file) }}#}
+                            {#</div>#}
+
+                            {#<div class="col-md-6">#}
+                            {#<img src="" alt="Profile picture" id="previewImage" style="display: none;">#}
+                            {#</div>#}
+
+                            {{ include('@YarshaFrontend/Includes/profileImageCropper.html.twig') }}
+                            <div class="col-md-6 new-reg-form-blk" style="margin-bottom: 11px">
+                                <label class="control-label" for="reg_title">Upload Profile Picture <cite
+                                            class="text-success">(JPG, PNG file only)</cite> </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-photo" aria-hidden="true"></i>
+                                    </span>
+
+                                    <input data-toggle="modal" data-target="#avatar-modal" type="text" name=""
+                                           readonly="readonly"
+                                           value="Upload Profile Picture" class="btn btn-default btn-file image-upload"><br>
+
+                                </div>
+
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-sm-4 new-reg-form-blk">
+                                {#<label class="control-label" for="available_for">Do you have Experience?</label>#}
+                                <div class="input-group">
+                                    {{ form_widget(form.hasExperience) }}
+                                </div>
+                                {{ form_errors(form.hasExperience) }}
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk has-experience">
+                                <label class="control-label" for="reg_title">No. Of Years: </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"
+                                                                       aria-hidden="true"></i></span>
+                                    {{ form_widget(form.noOfYear) }}
+                                </div>
+                                {{ form_errors(form.noOfYear) }}
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk has-experience">
+                                <label class="control-label" for="reg_title">No. Of Months: </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"
+                                                                       aria-hidden="true"></i></span>
+                                    {{ form_widget(form.noOfMonth) }}
+                                </div>
+                                {{ form_errors(form.noOfMonth) }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="new-register-form-blk-left-ind clearfix">
+                            <div class="col-md-12 new-register-form-blk-left-title">User Information</div>
+
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Username: <sup
+                                            style="color:red">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-envelope"
+                                                                       aria-hidden="true"></i></span>
+                                    {{ form_widget(form.username) }}
+                                </div>
+                                {{ form_errors(form.username) }}
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Password: <sup
+                                            style="color:red">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                    {{ form_widget(form.password.first) }}
+                                </div>
+                                {{ form_errors(form.password.first) }}
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Confirm Password: <sup
+                                            style="color:red">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                    {{ form_widget(form.password.second) }}
+                                </div>
+                                {{ form_errors(form.password.second) }}
+                            </div>
+                            <div class="row register-new-btn-blk">
+
+                                <div class="col-md-12 buttons">
+                                    <div class="col-md-2 col-sm-2 col-xs-6">
+                                        <button type="submit" class="avatar-save">Register
+                                        </button>
+
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-6">
+                                        <button type="reset" style="background: #f2652a">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('bundles/yarshamain/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('bundles/yarshamain/datepicker/bootstrap-datepicker.js') }}"></script>
+
+    <script>
+        $('.select2').select2({
+            maximumSelectionLength: 3
+        });
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+
+        function toggleExperienceBlock(obj) {
+            $('.has-experience').toggle();
+        }
+        function validateContactEmail(obj) {
+            contactEmail = $(obj).val();
+
+        }
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#previewImage').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#fos_user_yarsha_jobseekerbundle_user_file").change(function () {
+            readURL(this);
+            $("#previewImage").show();
+        });
+
+        var typingTimer;                //timer identifier
+        var doneTypingInterval = 500;
+        $('.cont_email, .form-usr-name, .pass, .con_pass').on('keyup', function () {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(function () {
+
+                $contactEmail = $('.cont_email').val();
+                $('.form-usr-name').val($contactEmail);
+
+                form = $("#seekerform");
+                validateRegistrationForm(form);
+
+                $('.form-usr-name').prop('disabled', true);
+
+
+
+            }, doneTypingInterval);
+        });
+
+    </script>
+{% endblock %}

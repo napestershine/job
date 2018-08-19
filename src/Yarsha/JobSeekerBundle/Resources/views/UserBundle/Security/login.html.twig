@@ -1,0 +1,93 @@
+{% extends "@YarshaFrontend/frontend_layout.html.twig" %}
+
+{% block content %}
+    <!-- navigation bottom background section -->
+    <section class="navigation-btm-sec login-reg-bg-wrap">
+        <div class="container">
+            <div class="row">
+                {% set pathinfo = app.request.pathInfo() %}
+                {% if(pathinfo == '/agency/login') %}
+                    {% set title = 'login as agency' %}
+                    {% set securityUrl = 'yarsha_agency_security_check' %}
+                {% else %}
+                    {% set title = 'login as job seeker' %}
+                    {% set securityUrl = 'yarsha_job_seeker_security_check' %}
+                {% endif %}
+
+                <h2>{{ title }}</h2>
+
+
+                {#<span class="login-register-quote">Et omnis referrentur conclusionemque eos</span>#}
+                <div class="col-md-12 login-reg-wrap">
+
+                    <div class="login-reg-blk">
+                        {% if error %}
+                            <div class="text-center text-danger alert">
+                                {% if(error.messageKey == 'Account is disabled.') %}
+                                    {% set errorMsg = 'Account is disabled. Verify your account before login.' %}
+                                {% else %}
+                                    {% set errorMsg = error.messageKey %}
+                                {% endif %}
+                                {{ errorMsg|trans(error.messageData, 'security') }}
+                            </div>
+                        {% endif %}
+
+                        <form action="{{ path(securityUrl) }}" method="post">
+                            {% if app.session.get('requestPageSlug') %}
+                                {% set redirectUrl = path('yarsha_frontend_job_detail_view', {'slug':app.session.get('requestPageSlug') | first}) %}
+                                <input type="hidden" name="_target_path" value="{{ redirectUrl }}"/>
+                            {% endif %}
+                            <input type="hidden" name="_csrf_token" value="/{{ csrf_token }}"/>
+
+                            <input type="text" id="username" name="_username" value="{{ last_username }}"
+                                   required="required" placeholder="Username"/>
+
+                            <input type="password" id="password" name="_password" required="required"
+                                   placeholder="Password" class="form-control"/>
+
+                            {#<div class="col-md-9">#}
+                            {#<input type="checkbox" id="remember_me" name="_remember_me" value="on"/>#}
+                            {#<label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>#}
+                            {#</div>#}
+
+                            <input type="submit" id="_submit" name="_submit"
+                                   value="Log In"/>
+
+                        </form>
+                        {% if(pathinfo == '/seeker/login') %}
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12 login-reg-blk-left-blk"><a
+                                        href="{{ path('yarsha_job_seeker_resetting-request') }}"><i
+                                            class="fa fa-exclamation-triangle" aria-hidden="true"></i>Forgot Password ?</a>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12 login-reg-blk-right-blk"><a
+                                        href="{{ path('yarsha_frontend_register_as_seeker') }}"><i
+                                            class="fa fa-pencil-square-o" aria-hidden="true"></i>Register</a></div>
+                        </div>
+                        <div class="sign-in-with">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 login-reg-blk-left-blk"><h3>Signin with</h3></div>
+                                <div class="col-md-6 col-sm-6 login-reg-blk-right-blk">
+                                    <a href="{{ path('hwi_oauth_service_redirect', {'service':'facebook'}) }}">
+                                        <i class="fa fa-facebook-square" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}">
+                                        <i class="fa fa-google-plus-square" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a href="{{ path('hwi_oauth_service_redirect', {'service':'linkedin'}) }}">
+                                        <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

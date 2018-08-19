@@ -1,0 +1,133 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/security.html
+security:
+
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+    role_hierarchy:
+        ROLE_JOB_SEEKER: ROLE_USER
+        ROLE_EMPLOYER: ROLE_USER
+        ROLE_AGENCY: ROLE_USER
+        ROLE_ADMIN: ROLE_USER
+        ROLE_ACCOUNT_MANAGER: [ROLE_ADMIN]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN]
+
+    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        in_memory:
+            memory: ~
+        yarsha_admin_bundle:
+            id: yarsha_admin.user_provider.username
+        yarsha_employer_bundle:
+            id: yarsha_employer.user_provider.username
+        yarsha_job_seeker_bundle:
+            id: yarsha_job_seeker.user_provider.username
+        yarsha_agency_bundle:
+            id: yarsha_agency.user_provider.username
+
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        admin:
+            pattern: ^/admin
+            form_login:
+                provider: yarsha_admin_bundle
+                check_path: /admin/login_check
+                login_path: /admin/login
+                default_target_path: yarsha_admin_dashboard
+#                csrf_provider: form.csrf_provider
+            logout:
+                path: /admin/logout
+                target: /admin/login
+            anonymous: true
+
+        agency:
+            pattern: ^/agency
+            form_login:
+                provider: yarsha_agency_bundle
+                check_path: /agency/login_check
+                login_path: /agency/login
+                default_target_path: yarsha_agency_dashboard
+                #csrf_provider: form.csrf_provider
+            logout:
+                path: /agency/logout
+                target: /agency/login
+            anonymous: true
+            context: home
+
+        employer:
+            pattern: ^/employer
+            form_login:
+                provider: yarsha_employer_bundle
+                check_path: /employer/login_check
+                login_path: /employer/login
+ #               login_path: /login?t=p
+
+                default_target_path: yarsha_employer_homepage
+#                csrf_provider: form.csrf_provider
+            logout:
+                path: /employer/logout
+                target: /employer/login
+            anonymous: true
+            context: home
+
+        seeker:
+            pattern: ^/
+            oauth:
+                resource_owners:
+                    facebook: /check-facebook
+                    linkedin: /check-linkedin
+                    google:  /check-google
+                login_path: /seeker/login
+                #login_path: /login
+                default_target_path: yarsha_job_seeker_profile_detail_view
+                oauth_user_provider:
+                    service: yarsha_job_seeker_user_provider
+            form_login:
+                provider: yarsha_job_seeker_bundle
+                check_path: /seeker/login_check
+                login_path: /seeker/login
+                use_referer: true
+               #login_path: /login
+                default_target_path: yarsha_job_seeker_profile_detail_view
+#                csrf_provider: form.csrf_provider
+            logout:
+                path: /seeker/logout
+                target: /seeker/login
+            anonymous: true
+            context: home
+
+
+
+        main:
+            anonymous: ~
+            # activate different ways to authenticate
+
+            # http_basic: ~
+            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: ~
+            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
+    access_control:
+        - { path: ^/agency/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/agency/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/agency/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/agency/, role: ROLE_AGENCY }
+        - { path: ^/employer/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/employer/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/employer/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/employer/, role: ROLE_EMPLOYER }
+        - { path: ^/seeker/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/seeker/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/seeker/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/seeker/, role: ROLE_JOB_SEEKER }
+        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: ROLE_ADMIN }

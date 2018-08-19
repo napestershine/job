@@ -1,0 +1,72 @@
+<section class="hot-job-section" style="background:#fff;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"><h2 style="color:#f2652a; "><span class="glyphicon glyphicon-fire"></span>
+                    &nbsp;{{ settings.title }}</h2>
+            </div>
+
+            {% macro headerPart(e) %}
+            <div class="col-md-4 col-sm-6 hot-job-row-blk">
+                <div class="hot-job-sec-blk hot-job-ind-wrap clearfix">
+                    <div class="col-md-2 col-sm-2 col-xs-3 hot-job-sec-blk-img-blk">
+                        <img src="{{ organization_profile_image(e)|imagine_filter('thumb_small') }}" height="68" width="108">
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-9 hot-job-blk-cnt">
+                        <h1>
+                            {#{% set eName = e.name | length > 43 ?  set_total_content(e.name, 41) ~ '..' : e.name %}#}
+                            {% set path = path('yarsha_frontend_employer_detail_by_slug', {'slug':e.slug}) %}
+                            {{ set_total_link_content(path, e.name,45,'color: #1899D3;') }}
+                            {#<a style="color: #1899D3;" title="{{ e.name }}"#}
+                               {#href="{{ path('yarsha_frontend_employer_detail_by_slug', {'slug':e.slug}) }}">{{ eName }}</a>#}
+                        </h1>
+                        {% endmacro %}
+
+                        {% macro footerPart() %}
+                    </div>
+                </div>
+            </div>
+            {% endmacro %}
+
+            <div>
+
+                {% set totalBlocks = 0 %}
+                {% for k, employer in organizations %}
+
+                    {{ _self.headerPart(employer.organization) }}
+
+                    {% set count = 0 %}
+                    {% for job in employer.jobs %}
+
+                        {% if count > 1 and count % 2 == 0 %}
+                            {% set count = 0 %}
+                            {{ _self.footerPart() }}
+                            {{ _self.headerPart(employer.organization) }}
+                        {% endif %}
+
+                        {#{% set hotjobtitle = job.title | length > 55 ? set_total_content(job.title, 53) ~ '..' : job.title %}#}
+                        {% set path = path('yarsha_frontend_job_detail_view', {'slug':job.slug}) %}
+                        <span>
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                            {{ set_total_link_content(path,job.title, 55) }}
+                            {#<a href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}" title="{{ job.title }}">#}
+                                {#&nbsp;{{ hotj0.obtitle }}#}
+                            {#</a>#}
+                        </span>
+                        {% set count = count + 1 %}
+                    {% endfor %}
+
+                    {{ _self.footerPart() }}
+                    {% set totalBlocks = totalBlocks + 1 %}
+
+                {% endfor %}
+
+                {% set hotJobBlockOverFlow = totalBlocks > 3 ? totalBlocks % 3 : 3 - (totalBlocks % 3) %}
+                {% if hotJobBlockOverFlow > 0 %}
+                    {{ render_ads('hot', hotJobBlockOverFlow) }}
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+</section>

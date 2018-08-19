@@ -1,0 +1,1067 @@
+<?php
+
+
+namespace Yarsha\JobSeekerBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\DecimalType;
+use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Yarsha\JobsBundle\Entity\JobLevel;
+use Yarsha\MainBundle\Entity\Category;
+use Yarsha\MainBundle\Entity\Location;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use JMS\Serializer\Annotation\Expose;
+
+
+/**
+ * Class User
+ * @package Yarsha\JobSeekerBundle\Entity
+ *
+ * @ORM\Entity(repositoryClass="Yarsha\JobSeekerBundle\Repository\UserRepository")
+ * @ORM\Table(name="ys_job_seekers")
+ */
+class User extends BaseUser
+{
+
+    /**
+     * @var integer
+     *
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
+     */
+    private $firstName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
+     */
+    private $lastName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="gender", type="string", length=20, nullable=true)
+     */
+    private $gender;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="facebook_id", type="string", length=255, nullable=true)
+     */
+    private $facebook_id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="facebook_access_token", type="string", length=255, nullable=true)
+     */
+    private $facebookAccessToken;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="linkedin_id", type="string", length=255, nullable=true)
+     */
+    private $linkedin_id;
+
+    /**
+     * @ORM\Column(name="google_id", type="string", nullable=true)
+     */
+    private $google_id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="linkedin_access_token", type="string", length=255, nullable=true)
+     */
+    private $linkedinAccessToken;
+
+    /**
+     * @ORM\Column(name="google_access_token", type="string", length=255, nullable=true)
+     */
+    private $googleAccessToken;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="salutation", type="string", length=25, nullable=true)
+     */
+    private $salutation;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="father_name", type="string", length=255, nullable=true)
+     */
+    private $fatherName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mother_name", type="string", length=255, nullable=true)
+     */
+    private $motherName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="current_address", type="string", length=255, nullable=true)
+     */
+    private $currentAddress;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="permanent_address", type="string", length=255, nullable=true)
+     */
+    private $permanentAddress;
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="dob", type="string", length=255, nullable=true)
+     */
+    private $dob;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="marital_status", length=50, type="string", nullable=true)
+     */
+    private $maritalStatus;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nationality", length=50, type="string", nullable=true)
+     */
+    private $nationality;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="religion", length=50, type="string", nullable=true)
+     */
+    private $religion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mobile", length=50, type="string", nullable=true)
+     */
+    private $mobile;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="phone", length=50, type="string", nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="office_phone", length=50, type="string", nullable=true)
+     */
+    private $officePhone;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Yarsha\MainBundle\Entity\Location")
+     * @ORM\JoinTable(name="ys_seeker_preferred_locations")
+     */
+    private $preferredLocations;
+
+    /**
+     * @var Category
+     *
+     * @ORM\ManyToMany(targetEntity="Yarsha\MainBundle\Entity\Category")
+     * @ORM\JoinTable(name="ys_seeker_preferred_categories")
+     */
+    private $preferredCategories;
+
+    /**
+     * @var Category
+     *
+     * @ORM\ManyToMany(targetEntity="Yarsha\MainBundle\Entity\Category")
+     * @ORM\JoinTable(name="ys_seeker_preferred_industries")
+     */
+    private $preferredIndustries;
+
+    /**
+     * @var JobLevel
+     *
+     * @ORM\ManyToOne(targetEntity="Yarsha\JobsBundle\Entity\JobLevel")
+     */
+    private $preferredPosition;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="available_for", type="string", length=100, nullable=true)
+     */
+    private $availableFor;
+
+    /**
+     * @var DecimalType
+     *
+     * @ORM\Column(name="expected_salary", type="decimal", nullable=true)
+     */
+    private $expectedSalary;
+
+    /**
+     * @var DecimalType
+     *
+     * @ORM\Column(name="present_salary", type="decimal", nullable=true)
+     */
+    private $presentSalary;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="has_experience", type="boolean", nullable=true)
+     */
+    private $hasExperience;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="no_of_year", type="integer", length=100, nullable=true)
+     */
+    private $noOfYear;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="no_of_month", type="integer", length=100, nullable=true)
+     */
+    private $noOfMonth;
+
+//
+//    /**
+//     * @var string
+//     *
+//     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
+//     */
+//    private $photo;
+
+    /**
+     * Image path
+     *
+     * @var string
+     *
+     * @ORM\Column(type="text", length=255, nullable=true)
+     *
+     * @Expose
+     */
+    protected $path;
+
+    /**
+     * Image file
+     *
+     * @var File
+     * @Vich\UploadableField(mapping="", fileNameProperty="path")
+     *
+     * @Assert\File(
+     *     maxSize = "50M",
+     *     mimeTypes = {"application/*", "video/*", "audio/*", "image/*"},
+     *     maxSizeMessage = "The maximum allowed file size is 50MB.",
+     *     mimeTypesMessage = "Only the filetypes image are allowed."
+     * )
+     */
+    protected $file;
+
+    /**
+     * @var
+     * @ORM\Column(type="text", length=255, nullable=true)
+     */
+    protected $curriculumVitaePath;
+
+    /**
+     * Image file
+     *
+     * @var curriculumVitaeFile
+     * @Vich\UploadableField(mapping="", fileNameProperty="curriculumVitaePath")
+     *
+     * @Assert\File(
+     *     mimeTypes = {"application/*"},
+     *     mimeTypesMessage = "Only the filetypes image are allowed."
+     * )
+     */
+    protected $curriculumVitaeFile;
+
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="profile_completed", nullable=true, type="boolean")
+     */
+    private $profileCompleted = false;
+
+    /**
+     * @var DecimalType
+     *
+     * @ORM\Column(name="profile_completed_percentage", type="decimal", nullable=true)
+     */
+    private $profileCompletedPercentage;
+
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->addRole('ROLE_JOB_SEEKER');
+
+        $this->preferredLocations = new ArrayCollection();
+        $this->preferredCategories = new ArrayCollection();
+        $this->preferredIndustries = new ArrayCollection();
+    }
+
+    public function addPreferredLocation($preferred_location)
+    {
+        $this->preferredLocations[] = $preferred_location;
+    }
+
+    public function removePreferredLocation($preferred_location)
+    {
+        $this->preferredLocations->removeElement($preferred_location);
+    }
+
+    public function addPreferredCategory($preferred_category)
+    {
+        $this->preferredCategories[] = $preferred_category;
+    }
+
+    public function removePreferredCategory($preferred_category)
+    {
+        $this->preferredCategories->removeElement($preferred_category);
+    }
+
+    public function addPreferredIndustry($preferred_industry)
+    {
+        $this->preferredIndustries[] = $preferred_industry;
+    }
+
+    public function removePreferredIndustry($preferred_industry)
+    {
+        $this->preferredIndustries->removeElement($preferred_industry);
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return User
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebookId()
+    {
+        return $this->facebook_id;
+    }
+
+    /**
+     * @param string $facebookId
+     *
+     * @return User
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebook_id = $facebookId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebookAccessToken()
+    {
+        return $this->facebookAccessToken;
+    }
+
+    /**
+     * @param string $facebookAccessToken
+     *
+     * @return User
+     */
+    public function setFacebookAccessToken($facebookAccessToken)
+    {
+        $this->facebookAccessToken = $facebookAccessToken;
+
+        return $this;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getGoogleId()
+    {
+        return $this->google_id;
+    }
+
+    /**
+     * @param string $googleId
+     *
+     * @return User
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->google_id = $googleId;
+
+        return $this;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getGoogleAccessToken()
+    {
+        return $this->googleAccessToken;
+    }
+
+    /**
+     * @param string $googleAccessToken
+     *
+     * @return User
+     */
+    public function setGoogleAccessToken($googleAccessToken)
+    {
+        $this->googleAccessToken = $googleAccessToken;
+
+        return $this;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     *
+     * @return User
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param string $lastName
+     *
+     * @return User
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * @param string $gender
+     *
+     * @return User
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalutation()
+    {
+        return $this->salutation;
+    }
+
+    /**
+     * @param string $salutation
+     */
+    public function setSalutation($salutation)
+    {
+        $this->salutation = $salutation;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFatherName()
+    {
+        return $this->fatherName;
+    }
+
+    /**
+     * @param string $father_name
+     */
+    public function setFatherName($father_name)
+    {
+        $this->fatherName = $father_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMotherName()
+    {
+        return $this->motherName;
+    }
+
+    /**
+     * @param string $mother_name
+     */
+    public function setMotherName($mother_name)
+    {
+        $this->motherName = $mother_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentAddress()
+    {
+        return $this->currentAddress;
+    }
+
+    /**
+     * @param string $current_address
+     */
+    public function setCurrentAddress($current_address)
+    {
+        $this->currentAddress = $current_address;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPermanentAddress()
+    {
+        return $this->permanentAddress;
+    }
+
+    /**
+     * @param string $permanent_address
+     */
+    public function setPermanentAddress($permanent_address)
+    {
+        $this->permanentAddress = $permanent_address;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDob()
+    {
+        return $this->dob;
+    }
+
+    /**
+     * @param DateTime $dob
+     */
+    public function setDob($dob)
+    {
+        $this->dob = $dob;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMaritalStatus()
+    {
+        return $this->maritalStatus;
+    }
+
+    /**
+     * @param string $marital_status
+     */
+    public function setMaritalStatus($marital_status)
+    {
+        $this->maritalStatus = $marital_status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNationality()
+    {
+        return $this->nationality;
+    }
+
+    /**
+     * @param string $nationality
+     */
+    public function setNationality($nationality)
+    {
+        $this->nationality = $nationality;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReligion()
+    {
+        return $this->religion;
+    }
+
+    /**
+     * @param string $religion
+     */
+    public function setReligion($religion)
+    {
+        $this->religion = $religion;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMobile()
+    {
+        return $this->mobile;
+    }
+
+    /**
+     * @param string $mobile
+     */
+    public function setMobile($mobile)
+    {
+        $this->mobile = $mobile;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOfficePhone()
+    {
+        return $this->officePhone;
+    }
+
+    /**
+     * @param string $office_phone
+     */
+    public function setOfficePhone($office_phone)
+    {
+        $this->officePhone = $office_phone;
+    }
+
+    /**
+     * @return Location
+     */
+    public function getPreferredLocations()
+    {
+        return $this->preferredLocations;
+    }
+
+    /**
+     * @return Category
+     */
+    public function getPreferredCategories()
+    {
+        return $this->preferredCategories;
+    }
+
+
+    /**
+     * @return Category
+     */
+    public function getPreferredIndustries()
+    {
+        return $this->preferredIndustries;
+    }
+
+    /**
+     * @return JobLevel
+     */
+    public function getPreferredPosition()
+    {
+        return $this->preferredPosition;
+    }
+
+    /**
+     * @param JobLevel $preferred_position
+     */
+    public function setPreferredPosition($preferred_position)
+    {
+        $this->preferredPosition = $preferred_position;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAvailableFor()
+    {
+        return $this->availableFor;
+    }
+
+    /**
+     * @param string $available_for
+     */
+    public function setAvailableFor($available_for)
+    {
+        $this->availableFor = $available_for;
+    }
+
+    /**
+     * @return DecimalType
+     */
+    public function getExpectedSalary()
+    {
+        return $this->expectedSalary;
+    }
+
+    /**
+     * @param DecimalType $expected_salary
+     */
+    public function setExpectedSalary($expected_salary)
+    {
+        $this->expectedSalary = $expected_salary;
+    }
+
+    /**
+     * @return DecimalType
+     */
+    public function getPresentSalary()
+    {
+        return $this->presentSalary;
+    }
+
+    /**
+     * @param DecimalType $present_salary
+     */
+    public function setPresentSalary($present_salary)
+    {
+        $this->presentSalary = $present_salary;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isHasExperience()
+    {
+        return $this->hasExperience;
+    }
+
+    /**
+     * @param boolean $hasExperience
+     */
+    public function setHasExperience($hasExperience)
+    {
+        $this->hasExperience = $hasExperience;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getNoOfYear()
+    {
+        return $this->noOfYear;
+    }
+
+    /**
+     * @param int $no_of_year
+     */
+    public function setNoOfYear($no_of_year)
+    {
+        $this->noOfYear = $no_of_year;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNoOfMonth()
+    {
+        return $this->noOfMonth;
+    }
+
+    /**
+     * @param int $no_of_month
+     */
+    public function setNoOfMonth($no_of_month)
+    {
+        $this->noOfMonth = $no_of_month;
+    }
+
+//    /**
+//     * @return string
+//     */
+//    public function getPhoto()
+//    {
+//        return $this->photo;
+//    }
+//
+//    /**
+//     * @param string $photo
+//     */
+//    public function setPhoto($photo)
+//    {
+//        $this->photo = $photo;
+//    }
+
+    /**
+     * @return boolean
+     */
+    public function isProfileCompleted()
+    {
+        return $this->profileCompleted;
+    }
+
+    /**
+     * @param boolean $profile_completed
+     */
+    public function setProfileCompleted($profile_completed)
+    {
+        $this->profileCompleted = $profile_completed;
+    }
+
+    /**
+     * @return DecimalType
+     */
+    public function getProfileCompletedPercentage()
+    {
+        return $this->profileCompletedPercentage;
+    }
+
+    /**
+     * @param DecimalType $profile_completed_percentage
+     */
+    public function setProfileCompletedPercentage($profile_completed_percentage)
+    {
+        $this->profileCompletedPercentage = $profile_completed_percentage;
+    }
+
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return self
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * Called before entity removal
+     *
+     * @ORM\PreRemove()
+     */
+    public function removeUpload()
+    {
+        if ($file = $this->getAbsolutePath()) {
+            unlink($file);
+        }
+    }
+
+    /**
+     * Called after entity persistence
+     *
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->getFile()) {
+            return;
+        }
+        $filename = sha1(uniqid(mt_rand(), true));
+        $this->path = $filename . '.' . $this->getFile()->getClientOriginalExtension();
+        $this->getFile()->move(
+            $this->getUploadRootDir(),
+            $this->path
+        );
+
+        $srcBase = $this->getUploadRootDir() . '/' . $this->path;
+        $dstBase = $this->getUploadThumbnailRootDir() . '/' . $this->path;
+//        $resizer->resizeImage($srcBase, $dstBase);
+
+        $this->updatedAt = new \DateTime('now');
+
+        // clean up the file property as you won't need it anymore
+        $this->file = null;
+    }
+
+
+    public function getAbsolutePath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadRootDir() . '/' . $this->path;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadDir() . '/' . $this->path;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
+    }
+
+
+    protected function getUploadThumbnailRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents thumbnail should be saved
+        return __DIR__ . '/../../../../web/' . $this->getUploadThumbnailDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/attachments';
+    }
+
+    protected function getUploadThumbnailDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/attachments/_thumb';
+    }
+
+    /**
+     * @return string
+     */
+    public function getLinkedinId()
+    {
+        return $this->linkedin_id;
+    }
+
+    /**
+     * @param string $linkedin_id
+     */
+    public function setLinkedinId($linkedin_id)
+    {
+        $this->linkedin_id = $linkedin_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLinkedinAccessToken()
+    {
+        return $this->linkedinAccessToken;
+    }
+
+    /**
+     * @param string $linkedinAccessToken
+     */
+    public function setLinkedinAccessToken($linkedinAccessToken)
+    {
+        $this->linkedinAccessToken = $linkedinAccessToken;
+    }
+
+
+}

@@ -1,0 +1,42 @@
+</div>
+</div>
+
+{% import "@YarshaFrontend/Macros/frontend_employer_macros.html.twig" as orgMacro %}
+{% import "@YarshaFrontend/Macros/job_detail_macros.html.twig" as jobDetailMacro %}
+
+<!-- dashboard wrap section -->
+<section class="dashboard-section">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-9 col-sm-9 dashboard-section-right">
+
+                {{ orgMacro.partialWidthBanner(organization) }}
+
+                <div class="company-info-blk dashboard-bg-color clearfix">
+                    <div class="title">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">About Us</div>
+                        </div>
+                    </div>
+                    <p>{{ filterProfile(organization.profile)|raw }}</p>
+                </div>
+
+
+                <!-- job application section -->
+
+                {{ sonata_block_render({"type":"yarsha.block.employer_detail_page_job"},{"organization": organization }) }}
+                {#{{ sonata_block_render({'type':'yarsha.block.relatedjobs'},{'type':'recent_jobs','organization':organization}) }}#}
+
+                <div class="col-md-3 col-sm-3 dashboard-section-left">
+
+                    {{ jobDetailMacro.aboutCompany(organization) }}
+
+                    {{ sonata_block_render({"type":"yarsha.block.employer_sidebar"},{"organization": organization }) }}
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

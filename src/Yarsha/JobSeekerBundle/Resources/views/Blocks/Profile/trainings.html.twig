@@ -1,0 +1,150 @@
+<style>
+    label.control-label {
+        display: inline-block;
+    }
+
+    .table ul{margin-left:10px}
+    .table ul li{}
+</style>
+
+<div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix" id="profile_{{ setting.section }}">
+    <div class="title">
+        <div class="row">
+            <div class="col-md-10 col-sm-10">Training</div>
+            {% if setting.employer == false %}
+                <div class="col-md-2 col-sm-2 right">
+                    <input type="submit" data-toggle="modal"
+                           data-target="#addTraining"
+                           data-trainingId=""
+                           data-title="Add Training"
+                           value="+ Add Training">
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div class="posted-jobs-blk-list-blk">
+        {% if data | length %}
+            <table class="table">
+                <tr>
+
+                    <th>Title</th>
+                    <th>Institution</th>
+                    <th style="width: 10%">Duration</th>
+                    <th>Objective</th>
+                    {% if setting.employer == false %}
+                        <th>Action</th>
+                    {% endif %}
+                </tr>
+                {% for training in data %}
+                    <tr>
+
+                        <td>{{ training.title }}</td>
+                        <td>{{ training.institution }}</td>
+                        <td>{{ training.duration }}</td>
+                        <td>{{ training.objective|raw }}</td>
+                        {% if setting.employer == false %}
+                            <td style="width:10%;text-align: center;">
+                                <a href="" data-toggle="modal"
+                                   data-target="#addTraining"
+                                   data-trainingId="{{ training.id }}"
+                                   data-title="Update Training"
+                                   data-toggle="tooltip" title="Edit">
+
+                                    <i class="fa fa-edit"></i>
+
+                                </a>
+                                <a href="#" data-id="{{ training.id }}" onclick="deleteTraining(event, this)"
+                                   data-toggle="tooltip" title="Delete">
+
+                                    <i class="fa fa-trash"></i>
+
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            {{ ys_no_contents('No training added.') }}
+        {% endif %}
+
+    </div>
+    <div class="modal fade" id="addTraining" role="dialog" arial-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" class="close">&times</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#addTraining').on('show.bs.modal', function (e) {
+            var modal = $(this);
+            var button = $(e.relatedTarget);
+            var companyId = button.attr('data-companyId');
+            var title = button.attr('data-title');
+            var trainingId = button.attr('data-trainingId');
+
+            if (trainingId != '') {
+                var url = "{{ path('yarsha_job_seeker_ajax_update_training', {'trainingId':'TRAINING_ID'}) }}";
+                var url = url.replace('TRAINING_ID', trainingId);
+            } else {
+                var url = "{{ path('yarsha_job_seeker_ajax_add_training') }}";
+            }
+
+            modal.find('.modal-title').html(title);
+
+            $.ajax({
+                type: 'get',
+                url: url,
+                data: {'trainingId': trainingId},
+                success: function (res) {
+                    modal.find('.modal-body').html(res.template);
+                    modal.find('.modal-body form').on('submit', function(){
+                        for ( instance in CKEDITOR.instances ) {
+                            CKEDITOR.instances[instance].updateElement();
+                        }
+                        submitTraining(url, $(this));
+                    });
+                },
+                error: function (res) {
+                    alert(res.message);
+                }
+            });
+        });
+
+        function submitTraining(url, _obj){
+            $.LoadingOverlay('show');
+            var form = $(_obj);
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                success: function (res) {
+                    window.location = ''
+                },
+                error: function (res) {
+
+                },
+                then: function(res)
+                {
+                    $.LoadingOverlay('hide');
+                }
+            });
+
+
+            return false;
+        }
+
+    });
+</script>

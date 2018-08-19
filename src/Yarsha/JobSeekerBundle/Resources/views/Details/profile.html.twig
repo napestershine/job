@@ -1,0 +1,37 @@
+{% extends 'YarshaJobSeekerBundle::job_seeker_layout.html.twig' %}
+
+{% block content %}
+
+
+    {% set profileInfos = [
+    'personal_information',
+    'general_information',
+    'education_information',
+    'trainings',
+    'professional_information',
+    'other_information'
+    ] %}
+
+    {% for p in profileInfos %}
+        {% set template = 'YarshaJobSeekerBundle:Blocks/Profile:'~p~'.html.twig' %}
+        {{ sonata_block_render({'type':'yarsha.block.seeker_profile'}, {'section':p,'template':template, 'seeker':app.user}) }}
+
+
+    {% endfor %}
+
+    {% include 'YarshaJobSeekerBundle:Details:setting-new.html.twig' %}
+
+{% endblock %}
+
+
+{% block scripts %}
+    {#<script src="{{ asset('bundles/yarshamain/select2/select2.min.js') }}"></script>#}
+    <script>
+        window.location.hash = "#profile_{{ profileSection }}";
+
+        //        $(document).ready(function(){
+        //            $('.select2').select2({});
+        //        });
+
+    </script>
+{% endblock %}

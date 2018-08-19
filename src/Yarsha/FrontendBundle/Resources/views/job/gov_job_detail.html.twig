@@ -1,0 +1,44 @@
+{% import "@YarshaFrontend/Macros/job_detail_macros.html.twig" as jobMacro %}
+
+<!-- dashboard wrap section -->
+<section class="dashboard-section">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-9 col-sm-9 dashboard-section-right">
+
+                {{ jobMacro.jobDetailPartialBanner(job.organization) }}
+
+                <!-- job application section -->
+                <div class="company-info-blk dashboard-bg-color job-det-info-blk clearfix">
+                    <div class="title">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">{{ job.organization ? job.organization.name : '' }}</div>
+                        </div>
+                    </div>
+                    <div class="posted-jobs-blk-list-blk">
+                        {{ jobMacro.jobDetailDescriptionTable(job) }}
+                    </div>
+
+                    <div class="new-job-spec-blk">
+                        <div class="title">{{ job.title }}</div>
+                        {% if(job.path != null or job.path != '') %}
+                            {% set imgSrc =  asset('uploads/jobsfile/') ~ job.path %}
+                            <img src="{{ imgSrc }}" alt="Government job" class="gov-job-detail-image">
+                        {% endif %}
+                        <div> {{ job.description | raw }} </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-3 col-sm-3 dashboard-section-left">
+
+                {{ sonata_block_render({'type':'yarsha.block.super_employer.job.frontend'}, {'limit':6}) }}
+
+            </div>
+
+        </div>
+    </div>
+</section>

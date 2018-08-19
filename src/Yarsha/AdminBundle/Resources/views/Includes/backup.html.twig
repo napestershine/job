@@ -1,0 +1,56 @@
+
+<div class=container>
+
+</div>
+
+<div class="col-md-12">
+    <header>
+        <h4>ADMIN PANEL</h4>
+        <a href="{{ path('yarsha_admin_dashboard') }}">Dashboard</a>
+        <a href="{{ path('yarsha_admin_security_logout') }}">Logout</a>
+    </header>
+</div>
+
+<div class="clearfix"></div>
+
+{% if (app.session.flashbag.peekAll|length > 0) or (error is defined) %}
+    <section class="sys-info-content">
+        <div class="col-md-12">
+            {% if app.session.flashbag.peekAll|length > 0 %}
+                {% for type, messages in app.session.flashbag.all %}
+                    {% for message in messages %}
+                        {% if type == 'success' %}
+                            {% set alertClass = 'alert-success' %}
+                            {% set faClass = 'fa-check-circle' %}
+                        {% elseif type == 'warning' %}
+                            {% set alertClass = 'alert-warning' %}
+                            {% set faClass = 'fa-exclamation-triangle' %}
+                        {% else %}
+                            {% set alertClass = 'alert-danger' %}
+                            {% set faClass = 'fa-exclamation-triangle' %}
+                        {% endif %}
+
+                        {#{% set alertClass = type == 'success' ? 'alert-success' : 'alert-danger' %}#}
+                        {#{% set faClass = type == 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle' %}#}
+
+                        <div class="alert disabled {{ alertClass }}">
+                            <i class="fa {{ faClass }}"></i> &nbsp;
+                            {{ message|trans({}, domain|default('messages')) }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+            {% if error is defined %}
+                <div class="alert disabled alert-danger">
+                    <i class="fa fa-exclamation-triangle"></i> &nbsp;
+                    {{ error }}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endif %}
+
+<div class="col-md-12">
+    {% block content %}{% endblock %}
+</div>

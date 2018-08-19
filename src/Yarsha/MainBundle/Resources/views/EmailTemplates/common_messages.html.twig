@@ -1,0 +1,12 @@
+{% extends "@YarshaMain/EmailTemplates/email_notification_new.html.twig" %}
+
+{% block email_body %}
+
+    <section
+            style="background:#efefef; min-height:200px; margin:10px 5px; border-radius:6px; padding:10px; line-height: 24px;">
+        {% if message is defined %}
+            {{ message|raw }}
+        {% endif %}
+    </section>
+
+{% endblock %}

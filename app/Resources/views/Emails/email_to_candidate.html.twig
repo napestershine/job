@@ -1,0 +1,17 @@
+{% extends "@YarshaMain/EmailTemplates/email_template_layout.html.twig" %}
+
+{% block email_body %}
+    <section style="background:#fff; padding:1%;padding-top: 0px;padding-bottom: 20px;">
+        Dear {{ toName }},
+        <br/>
+        You are {{ status }} for applied job {{ jobTitle }}.
+        <br/>
+        Thank you!
+        <br/>
+        {{ fromName }}
+        <br/>
+        {{ address }}
+    </section>
+
+
+{% endblock %}

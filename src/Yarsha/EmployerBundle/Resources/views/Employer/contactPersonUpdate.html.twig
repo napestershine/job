@@ -1,0 +1,57 @@
+{#{% extends '@YarshaEmployer/employer_layout.html.twig' %}#}
+{#{% block content %}#}
+
+
+    {#<div class="row">#}
+        {#{{ form_start(form) }}#}
+        {#<input type="submit" value="Edit">#}
+        {#{{ form_end(form) }}#}
+    {#</div>#}
+
+
+{#{% endblock %}#}
+{#{% block scripts %}#}
+
+{#{% endblock %}#}
+
+
+
+
+
+{{ form_start(form, {'attr':{'id':'editContact', 'onsubmit':'return submitContact(this)','data-id':id}}) }}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+<div class="row">
+
+
+    <div class="clearfix"></div>
+    <div class="col-md-6">
+        {{ form_row(form.firstName) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.lastName) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.phone) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.email) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.designation) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_row(form.mobile) }}
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="modal-footer">
+        <input type="submit" class="btn btn-primary" value="SAVE">
+
+        <button type="button" class="btn btn-danger" data-dismiss="modal">
+            CANCEL
+        </button>
+    </div>
+    {{ form_end(form) }}
+</div>
+

@@ -1,0 +1,134 @@
+{% extends '@YarshaFrontend/frontend_static_layout.html.twig' %}
+
+{% block static_content_title %}{{ contentTitle }}{% endblock %}
+
+{% block seo %}
+
+    {% set imgSrc = asset(article.image) ? asset(article.image):asset('images/kantipurjob-cover-foto.jpg') %}
+    <meta name="title" content="{{ article.title }}"/>
+    <meta name="keywords" content="{{ article.title }}"/>
+    <meta name="description" content="{{ set_total_content(article.content,200) }}"/>
+    <link rel="canonical" href="{{ path('yarsha_frontend_article_detail',{'slug':article.slug,'category':category}) }}"/>
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="{{ category }}"/>
+    <meta property="og:title" content="{{ article.title ~' | '~category}}"/>
+    <meta property="og:description"
+          content="{{ set_total_content(article.content,200) }}"/>
+    <meta property="og:url" content="{{ path('yarsha_frontend_article_detail',{'slug':article.slug,'category':category}) }}"/>
+    <meta property="og:site_name" content="Kantipur Jobs"/>
+    <meta property="article:section" content="{{ category }}"/>
+    <meta property="og:image" content="{{ imgSrc }}"/>
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:description"
+          content="{{ set_total_content(article.content,200) }}"/>
+    <meta name="twitter:title"
+          content="{{ article.title }}"/>
+    <meta name="twitter:image" content="{{ imgSrc }}"/>
+
+    <!-- Schema.org markup for Google+ -->
+    <meta itemprop="name" content="{{ article.title }}">
+    <meta itemprop="description" content="{{ set_total_content(article.content,200) }}">
+    <meta itemprop="image" content="{{ imgSrc }}">
+
+    <!-- Linkedin -->
+
+    <meta prefix="og: http://ogp.me/ns#" property="og:title" content="{{ article.title }}"/>
+    <meta prefix="og: http://ogp.me/ns#" property="og:type" content="{{ set_total_content(article.content,200) }}"/>
+    <meta prefix="og: http://ogp.me/ns#" property="og:image" content="{{ imgSrc }}"/>
+    <meta prefix="og: http://ogp.me/ns#" property="og:url"
+          content="{{ path('yarsha_frontend_article_detail',{'slug':article.slug,'category':category}) }}"/>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        @media(max-width: 767px) {
+            #st-1{
+                margin-top: 10px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block static_content %}
+
+    <div class="container">
+
+        <div class="row article-detail-wrap">
+
+            <div class="col-md-8">
+
+                <div class="panel panel-default article-wrap">
+                    <div class="panel-heading article-block-title"><i class="fa fa-list-ul" aria-hidden="true"></i>
+                        &nbsp;{{ article.title }}</div>
+                    <div class="" style="padding: 20px;">
+
+                        {#<h3 class="article-detail-title">{{ article.title }}</h3>#}
+                        <cite>
+                            Posted Date: {{ article.createdDate|date('Y-m-d') }}
+                        </cite>
+                        <br>
+                        <br>
+
+                        {% if article.image %}
+                            <div class="image">
+                                <img src="{{ asset(article.image) }}" alt="{{ article.title }}">
+                            </div>
+                        {% endif %}
+
+                        <div class="article-detail-content">
+                            {{ article.content|raw }}
+                        </div>
+
+                        {% set tags = ys_display_tags(article) %}
+                        {% if tags %}
+                            <div class="article-detail-tags">
+                                {{ tags|raw }}
+                            </div>
+                        {% endif %}
+
+                        <hr>
+
+                        <div class="article-info-footer">
+                            <div class="others pull-left">
+                                <i class="fa fa-star"></i> {{ article.hits ? : 0 }} Views |
+                                {% set author = (article.linkText) ? article.linkText : 'Kantipur Job' %}
+                                {% set author = (article.linkText and article.linkUrl) ? article.linkUrl : path('yarsha_frontend_homepage') %}
+                                <a href="{{ path('yarsha_frontend_homepage') }}">Kantipur Job</a>
+                            </div>
+                            <div class="pull-right col-md-5 col-sm-5 col-xs-12">
+                                <div class="sharethis-inline-share-buttons"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                {% macro renderSideBlock(title, iconClass, categoryId) %}
+                    {{ sonata_block_render({'type':'yarsha.block.article.category'}, {
+                        'title':title,
+                        'iconClass':iconClass,
+                        'category':categoryId,
+                        'limit':4,
+                        'wrapperClass': 'col-md-12 col-sm-12',
+                        'template':'YarshaFrontendBundle:Block:article_list_inner_block.html.twig'
+                    }) }}
+                {% endmacro %}
+
+                {{ _self.renderSideBlock('Latest News', 'fa-newspaper-o', 10 ) }}
+
+                {{ _self.renderSideBlock('Latest News - Human Resource', 'fa-lightbulb-o', 5 ) }}
+
+                {{ _self.renderSideBlock('Resources Center - Loksewa', 'fa-user', 9 ) }}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+{% endblock %}

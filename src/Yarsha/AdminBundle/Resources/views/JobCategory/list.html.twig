@@ -1,0 +1,84 @@
+{% extends '@YarshaAdmin/admin_layout.html.twig' %}
+
+{% block page_title %} Job Categories{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block content %}
+
+    <a href="{{ path('yarsha_admin_category_add') }}" class="pull-right btn btn-primary">
+        Add Category
+    </a>
+
+    <div class="clearfix"></div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">Filter</h4>
+        </div>
+        <div class="panel-body">
+            <form action="">
+                <div class="col-md-3 form-group">
+                    <input type="text" name="title" placeholder="Title" value="{{ app.request.get('title') }}"
+                           class="form-control">
+                </div>
+
+                <div class="col-md-3 form-group">
+                    {% set section = app.request.get('section') %}
+                    <select name="section" id="section" class="form-control">
+                        <option value="">select section</option>
+                        <option value="Jobs By Function" {{ section == 'Jobs By Function' ? 'selected="selected"' : "" }}>
+                            Jobs By Function
+                        </option>
+                        <option value="Jobs By Industry" {{ section == 'Jobs By Industry' ? 'selected="selected"' : "" }}>
+                            Jobs By Industry
+                        </option>
+                    </select>
+                </div>
+
+
+                <input type="submit" value="Search" class="btn btn-primary">
+            </form>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <table class="table table-striped table-hover table-condensed">
+            <tr>
+                <td>SN</td>
+                <td>Title</td>
+                <td>Section</td>
+                <td>Parent</td>
+                <td>Actions</td>
+            </tr>
+            {% for c in categories %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ c.title }}</td>
+                    <td>{{ c.section }}</td>
+                    <td>{{ c.parent ? c.parent : '-' }}</td>
+                    <td>
+                        <a href="{{ path('yarsha_admin_category_update', {id: c.id}) }}">
+                            <button class="btn btn-info">Edit</button>
+                        </a>
+                        <a href="{{ path('yarsha_admin_category_delete', {id: c.id}) }}">
+                            <button class="btn btn-danger">Delete</button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+
+
+        {% if(categories.haveToPaginate) %}
+            <div class="col-md-12">
+                {{ pagerfanta(categories, 'twitter_bootstrap3') }}
+            </div>
+        {% endif %}
+
+        <div class="clearfix"></div>
+
+    </div>
+
+{% endblock %}

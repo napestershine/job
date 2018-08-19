@@ -1,0 +1,87 @@
+<div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+    <div class="title">
+        <div class="row">
+            <div class="col-md-10 col-sm-10">posted jobs</div>
+            <div class="col-md-2 col-sm-2 right">
+                <a href="{{ path('yarsha_employer_job_post') }}"><input type="submit" value="+ Add Job"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="posted-jobs-blk-list-blk">
+        {% if jobs|length %}
+            <table>
+                <tr>
+                    <th>Jobs</th>
+                    <th>Deadline</th>
+                    <th>Job Viewed</th>
+                    <th>Applied</th>
+                    <th>Job Status</th>
+                    <th>Action</th>
+                </tr>
+                {% for job in jobs %}
+                    <tr id="tr_{{ job.id }}">
+                        <td><a target="_blank"
+                               href="{{ path('yarsha_frontend_job_detail_view',{'slug':job.slug}) }}">{{ job.title }}</a>
+                        </td>
+                        <td>{{ job.deadline ?job.deadline|date('M j,Y') : '' }}</td>
+                        <td>{{ job.viewCount }}</td>
+                        {#<td>#}
+                        {#<a href="{{ path('yarsha_employer_job_applicants', {'id' : job.id}) }}">{{ total_applicant(job.id) }}#}
+                        {#&nbsp;View </a>#}
+                        {#</td>#}
+                        <td>
+                            <a href="{{ path('yarsha_employer_job_applicants', {'id' : job.id}) }}" data-toggle="tooltip" title="View Applications">View
+                                Applications</a>
+                        </td>
+                        <td>{{ render_job_status(job.status) }}</td>
+                        <td>
+                            <a href="{{ path('yarsha_employer_job_update', {'id' : job.id}) }}"
+                               data-toggle="tooltip" title="Edit">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                            &nbsp;&nbsp;
+                            {#<a href="#" onclick="deleteJob({{ job.id }})"#}
+                               {#data-toggle="tooltip" title="Delete">#}
+                                {#<i class="fa fa-times" aria-hidden="true"></i>#}
+                            {#</a>#}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {% if(jobs|length > 10) %}
+                <a href="{{ path('yarsha_employer_job_list') }}" style="float: right;
+    margin: 10px;
+    color: red;
+    font-size: 14px;">View More >></a>
+            {% endif %}
+        {% else %}
+            {{ ys_no_contents('No jobs added yet. Start Adding jobs by clicking on Add Job.') }}
+        {% endif %}
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    function deleteJob(id) {
+        var trId = 'tr_' + id;
+        var result = confirm('Are you sure ?');
+        if (result) {
+            var remoteUrl = "{{ url('yarsha_employer_job_delete', {'id': 'USERID'}) }}";
+            var remoteUrl = remoteUrl.replace('USERID', id);
+
+            $.ajax({
+                type: 'GET',
+                url: remoteUrl,
+                success: function (res) {
+                    if (res && res.status == 'success') {
+                        $("#" + trId).remove();
+                    }
+                }
+            });
+        }
+    }
+
+
+</script>

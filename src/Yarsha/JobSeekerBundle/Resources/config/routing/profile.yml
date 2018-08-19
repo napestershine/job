@@ -1,0 +1,9 @@
+
+yarsha_job_seeker_profile_show:
+    path: /
+    defaults: { _controller: "FOSUserBundle:Profile:show" }
+    methods: "GET"
+
+yarsha_job_seeker_profile_edit:
+    path: /edit
+    defaults: { _controller: "FOSUserBundle:Profile:edit" }

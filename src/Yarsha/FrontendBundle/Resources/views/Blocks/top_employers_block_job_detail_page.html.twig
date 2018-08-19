@@ -1,0 +1,53 @@
+<div class="dashboard-section-dropdown dashboard-bg-color job-detail-blk {{ settings.additionalClass }}">
+    <h1 class="show-hide-blk dropdown-h1-title untoggable-title"><i class="fa fa-bookmark" aria-hidden="true"></i>
+        &nbsp;top employers</h1>
+    <ul class=" profile-below-blk">
+        <div class="cntc-acc-manager-blk job-detail-company-blk clearfix">
+            <div class="col-md-12 col-sm-12">
+                <div class="row">
+                    <ul class="inner-super-emp">
+                        <li>
+                            {% if topEmployers|length %}
+                                {% for employer in topEmployers %}
+                                    <div class="span3">
+                                        <div class="icon-slider-img-blk">
+                                            <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':employer.slug}) }}"><img
+                                                        src="{{ organization_profile_image(employer) }}" alt="Image" style="max-width:100%;"></a>
+                                        </div>
+                                        <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':employer.slug}) }}">
+                                            <h1>{{ employer.name }}</h1></a>
+                                        <span>{{ employer.address }}</span>
+                                        <p>
+                                            <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':employer.slug}) }}"><i
+                                                        class="fa fa-briefcase" aria-hidden="true"></i>
+                                                &nbsp;{{ count_jobs_by_organization(employer) }} Jobs</a></p>
+                                        <div class="span3-btm clearfix">
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                {{ render_follow_button(employer, app.user) }}
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                {% if not app.user %}
+                                                    {{ render_login_alert_button('apply') }}
+                                                {% else %}
+                                                    <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':employer.slug}) }}"
+                                                       class="apply">
+                                                        <i class="fa fa-pencil-square-o"
+                                                           aria-hidden="true"></i>
+                                                        &nbsp;apply now
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                {{ ys_no_contents('Top Employer does not exist.') }}
+                            {% endif %}
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </ul>
+</div>

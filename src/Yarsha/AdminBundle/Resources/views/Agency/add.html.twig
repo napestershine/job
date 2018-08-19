@@ -1,0 +1,58 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+{% block page_title %} Agency {% endblock %}
+{% block page_description %}{{ is_updating ? 'Edit':'Add' }}{% endblock %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block content %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h4 class="separator-header">Personal Information</h4>
+
+                    <div class="row">
+
+                        <div class="col-md-4">{{ form_row(form.name) }}</div>
+                        <div class="col-md-4">{{ form_row(form.email) }}</div>
+                        <div class="col-md-4">{{ form_row(form.address) }}</div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-4">{{ form_row(form.phone) }}</div>
+                        <div class="col-md-4">{{ form_row(form.website) }}</div>
+                        <div class="clearfix"></div>
+
+                    </div>
+
+                    <h4 class="separator-header">Contact Person Information</h4>
+
+                    <div class="row">
+                        <div class="col-md-4">{{ form_row(form.contactPersonName) }}</div>
+                        <div class="col-md-4">{{ form_row(form.contactPersonEmail) }}</div>
+                        <div class="col-md-4">{{ form_row(form.contactPersonPhone) }}</div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    {% if is_updating == false %}
+                        <h4 class="separator-header">Login Credentials</h4>
+
+                        <div class="row">
+                            <div class="col-md-4">{{ form_row(form.username) }}</div>
+                            <div class="col-md-4">{{ form_row(form.password.first) }}</div>
+                            <div class="col-md-4">{{ form_row(form.password.second) }}</div>
+                            <div class="clearfix"></div>
+
+                        </div>
+                    {% endif %}
+
+                    <input type="submit" value="SAVE" class="btn btn-primary">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+

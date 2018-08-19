@@ -1,0 +1,133 @@
+<!-- top nav bar -->
+{% block styles %}
+    <style>
+
+
+        @media (max-width: 767px) {
+            .navigation-home{
+                float: right;
+                display: grid;
+                margin-top: -65px;
+            }
+
+            .nav-home{
+                display: none;
+            }
+
+            ul.nav.navbar-nav.navbar-right.bottom-right-nav.logged-in-nav .dropdown a {
+                float: right;
+            }
+
+        }
+    </style>
+
+{% endblock %}
+<!-- bottom nav bar -->
+<div id="sticky-anchor"></div>
+<section class="bottom-nav-bar-sec" id="sticky">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-2" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ path('yarsha_frontend_homepage') }}">
+                        <img src="{{ asset('bundles/yarshafrontend/images/urgent.png') }}" alt="" title="">
+                    </a>
+
+                    {% if not app.user %}
+                        <!-- xs display navbar -->
+                        <ul class="nav navbar-right xs-display-nav">
+                            <li data-toggle="modal" data-target="#myModal"><a href="#"
+                                                                              style="color: #1a98d3;">Register</a></li>
+                            <li data-toggle="modal" data-target="#loginModal"><a href="#"
+                                                                                 style="color: white;">Login</a>
+                            </li>
+                        </ul>
+                        <!-- xs display navbar -->
+                    {% endif %}
+
+                </div>
+
+                <div class="collapse navbar-collapse navigation-home" id="bs-example-navbar-collapse-2">
+
+                    {% if not app.user %}
+                        <ul class="nav navbar-nav navbar-right bottom-right-nav nav-home">
+                            <li><a href="{{ path('yarsha_frontend_register_employer') }}">Post Job</a></li>
+                            <li data-toggle="modal" data-target="#myModal"><a href="#">register</a></li>
+                            <li data-toggle="modal" data-target="#loginModal"><a href="#">login</a></li>
+                        </ul>
+                    {% else %}
+
+                        {% set userDetail = user_detail(app.user) %}
+                        {% set dashboardLink = userDetail.dashboardLink != "" ? path(userDetail.dashboardLink) : '#' %}
+                        {% set profileLink = userDetail.profileLink != "" ? path(userDetail.profileLink) : '#' %}
+                        {% set logoutLink = userDetail.logoutLink != "" ? path(userDetail.logoutLink) : '#' %}
+
+                        <ul class="nav navbar-nav navbar-right bottom-right-nav logged-in-nav">
+                            <li class="dropdown">
+
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-haspopup="true" aria-expanded="false">
+                                    {#<img#}
+                                    {#src="{{ profile_pic_path(app.user))|imagine_filter('profile_pic_mini') }}"#}
+
+                                    {#class="logged-in-profile-pic"#}
+                                    {#>#}
+                                    <img
+                                            src="{{ asset(profile_pic_path(app.user)) }}"
+
+                                            class="logged-in-profile-pic"
+                                    >
+                                    <span class="hidden-xs">
+                                        {{ userDetail.name|title }}
+                                    </span>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu dashboard-login-menu">
+                                    <li class=""><a href="{{ dashboardLink }}">Dashboard</a></li>
+                                    <li class=""><a href="{{ profileLink }}">Profile</a>
+                                    <li class=""><a href="{{ logoutLink }}">Log out</a></li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</section>
+
+
+{% macro renderStaticMenuBar() %}
+
+    {% set
+    topMenus = [
+    {'l':'HOME', 'r':'yarsha_frontend_homepage', 'p':{}},
+    {'l':'ABOUT US', 'r':'yarsha_frontend_about_us', 'p':{}},
+    {'l':'SERVICES', 'r':'yarsha_frontend_services', 'p':{}},
+    {'l':'CAREER RESOURCES', 'r':'yarsha_frontend_article_list', 'p':{'category':'career-resources'}},
+    {'l':'TRAININGS', 'r':'yarsha_frontend_trainings', 'p':{}},
+    {'l':'EMPLOYERS', 'r':'yarsha_frontend_employers_list', 'p':{}}
+    ] %}
+    {% for m in topMenus %}
+
+        {% if  app.request.get('_route') != 'yarsha_frontend_article_list' %}
+            {% set active = app.request.get('_route') == m.r ? 'active' : '' %}
+        {% else %}
+            {% set routeParams = app.request.attributes.get('_route_params') %}
+            {% set active = ((routeParams.category is defined) and (m.p.category is defined and routeParams.category == m.p.category)) ? 'active' : '' %}
+        {% endif %}
+
+        <li class="{{ active }}">
+            <a href="{{ path(m.r, m.p) }}"> {{ m.l }} </a>
+        </li>
+    {% endfor %}
+{% endmacro %}

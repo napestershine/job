@@ -1,0 +1,25 @@
+{% extends 'YarshaJobSeekerBundle::job_seeker_layout.html.twig' %}
+
+{% block content %}
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        {% for message in app.session.flashbag.get('success') %}
+            {{ bootstrap_alert_message(message, 'info') }}
+        {% endfor %}
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">{{ updating ? 'Update' : 'Add' }} Cover letter</div>
+            </div>
+        </div>
+        <div class="table-listing-page-wrap">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <div class="col-md-4 col-sm-4">
+                <input type="submit" value="Add Cover Letter">
+            </div>
+            {{ form_end(form) }}
+        </div>
+
+    </div>
+
+{% endblock %}

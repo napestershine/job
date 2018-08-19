@@ -1,0 +1,17 @@
+<style>
+    input{
+        margin-top: 10px;
+        padding: 5px;
+    }
+</style>
+<form method="post">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('login') }}"/>
+    <input type="text" id="username" name="_username" value="" class="form-control"
+           required="required" placeholder="Username"/>
+
+    <input type="password" id="password" name="_password" required="required"
+           placeholder="Password" class="form-control"/>
+
+    <input type="submit" id="_submit" name="_submit" class="btn btn-primary"
+           value="Log In"/>
+</form>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- meta viewport -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- title -->
+    <title> kantipurjob.com | Jobs in Nepal | Recruitment | Post Job | Vacancies | Search Jobs in Nepal | Outsourcing |
+        Human Resource | </title>
+    <meta name="description"
+          content="Jobs in Nepal- www.kantipurjob.com is the continuously updated online job site in Nepal where you can post job, vacancies and requirements for free. Being an innovative human resource consulting company, we provide staffing service solutions, recruitment and selection process outsourcing, and call center management services. Job seekers can post their resume for free and explore career opportunities across Nepal."/>
+
+    {% block seo %} {% endblock %}
+
+    {% include "@YarshaFrontend/Includes/styles.html.twig" %}
+
+    {% block styles %}{% endblock %}
+
+    <!--[if lt IE 9]>
+    <script src="{{ asset('bundles/yarshafrontend/js/html5shiv.js') }}"></script>
+    <script src="{{ asset('bundles/yarshafrontend/js/respond.min.js') }}"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="{{ asset('bundles/yarshafrontend/css/jquery.simplyscroll.css') }}">
+
+
+</head>
+
+<body>
+
+<!--[if lt IE 9]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your browsing experience.</p>
+<![endif]-->
+
+{% include "@YarshaFrontend/Includes/navigation_bar.html.twig" %}
+
+
+<section class="inner-pages-banner-sec test">
+    <img src="{{ asset('static/images/Business-Team-Busy-Working-Talking-Concept.jpg') }}">
+    <div class="overlay">
+        <div class="col-xs-6 col-md-12">
+            <div class="left-overlay">
+                <h1>{% block static_content_title %}{% endblock %}</h1>
+                <p>YOUR PLATFORM TO <br><span>REDEFINE FUTURE</span></p>
+            </div>
+        </div>
+        <div class="col-xs-4 col-md-12">
+            <div class="right-overlay">
+                <p>Kantipur Management Private Limited (KMPL) is an expertise on human resources solutions and has been
+                    providing Human Resource Management and related solutions to organizations across the country.</p>
+            </div><!-- right-overlay -->
+        </div>
+    </div>
+</section>
+
+
+{% block static_short_content %}
+    <section class="bg-title-wrap">
+        <div class="container">
+            <div class="row">
+                <h1>your platform <span>to redefine future</span></h1>
+                <p>Kantipur Management Private Limited (KMPL) is an expertise on human resources solutions and has been
+                    providing Human Resource Management and related solutions to organizations across the country.</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
+
+{% block static_content %}{% endblock %}
+
+{{ sonata_block_render({"type":"yarsha.block.top_super_employer.job.frontend"}) }}
+
+
+{% include 'YarshaFrontendBundle:Includes:register_pop_up.html.twig' %}
+{% include 'YarshaFrontendBundle:Includes:login_pop_up.html.twig' %}
+
+{% include "@YarshaFrontend/Includes/footer.html.twig" %}
+
+{% include "@YarshaFrontend/Includes/scripts.html.twig" %}
+
+{% include "@YarshaFrontend/Includes/simplyscroller.html.twig" %}
+
+
+{% block scripts %}{% endblock %}
+
+</body>
+</html>

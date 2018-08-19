@@ -1,0 +1,141 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Banners{% endblock %}
+
+{% block page_description %}{{ organization.name }}{% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>
+    </button>
+
+    {#<a href="#" class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i> Export</a>#}
+
+    <a href="{{ path('yarsha_admin_employer_banner_add',{'ref':organization.id}) }}" class="btn btn-info btn-xs">
+        <i class="fa fa-plus"></i> Add New Banner
+    </a>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                {% if banners | length %}
+                    <table class="table table-bordered table-striped table-hover">
+
+
+                        <thead>
+                        <tr>
+                            <th>S.N</th>
+                            <th>Banner</th>
+                            <th>Caption</th>
+                            <th>Status</th>
+                            <th>Is Featured</th>
+                            <th>Order</th>
+                            <th>Action</th>
+
+                        </tr>
+                        </thead>
+
+                        {% set count = 0 %}
+                        {% for banner in banners %}
+                            {% set count = count + 1 %}
+                            {% set imgSrc = asset('uploads/employers/')~banner.path %}
+                            {% if(banner.status == 1) %}
+                                {% set sts = '<span class="label label-success">Active</span>' %}
+                            {% else %}
+                                {% set sts = '<span class="label label-primary">Inactive</span>' %}
+                            {% endif %}
+                            {% if(banner.isFeatured == 1) %}
+                                {% set check = 'checked' %}
+                            {% else %}
+                                {% set check = '' %}
+                            {% endif %}
+
+
+                            <tr id="tr_{{ banner.id }}">
+
+                                <td>{{ count }}</td>
+                                <td><img src="{{ imgSrc }}" style="width: 100px;"></td>
+                                <td>{{ banner.caption }}</td>
+                                <td>{{ sts |raw }}</td>
+                                <td>
+                                    <input type="checkbox" id="feature-{{ banner.id }}" {{ check }}
+                                           onclick="update_featured({{ banner.id }})"/></td>
+                                <td>{{ banner.order }}</td>
+                                <td>
+                                    <a href="{{ path('yarsha_admin_employer_banner_edit', {'id' : banner.id,'ref':organization.id}) }}"
+                                       class="btn btn-xs btn-primary">
+                                        <i class="fa fa-edit"></i> Edit</a>
+
+                                    <a href="#"
+                                       onclick="deleteBanner({{ banner.id }})" class="btn btn-xs btn-danger">
+                                        <i class="fa fa-times"></i> Delete</a>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+                    </table>
+
+                {% else %}
+                    {{ ys_no_contents('No Banner added yet. Start Adding banner by clicking on Add Banner Image.') }}
+                {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+    {% block scripts %}
+
+        <script type="text/javascript">
+            function deleteBanner(id) {
+                var trId = 'tr_' + id;
+                var result = confirm('Are you sure ?');
+                if (result) {
+                    var remoteUrl = "{{ url('yarsha_admin_employer_banner_delete', {'id': 'USERID'}) }}";
+                    var remoteUrl = remoteUrl.replace('USERID', id);
+
+                    $.ajax({
+                        type: 'post',
+
+                        url: remoteUrl,
+                        success: function (res) {
+                            if (res && res.status == 'success') {
+                                $("#" + trId).remove();
+                            }
+                        }
+                    });
+                }
+            }
+
+            function update_featured(id) {
+
+                var trId = 'tr_' + id;
+                var result = confirm('Are you sure ?');
+                if (result) {
+                    var remoteUrl = "{{ url('yarsha_admin_employer_banner_images_feature', {'id': 'USERID'}) }}";
+                    var remoteUrl = remoteUrl.replace('USERID', id);
+
+                    $.ajax({
+                        type: 'post',
+
+                        url: remoteUrl,
+                        success: function (res) {
+                            if (res && res.status == 'success') {
+                                window.location.reload();
+                            }
+                        }
+                    });
+                }
+
+            }
+
+
+        </script>
+    {% endblock %}

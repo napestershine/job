@@ -1,0 +1,31 @@
+<style>
+    label.control-label {
+        display: none;
+    }
+</style>
+<div class="panel panel-default">
+    <div class="panel-body">
+        {% if seeker.curriculumVitaePath != '' and seeker.curriculumVitaePath != null  %}
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <h1>CV</h1>
+                </div>
+                <div class="col-md-8">
+                    <p>Name: {{ seeker.curriculumVitaePath }}</p>
+                    <a href="{{ path('yarsha_job_seeker_cv_download') }}">
+                        <button class="btn btn-info">Download</button>
+                    </a>
+                </div>
+            </div>
+
+        {% endif %}
+    </div>
+    <div class="clearfix"></div>
+    <div class="panel-footer">
+            {% form_theme form 'bootstrap_3_layout.html.twig' %}
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <input type="submit" value="Submit" class="btn btn-primary">
+            {{ form_end(form) }}
+    </div>
+</div>

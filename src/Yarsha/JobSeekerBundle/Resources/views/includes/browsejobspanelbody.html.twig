@@ -1,0 +1,27 @@
+{#<div class="col-md-6 pull-left">#}
+    {#{% set imgSrc = job.organization.path %}#}
+    {#<div class="col-md-2">#}
+        {#{% if(imgSrc) | length %}#}
+            {#<img src="{{ asset('uploads/employers') ~ '/'~ imgSrc }}" alt="Company logo"#}
+                 {#height="80px"#}
+                 {#width="80px">#}
+        {#{% else %}#}
+            {#<i class="fa fa-industry"></i>#}
+        {#{% endif %}#}
+    {#</div>#}
+    {#<div class="col-md-10">#}
+        {#<h4>{{ job.title }}</h4>#}
+        {#<p>{{ job.locations | first }}</p>#}
+    {#</div>#}
+{#</div>#}
+
+
+<div class="col-md-3 col-sm-3 follower-tab-blk">
+    <div class="follower-tab-ind">
+        <h1>
+            <a href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}">{{ job.title }}</a>
+        </h1>
+        <h3>@ {{ job.organization.name }}</h3>
+        <span>{{ job.locations | first }}</span>
+    </div>
+</div>

@@ -1,0 +1,3 @@
+yarsha_article:
+    resource: "@YarshaArticleBundle/Controller"
+    type: annotation

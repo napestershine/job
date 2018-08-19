@@ -1,0 +1,82 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Followed Companies{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>
+    </button>
+
+
+{% endblock %}
+
+{% block filter %}
+    <div class="row">
+
+        <div class="form-group-sm col-md-3">
+            <label for="name">Company Name</label>
+            <input type="text" name="company_name" value="{{ app.request.get('company_name') }}"
+                   placeholder="Company Name"
+                   class="form-control">
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>SN</th>
+                        <th>Company Name</th>
+                        <th>Email Address</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if followedcompanies is not empty %}
+                        {% for followedcompany in followedcompanies %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>
+                                    <a href="{{ path('yarsha_admin_organization_detail', {'id':followedcompany.id}) }}">
+                                        {{ followedcompany.name }}
+                                    </a>
+                                </td>
+
+                                <td>{{ followedcompany.email }}</td>
+                                <td>{{ followedcompany.address }}</td>
+                                <td> {{ org_status_label(followedcompany.status) }}</td>
+
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No Company exist.</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+
+                </table>
+
+                {% if followedcompanies.haveToPaginate %}
+                    {{ pagerfanta(followedcompanies, 'twitter_bootstrap3') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+

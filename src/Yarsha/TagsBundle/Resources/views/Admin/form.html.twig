@@ -1,0 +1,41 @@
+{% extends '@YarshaAdmin/admin_layout.html.twig' %}
+
+{% block content %}
+    {{ form_start(form, {'attr':{'id':'tagsForm'}}) }}
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-body">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-primary btn-lg" role="button" type="submit">
+            <i class="fa fa-save"></i> SAVE
+        </button>
+        <a href="{{ path('yarsha_admin_tags_list') }}" class="btn btn-danger btn-lg">
+            <i class="fa fa-close"></i> CANCEL
+        </a>
+    </div>
+    {{ form_end(form) }}
+    <div class="clearfix"></div>
+
+{% endblock %}
+
+{% block scripts %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var tagSelectObj = $('.tagSelectAutoComplete');
+            tagSelectObj.select2({ placeholder: "Select a Tag to replace with" });
+            $('#tagsForm').on('submit', function(e){
+                if(tagSelectObj.val() != "" && ! confirm('Are you sure to change Tag?')){
+                    tagSelectObj.select2('val', 0);
+                    return false;
+                }
+                return true;
+            });
+        });
+    </script>
+{% endblock %}

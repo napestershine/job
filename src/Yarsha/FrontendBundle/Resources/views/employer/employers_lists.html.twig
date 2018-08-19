@@ -1,0 +1,42 @@
+{% extends '@YarshaFrontend/frontend_layout.html.twig' %}
+{% import '@YarshaFrontend/Macros/frontend_design_macros.html.twig' as frontendDesignMacro %}
+
+{% block content %}
+
+    <section class="inner-pages-banner-sec test">
+        <img src="{{ asset('static/images/inner1.jpg') }}">
+        <div class="overlay">
+            <h1>Employers</h1>
+            <p>Our Vision: Be a leading service provider locally and globally.</p>
+        </div>
+    </section>
+
+
+    <section class="bg-title-wrap">
+        <div class="container">
+            <div class="row">
+                <h1>your platform <span>to redefine future</span></h1>
+                <p>Kantipur Management Private Limited (KMPL) is an expertise on human resources solutions and has been
+                    providing Human Resource Management and related solutions to organizations across the country.</p>
+            </div>
+        </div>
+    </section>
+    <!-- employer slider section start -->
+    {{ sonata_block_render({'type':'yarsha.block.super_employer'}, {}) }}
+    <!-- employer slider section end -->
+
+
+
+    {% set template = 'YarshaFrontendBundle:Includes:allTopemployersblock.html.twig' %}
+
+    {{ sonata_block_render({"type":"yarsha.block.top_employer.job.frontend"},{'template':template}) }}
+
+    {{ frontendDesignMacro.registerSectionIndex() }}
+
+    {{ sonata_block_render({"type":"yarsha.block.featured_employer.job.frontend"}) }}
+
+
+    <!-- top employers detail page section -->
+
+
+{% endblock %}

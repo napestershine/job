@@ -1,0 +1,336 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Employers{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>
+    </button>
+
+    {#<a href="#" class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i> Export</a>#}
+
+    <a href="{{ path('yarsha_admin_organization_add') }}" class="btn btn-info btn-xs">
+        <i class="fa fa-plus"></i> Add New Employer
+    </a>
+
+{% endblock %}
+
+{% block filter %}
+
+    <div class="row">
+        <div class="form-group-sm col-md-4">
+            <label for="name">Name</label>
+            <input type="text" name="name" value="{{ app.request.get('name') }}" placeholder="company name"
+                   class="form-control">
+        </div>
+
+        <div class="form-group-sm col-md-4">
+            <label for="email">Email</label>
+            <input type="text" name="email" value="{{ app.request.get('email') }}" placeholder="contact email"
+                   class="form-control">
+        </div>
+
+        <div class="form-group-sm col-md-4">
+            <label for="address">Address</label>
+            <input type="text" name="address" value="{{ app.request.get('address') }}" placeholder="address"
+                   class="form-control">
+        </div>
+
+
+        <div class="clearfix"></div>
+
+        <div class="form-group-sm col-md-3">
+            <br>
+            <label for="industry">Industry</label>
+            {{ render_category_select_by_industry(app.request.get('industry')) }}
+        </div>
+
+        <div class="form-group-sm col-md-3">
+            <br>
+            <label for="function">Category</label>
+            {{ render_category_select_by_function(app.request.get('function')) }}
+        </div>
+
+        <div class="form-group-sm col-md-3">
+            <br>
+            <label for="category">Employer Type</label>
+            {{ render_organization_category_type_select(app.request.get('category')) }}
+        </div>
+
+        <div class="form-group-sm col-md-3">
+            <br>
+            <label for="status">Status</label>
+            {{ render_organization_status_select(app.request.get('status')) }}
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>SNo</th>
+                        <th>Company Logo</th>
+                        <th>Company Name</th>
+                        <th>Industry</th>
+                        <th>Contact Person</th>
+                        <th>Account Manager</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    {% if organizations | length %}
+                        {% set count = pager_first_index(organizations) %}
+                        {% for organization in organizations %}
+                            <tr id="org-{{ organization.id }}">
+                                <td>{{ count }}</td>
+                                <td>
+                                    {% set
+                                    imagePath = organization.path
+                                    ? 'uploads/employers/'~organization.path
+                                    : 'images/company_logo_default.jpg' %}
+                                    <img src="{{ asset(imagePath)|imagine_filter('thumb_small') }}"
+                                         alt="{{ organization.name }}">
+
+
+                                </td>
+                                <td>
+                                    <h4 style="margin-top: 0; margin-bottom: 5px">
+                                        <a href="{{ path('yarsha_admin_organization_detail',{'id':organization.id}) }}">
+                                            {{ organization.name }}
+                                        </a>
+                                    </h4>
+                                    <div class="dropdown" style="margin-bottom: 5px">
+                                        <span class="statusTd">{{ org_status_label(organization.status) }}</span>
+                                        <span
+                                                class="label label-default dropdown-toggle"
+                                                data-toggle="dropdown" aria-expanded="false"
+                                                title="Change Status"
+                                        >
+                                            <i class="fa fa-angle-down"></i>
+                                        </span>
+                                        <ul class="dropdown-menu statusButtons">
+                                            {{ org_status_buttons(organization.status, organization.id) }}
+                                        </ul>
+                                    </div>
+                                    <span class="form-group-sm">{{ org_category(organization.id) }}</span>
+
+
+                                </td>
+                                <td>{{ organization.industry ? organization.industry.title : '' }}</td>
+                                <td>{{ render_organization_contact_person_info(organization) }}</td>
+                                <td>
+                                    {#<div id="managerDetail{{ organization.id }}">#}
+                                    {#{{ render_account_manager_detail(organization.accountManager) }}#}
+                                    {#</div>#}
+                                    {% set selectedManager = organization.accountManager ? organization.accountManager.id : '' %}
+                                    <span class="form-group-sm">{{ render_account_manager_select(organization.id, selectedManager) }}</span>
+                                </td>
+                                <td>
+                                    <a href="{{ path('yarsha_admin_organization_detail',{'id':organization.id}) }}"
+                                       class="btn btn-xs btn-info">
+                                        <i class="fa fa-eye"></i> View
+                                    </a>
+
+                                    <a href="{{ path('yarsha_admin_organization_edit', {'id':organization.id}) }}"
+                                       class="btn btn-xs btn-primary">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+
+                                    <a href="{{ path('yarsha_admin_organization_job_list', {'id':organization.id}) }}"
+                                       class="btn btn-xs btn-success">
+                                        <i class="fa fa-list"></i> Posted Jobs
+                                    </a>
+
+                                    <a href="{{ path('yarsha_admin_applicants_list', {'organization':organization.id}) }}"
+                                       class="btn btn-xs btn-warning">
+                                        <i class="fa fa-users"></i> Applicants
+                                    </a>
+
+                                    <button
+                                            class="btn btn-xs btn-danger deleteEmployer"
+                                            data-employer="{{ organization.id }}"
+                                    >
+                                        <i class="fa fa-times"></i> Delete
+                                    </button>
+
+                                    <a href="{{ path('yarsha_admin_change_employer_password', {'id':organization.id}) }}"
+                                       class="btn btn-xs btn-success">
+                                        change password
+                                    </a>
+                                    {% set contactEmail = organization.contactPersons | first %}
+                                    {% if contactEmail %}
+                                        <a data-toggle="modal" data-target="#employerEmailSend"
+                                           class="btn btn-xs btn-danger" id="emailToEmployer-{{ organization.id }}"
+                                           data-email="{{ contactEmail.email }}" data-name="{{ organization.name }}">Send
+                                            Email
+                                        </a>
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+                            {% set count = count + 1 %}
+                        {% endfor %}
+                    {% else %}
+                    {% endif %}
+                </table>
+
+                {% if organizations.haveToPaginate %}
+                    {{ pagerfanta(organizations, 'twitter_bootstrap3') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+
+    <div id="employerEmailSend" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background: #0396d5;
+    color: #fff;
+    text-transform: uppercase;">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+                    {{ form_start(form) }}
+                    <label>Email To</label>
+                    {{ form_widget(form.email) }}
+                    <label>Message</label>
+                    {{ form_widget(form.message) }}
+                    <input type="submit" name="send" value="Send" class="btn btn-primary">
+
+                    {{ form_end(form) }}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+    <script>
+        $('tr').on('click', 'a[id^="emailToEmployer-"]', function (e) {
+            $this = $(this)
+            contactEmail = $this.attr('data-email');
+            organizationName = $this.attr('data-name');
+            $('#employerEmailSend').find('.modal-body #form_email').val(contactEmail);
+            $('#employerEmailSend').find('.modal-title').html('Email to ' + organizationName);
+        });
+
+
+        function changeOrganizationStatus(_obj) {
+            if (confirm('Are you sure to change status?')) {
+                var self = $(_obj);
+                var nextStatus = self.data('next-status'),
+                        orgId = self.data('org'),
+                        currentRow = $('#org-' + orgId);
+
+                $.ajax({
+                    type: 'get',
+                    url: '{{ path('yarsha_ajax_change_organization_status') }}',
+                    data: {status: nextStatus, org: orgId},
+                    success: function (res) {
+                        currentRow.find('.statusButtons').html(res.buttons);
+                        currentRow.find('.statusTd').html(res.label);
+                    },
+                    error: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+        }
+
+
+        $(".changeCategory").on('change', function (e) {
+            var type = this.value;
+            var orgId = $(this).data('org-id');
+            $.ajax({
+                type: 'get',
+                url: '{{ path('yarsha_ajax_update_organization_category') }}',
+                data: {'type': type, 'orgId': orgId},
+                success: function (res) {
+
+                },
+                error: function (res) {
+                }
+            });
+        });
+
+        $('.deleteEmployer').on('click', function (e) {
+
+            if (confirm('Are you sure to delete?')) {
+                var obj = $(this),
+                        employer = obj.data('employer');
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{ path('yarsha_admin_ajax_employer_delete') }}',
+                    data: {employer: employer},
+                    success: function (res) {
+                        window.location = window.location;
+                    },
+                    error: function (xhr) {
+                        alert('Something went wrong. Please try again later.');
+                    },
+                    complete: function (xhr) {
+                    }
+                });
+            }
+        });
+
+        $(".changeAccountManager").on('change', function (e) {
+            if (confirm('Are you sure to change account manager?')) {
+                var obj = $(this),
+                        organizationId = obj.data('org-id'),
+                        oldValue = obj.data('old-value'),
+                        selectedValue = obj.val()
+                        ;
+
+                obj.addClass('disabled');
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{ path('yarsha_admin_ajax_change_account_manager_for_employer') }}',
+                    data: {newManager: selectedValue, previousManager: oldValue, organization: organizationId},
+                    success: function (res) {
+//                        $('#managerDetail'+organizationId).html(res.template);
+                    },
+                    error: function (xhr) {
+                        obj.val(oldValue);
+                        alert('Something went wrong. Please try again later.');
+                    },
+                    complete: function (xhr) {
+                        obj.removeClass('disabled');
+                    }
+                });
+            }
+
+
+        });
+
+
+    </script>
+
+
+
+{% endblock %}

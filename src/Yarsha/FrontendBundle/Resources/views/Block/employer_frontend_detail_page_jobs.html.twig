@@ -1,0 +1,9 @@
+{% import '@YarshaFrontend/Macros/job_detail_macros.html.twig' as jobMacro %}
+
+{{ jobMacro.jobListTemplateDetailPage('Current Vacancies',jobs) }}
+
+{{ sonata_block_render({'type':'yarsha.block.relatedjobs'},{'job':jobs | first}) }}
+
+</div>
+
+{% include 'YarshaFrontendBundle:Includes:suggesttofriendmodal.html.twig' %}

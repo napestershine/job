@@ -1,0 +1,58 @@
+{% macro fullWidthBanner(organization) %}
+    <div class="col-md-12 job-detail-full-banner-wrap">
+        <div class="banner-wrap img-responsive carousel slide" id="myCarousel">
+            <div class="carousel-inner">
+                {{ render_org_banners_carousel(organization) }}
+            </div>
+        </div>
+
+        <div class="col-md-12 banner-detail-section">
+            <div class="col-md-2 col-sm-2 img-responsive profile-image">
+                <img src="{{ organization_profile_image(organization)| imagine_filter('company_profile_pic_large') }} " alt="Company logo">
+            </div>
+
+            <div class="col-md-6 col-md-offset-2 org-name"><h4>{{ organization.name }}</h4></div>
+
+            <div class="col-md-4 text-right right-buttons">
+                <div class="row">
+                    <span class="follower-count"> ( {{ count_followers(organization) }} ) Followers </span>
+                    <span>({{ organization.visit }}) Visits</span>&nbsp;&nbsp;
+                    <span class="template-follow-verified">
+                        {{ render_follow_button(organization, app.user, 'btn btn-md btn-info') }}&nbsp;&nbsp;
+                        <button class="btn btn-md btn-success"><i class="fa fa-star" aria-hidden="true">
+                            </i> &nbsp;Verified
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro partialWidthBanner(organization) %}
+
+    <div class="company-info-blk dashboard-bg-color job-detail-new-cover clearfix">
+        <div class="row">
+            <div class="col-md-2 profile-image col-sm-2">
+                <img src="{{ organization_profile_image(organization)| imagine_filter('company_profile_pic_large') }} " alt="Company logo">
+            </div>
+            <div class="col-md-5 col-sm-10 job-detail-new-cover-ind">
+                <h1>
+                    {{ organization.name }}
+                    {% if organization.isGovermentOrganization != true %}
+                        (Followers {{ count_followers(organization) }} )
+                    {% endif %}
+                </h1>
+            </div>
+            <div class="col-md-2 col-xs-6 col-sm-4 job-detail-new-cover-ind inner-btn-blue">
+                {{ render_follow_button(organization, app.user, 'btn btn-xs btn-info') }}
+            </div>
+            <div class="col-md-2 col-xs-6 col-sm-4 job-detail-new-cover-ind right-btn">
+                <button class="btn btn-xs btn-success"><i class="fa fa-star" aria-hidden="true"></i> &nbsp;Verified
+                </button>
+            </div>
+        </div>
+    </div>
+
+{% endmacro %}

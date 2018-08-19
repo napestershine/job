@@ -1,0 +1,117 @@
+{% extends "@YarshaMain/Emails/email_layout.html.twig" %}
+
+{% block header_right_image %}
+    <a href="#"><img src="{{ absolute_url(asset('bundles/yarshamain/images/email/2.jpg')) }}" style="width: auto;"></a>
+{% endblock %}
+{% block styles %}
+<style>
+
+    @media (max-width: 480px) {
+
+        .table-header td a img{
+            width: 120px !important;
+        }
+        .apply-now-btn{
+            font-size: 10px;
+        }
+
+        .job-detail-list img{
+            max-width: 65px !important;
+        }
+
+        table.dear-blk td {
+            color: black !important;
+        }
+
+
+    }
+</style>
+{% endblock %}
+{% block salutation %}
+    Dear <strong>{{ name|title }}</strong> <br>
+
+    <p style="text-align:justify">
+        Kantipurjob.com is firmly committed jobsite in Nepal, where you as a job seeker can create your account, upload
+        your resume, follow potential employers and explore career opportunities. Enlisted below are the latest jobs for
+        your reference.
+    </p>
+
+    <p style="text-align:justify">
+        If you are an employer, you can create your company profile and post your jobs for free. Being a dedicated and
+        an innovative human resource consulting company, we also provide staffing service, payroll management,
+        recruitment & selection, call center management, and outsourcing services.
+    </p>
+{% endblock %}
+
+{% block email_body %}
+
+    {% for job in jobs %}
+        <table class="job-detail-list" style="margin-bottom:20px; border-bottom: 1px solid #CCC">
+            <tr>
+                <td style="width: 80px">
+                    <img style="max-width: 80px"
+                         src="{{ organization_profile_image(job.organization)|imagine_filter('company_profile_pic_large') }}"/>
+                </td>
+                <td class="em-job-desc" style="vertical-align: top;">
+                    <h4>{{ job.title|upper }}</h4>
+                    <p style="font-size:12px"><strong>{{ job.organization.name }}</strong>
+                        | {{ job.organization.address }}</p>
+                    <p style="font-size:14px">{{ trim_content(job.description) }}...
+                        <a href="{{ url('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}"
+                           class="view-more-link">view more</a>
+                    </p>
+                </td>
+            </tr>
+            <tr style=" ">
+                <td colspan="2" style="font-size:13px; padding-bottom: 10px;">
+                    Education: {{ job.educationDegree ? job.educationDegree.name : '' }} |
+                    Experience: {{ job.minimumExperienceYear }} years | Position: {{ job.numberOfVacancies }} <br/>
+                    <span class="em-job-spec" style="color:#ff0303;font-size: 14px; margin-top: 3px" >Deadline: {{ job.deadline|date('M j, Y') }}</span>
+                    <span class="em-apply-btn" style="float:right;"><a
+                                href="{{ url('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}"
+                                class="apply-now-btn">APPLY NOW</a></span>
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+
+
+{% endblock %}
+
+{% block other_content %}
+    <table>
+        <tr>
+            <td style="width:50%; font-size: 16px; text-align: center">More than 200+ vacancies today</td>
+            <td class="td-lf-lg-pad" style="padding-left: 10px">
+                <a href="{{ url('yarsha_frontend_jobs_search') }}" target="_blank"
+                   class="em-view-all-btn em-btn em-lg-50">View all Jobs</a>
+                <a href="{{ url('yarsha_frontend_register_as_seeker') }}" target="_blank"
+                   class="em-view-all-btn em-btn em-lg-50">Register</a>
+            </td>
+        </tr>
+    </table>
+{% endblock %}
+
+{% block disclaimer_intro %}
+    {% if isRegistered is defined and isRegistered == true %}
+        You have received this mail because you are registered member on kantipurjob.com.
+    {% endif %}
+{% endblock %}
+
+ {% block disclaimer_closure %}
+     If you do not want to receive this mail.
+     {% if isRegistered is defined and isRegistered == true %}
+         Please <a
+             href="{{ url('yarsha_job_seeker_security_login') }}">login</a> to the website and disable receive job alerts on your user settings.
+     {% else %}
+         <a href="{{ url('yarsha_frontend_unsubscribe_from_mass', {'email':email}) }}"
+            style=" text-decoration: none;
+            padding: 2px 0;
+            margin-bottom: 7px;
+            margin-left: 8px;
+            background: #f2652a;">Unsubscribe.</a>
+     {% endif %}
+ {% endblock %}
+
+
+

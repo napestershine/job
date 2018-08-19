@@ -1,0 +1,61 @@
+{% include "@YarshaFrontend/Includes/login_alert_modal.html.twig" %}
+<script src="{{ asset('bundles/yarshamain/js/jquery.min.js') }}"></script>
+{#<script type="text/javascript" src="{{ asset('bundles/yarshafrontend/js/jquery.min.js') }}"></script>#}
+<!-- bootstrap jquery path -->
+<script type="text/javascript" src="{{ asset('bundles/yarshafrontend/js/bootstrap.min.js') }}"></script>
+<!-- custom jquery path -->
+<script type="text/javascript" src="{{ asset('bundles/yarshafrontend/js/custom.js') }}"></script>
+<script src="{{ asset('bundles/yarshamain/js/cropper.min.js') }}"></script>
+<script src="{{ asset('bundles/yarshamain/js/cropper-main.js') }}"></script>
+<script src="{{ asset('bundles/yarshafrontend/js/validator.min.js') }}"></script>
+{#<script src="{{ asset('bundles/yarshafrontend/js/jquery.loading.min.js') }}"></script>#}
+<script src="//cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay.min.js
+"></script>
+<script src="//cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay_progress.min.js
+"></script>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=590cc96b1554ce00113575cc&product=inline-share-buttons"></script>
+<!-- share this  start-->
+{#<script type="text/javascript">var switchTo5x = true;</script>#}
+{#<script type="text/javascript" src="//w.sharethis.com/button/buttons.js"></script>#}
+{#<script type="text/javascript">stLight.options({#}
+        {#publisher: "9930fe29-dd14-48e1-8fec-4f8e96adc6c0",#}
+        {#doNotHash: false,#}
+        {#doNotCopy: false,#}
+        {#hashAddressBar: false#}
+    {#});</script>#}
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#login-alert-modal').on('show.bs.modal', function (e) {
+            var modal = $(this),
+                    button = $(e.relatedTarget),
+                    message = button.data('message')
+                    ;
+            // message = message.replace(/sign up/g, '<a href="' + button.data('register') + '">Sign up</a>');
+            //  message = message.replace(/login/g, '<a href="' + button.data('login') + '">Login</a>');
+            modal.find('.content-message').html(message);
+            modal.find('.nav').html('<li>' +
+                '<a class="btn btn-default" onclick="saveRequestedUrl()" href="' + button.data('register') + '">Register</a>' +
+                '</li>' +
+                '<li class="active">' +
+                '<a class="btn btn-default" onclick="saveRequestedUrl()"  href="' + button.data('login') + '">Login</a>' +
+//                '<a class="btn btn-default" href="#" onclick="renderLoginModal(event)">Login</a>' +
+                '</li>');
+            modal.find('.modal-footer').html('<a class="forgot-left" href="' + button.data('forgot') + '">Forgot password!</a><a class="terms-right" href="{{ path('yarsha_frontend_terms') }}">Terms of use</a>');
+        });
+});
+</script>
+
+<!-- Start Alexa Certify Javascript -->
+<script>
+    _atrk_opts =
+        { atrk_acct:"peBLp1IW1d10em", domain:"kantipurjob.com",dynamic: true};
+    (function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+
+<noscript>
+    <img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=peBLp1IW1d10em" style="display:none" height="1" width="1" alt="" />
+</noscript>
+<!-- End Alexa Certify Javascript -->

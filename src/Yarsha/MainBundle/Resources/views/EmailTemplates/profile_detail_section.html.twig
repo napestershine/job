@@ -1,0 +1,48 @@
+<!-- your profile detail -->
+<section style="background:#1A98D3; padding: 1%;color: #fff; ">
+    Your Profile Details
+</section>
+
+
+<!-- profile summary section -->
+<section>
+    <div style="width: 50%; float: left;">
+
+        <ul style="background: #efefef; padding: 10px; border-radius: 6px;    margin-left: 10px;">
+            <li style="list-style-type: none; line-height: 32px; color: #1A98D3; font-size: 18px; margin-bottom: 10px;"><i class="fa fa-briefcase" aria-hidden="true"></i> &nbsp;Profile Summary</li>
+            <li style="list-style-type: none; line-height: 32px;">Personal Information <span style="float: right; background: red; color: #fff; padding: 4%;padding-top:0;padding-bottom: 0;border-radius:3px; width: 53px;">{{ profileStatus.personal_information }}%</span></li>
+            <li style="list-style-type: none; line-height: 32px;">General Information <span style="float: right; background: green; color: #fff; padding: 4%;padding-top:0;padding-bottom: 0;border-radius:3px;width: 53px;
+    ">{{ profileStatus.general_information }}%</span></li>
+            <li style="list-style-type: none; line-height: 32px;">Education <span style="float: right; background: orange; color: #fff; padding: 4%;padding-top:0;padding-bottom: 0;border-radius:3px;width: 53px;
+    ">{{ profileStatus.education_information }}%</span></li>
+            <li style="list-style-type: none; line-height: 32px;">Training <span style="float: right; background: #e96592; color: #fff; padding: 4%;padding-top:0;padding-bottom: 0;border-radius:3px;width: 53px;
+    ">{{ profileStatus.trainings }}%</span></li>
+            <li style="list-style-type: none; line-height: 32px;">Professional Summary <span style="float: right; background: #000; color: #fff; padding: 4%;padding-top:0;padding-bottom: 0;border-radius:3px;width: 53px;
+    ">{{ profileStatus.professional_information }}%</span></li>
+            <li style="list-style-type: none; line-height: 32px;">Other Summary <span style="float: right; background: #626595; color: #fff; padding: 4%;padding-top:0;padding-bottom: 0;border-radius:3px;width: 53px;
+    ">{{ profileStatus.other_information }}%</span></li>
+        </ul>
+    </div>
+
+    <div style="width: 46%; float: right;">
+        <ul style="background: #efefef; padding: 10px; border-radius: 6px;    margin-rigth: 10px;">
+            <li style="list-style-type: none; line-height: 32px; color: #1A98D3; font-size: 18px;"><i class="fa fa-user" aria-hidden="true"></i> &nbsp;{{ seeker.fullName|title }} <span style="float: right; color: green; font-size: 35px;"><i class="fa fa-check-square-o" aria-hidden="true"></i></span></li>
+            <li style="list-style-type: none; line-height: 32px;">Profile Visits: {{ seeker.profileVisits }}</li>
+            <li style="list-style-type: none; line-height: 32px;">Mobile: {{ seeker.mobile }} </li>
+            <li style="list-style-type: none; line-height: 32px;">Email: {{ seeker.contactEmail }} </li>
+            <li style="list-style-type: none; line-height: 32px;">Last Login Date: {{ seeker.lastLogin | date('F j, Y') }}</li>
+            <li style="list-style-type: none; line-height: 32px;">Last Profile Update: {{ seeker.lastProfileUpdate | date('F j, Y') }}</li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+
+    <div style="color: #000;margin-top: 20px; padding-top: 15px; padding-bottom: 15px;">
+        <div style="width: 70%; float: left;">
+            Employers look for the most recently updated profiles in their searches. To stay active, online and updated.
+        </div>
+        <div style="width: 20%; float: right;">
+            <a href="{{ url('yarsha_job_seeker_profile_detail_view') }}" style="color: #fff; background:#1A98D3; border:none; padding:4px 8px;">Update Now</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+</section>

@@ -1,0 +1,27 @@
+{{ form_start(form, {'attr':{'id':'addLanguage', 'onsubmit':'return submitLanguage(this)','data-id':id}}) }}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+<div class="clearfix"></div>
+<div class="col-md-12">
+    {{ form_row(form.language) }}
+</div>
+<div class="col-md-4">
+    {{ form_row(form.reading) }}
+</div>
+<div class="col-md-4">
+    {{ form_row(form.writing) }}
+</div>
+<div class="col-md-4">
+    {{ form_row(form.speaking) }}
+</div>
+
+<div class="clearfix"></div>
+
+<div class="modal-footer">
+    <input type="submit" class="btn btn-primary" value="SAVE">
+
+    <button type="button" class="btn btn-danger" data-dismiss="modal">
+        CANCEL
+    </button>
+</div>
+{{ form_end(form) }}

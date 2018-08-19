@@ -1,0 +1,93 @@
+<section class="employer-slider-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 slider-sec-title-wrap">
+                <div class="row">
+                    <div class="col-md-5 col-sm-5">
+                        <h2 class="super-emp-title">
+                            <i class="fa fa-bookmark" aria-hidden="true"></i>&nbsp; Super Employers</h2>
+                    </div>
+                    <div class="col-md-7 col-sm-7"><p> See why over 100,000 users have already used kantipurjob.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="span12">
+                <div class="">
+                    <div id="myCarouselSuperEmployers" class="carousel slide">
+
+                        <ol class="carousel-indicators">
+                            {% for emp in employers %}
+                                <li
+                                        data-target="#myCarouselSuperEmployers"
+                                        data-slide-to="{{ loop.index0 }}"
+                                        class="{{ loop.index0 == 0 ? 'active' : '' }}"
+                                ></li>
+                            {% endfor %}
+                        </ol>
+
+                        <!-- Carousel items -->
+                        <div class="carousel-inner">
+                            {% for emps in employers %}
+                                <div class="item {{ loop.index0 == 0 ? 'active' : '' }}">
+                                    <div class="row-fluid row">
+                                        <div class="col-md-12">
+                                            {% for employer in emps %}
+                                                <div class="col-md-3 col-sm-3">
+                                                    <div class="span3">
+                                                        {% set banner = render_super_employer_banner(employer.id) %}
+
+                                                        <div class="icon-slider-img-blk" style="background: url('{{ banner }}') no-repeat center;
+                                                           background-size: cover;">
+                                                            <img src="{{ organization_profile_image(employer)|imagine_filter('company_profile_pic_large') }}"
+                                                                 alt="Image" style="max-width:100%;"/>
+                                                        </div>
+                                                        <h1>
+                                                            <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug': employer.slug}) }}">{{ employer.name }}</a>
+                                                        </h1>
+                                                        <span>
+                                                    {% if employer.address %}
+                                                        {{ employer.address }}
+                                                    {% else %}
+                                                        &nbsp;
+                                                    {% endif %}
+                                                </span>
+                                                        <p>
+                                                            <a href="{{ path('yarsha_frontend_employer_detail_by_slug', {'slug':employer.slug}) }}"><i
+                                                                        class="fa fa-briefcase"
+                                                                        aria-hidden="true"></i>
+                                                                &nbsp;{{ count_jobs_by_organization(employer) }}
+                                                                Jobs</a></p>
+                                                        <div class="span3-btm clearfix">
+
+                                                            <div class="col-md-6 col-sm-12 col-xs-6">
+
+                                                                {{ render_follow_button(employer, app.user) }}
+
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-12 col-xs-6">
+                                                                <a href="{{ path('yarsha_frontend_employer_detail_by_slug', {'slug':employer.slug}) }}"
+                                                                   class="apply">
+                                                                    <i class="fa fa-pencil-square-o"
+                                                                       aria-hidden="true"></i>
+                                                                    &nbsp;apply now
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+                        <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

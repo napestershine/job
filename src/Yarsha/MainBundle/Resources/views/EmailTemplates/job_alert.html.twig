@@ -1,0 +1,62 @@
+{% extends "@YarshaMain/EmailTemplates/email_template_layout.html.twig" %}
+
+{% block header_right_image %}
+    <a href="#"><img src="{{ absolute_url(asset('bundles/yarshamain/images/email/2.jpg')) }}"></a>
+{% endblock %}
+
+{% block email_body %}
+
+    <!-- saluation section -->
+    <section style="background:#F2652A; padding: 1%;">
+        <div style="width: 80%; float: left;">
+            <span style="font-weight: 600;">Dear {{ seeker.firstname|title }},</span> jobs you may be interested based on your kantipurjob profile
+        </div>
+        <div style="text-align: right; width: 20%; float: right;">
+            <a href="{{ url('yarsha_job_seeker_profile_detail_view') }}" style="color: #fff;">(Update Profile)</a>
+        </div>
+        <div class="clear"></div>
+    </section>
+
+    <!-- job apply now section -->
+    <section style="background:#fff; padding:1%;padding-top: 0px;padding-bottom: 20px;">
+        {% for job in jobs %}
+            <div class="" style="margin-top: 10px; padding-top:20px; ">
+            <div class="row">
+                <div style="width: 80%; float: left;">
+                    <h3 style="margin-top: 0px; font-size: 15px; color: #1A98D2; font-weight: 600;">{{ job.title }}</h3>
+                    <h4 style="font-weight: 600; font-size: 15px; color: #F2652A;">
+                        <strong>{{ job.organization.name }}</strong>
+                    </h4>
+                    <p style="padding-bottom: 0px;margin-bottom: 0;">{{ job.description|raw }}</p>
+                </div>
+                <div style="width: 20%; float: right;">
+                    <a href="{{ url('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}" style="border:none; color: #fff; padding: 4px 8px; background:#1A98D2; margin-bottom: 20px; width: 100%; text-decoration:none; ">Apply Now</a>
+                    <br>
+                    {% set locations = '' %}
+                    {% for location in job.locations %}
+                        {% set locations = locations ~ location.name ~ ', ' %}
+                    {% endfor %}
+
+                    <div style="color: #1A98D2; font-weight: 600; margin-top:10px;">Location: {{ locations | slice(0, locations | length - 2) }}</div>
+                </div>
+                <div class="clear"></div>
+                <div style="margin-top: 15px; width: 100%;">
+                    <div class="row" style="background: #e3e3e3; padding: 1%;">
+                        <div class="" style="width: 70%; float: left;">Education: {{ job.educationDegree ? job.educationDegree.name : '' }} | Experience: {{ job.minimumExperienceYear }} years | Position: {{ job.numberOfVacancies }}</div>
+                        <div class="" style="width: 30%; float: right;">Deadline: {{ job.deadline|date('M j, Y') }}</div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </section>
+
+    {% include('@YarshaMain/EmailTemplates/profile_detail_section.html.twig') %}
+
+
+{% endblock %}

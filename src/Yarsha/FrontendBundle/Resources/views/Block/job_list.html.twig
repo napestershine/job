@@ -1,0 +1,40 @@
+{#{% if jobs|length %}#}
+    <div class="panel panel-default">
+        <div class="panel-title">{{ settings.title }}</div>
+        <hr>
+        <div class="panel-body">
+            <div class="row">
+                {% for job in jobs %}
+
+                    {#{% if(job.user.organization.path != '') %}#}
+                    {#{% set imgSrc = asset('uploads/employers/')~job.user.organization.path %}#}
+                    {#{% else %}#}
+                    {#{% set imgSrc = asset('bundles/images/avatar5.png') %}#}
+                    {#{% endif %}#}
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
+                                {#<img src="{{ imgSrc }}" width="100px" height="100px">#}
+
+                            </div>
+                            <div class="col-md-9">
+
+                                {#<h3>{{ job.user.organization.name }}</h3>#}
+                                <p>{{ job.title }}</p>
+                                <p>{{ job.deadline|date('F ,m Y') }}</p>
+                                {% if is_granted('ROLE_JOB_SEEKER') %}
+                                    <div><a href="{{ path('yarsha_job_seeker_job_apply',{'id': job.id}) }}">Apply</a>
+                                    </div>
+
+                                {% else %}
+                                    <div><a href="{{ path('yarsha_job_seeker_security_login') }}">Apply</a></div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{#{% endif %}#}

@@ -1,0 +1,389 @@
+{% macro jobDescriptionFooter(job, user,appliedJob) %}
+    <div class="row">
+        <div class="col-md-8 col-sm-8 job-info-det-soc-blk text-left">
+            {% if job.deadline|date('Y-m-d') >= "now"|date('Y-m-d') %}
+                {% if job.settings %}
+                    {% if job.settings.applyOnline == true %}
+                        {% if user %}
+                            {% if 'ROLE_JOB_SEEKER' in user.roles %}
+                                {% if appliedJob %}
+                                    <a><i class="fa fa-envelope" aria-hidden="true"></i> &nbsp;
+                                        Applied
+                                    </a>
+                                {% else %}
+                                    <a href="javascript:void(0)"
+                                       onclick="onlinejobapply('{{ job.slug }}')">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i> &nbsp;
+                                        Apply Online
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            {{ render_login_alert_button('apply') }}
+                        {% endif %}
+                    {% endif %}
+
+                    {% if job.settings.applyEmail == true %}
+                        {% if user %}
+                            {% if 'ROLE_JOB_SEEKER' in user.roles %}
+                                {% if not appliedJob %}
+                                    <a href="javascript:void(0)"
+                                       onclick="jobapplyemail('{{ job.slug }}','{{ job.organization }}','{{ job.title }}')">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;Apply Email</a>
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            {#{{ render_login_alert_button('apply_email') }}#}
+                            <a href="javascript:void(0)"
+                               onclick="jobapplyemail('{{ job.slug }}','{{ job.organization }}','{{ job.title }}')">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;Apply Email</a>
+                        {% endif %}
+                    {% endif %}
+
+
+
+
+
+                {% endif %}
+
+                {% if user %}
+                    {% if 'ROLE_JOB_SEEKER' in user.roles %}
+                        <a href="#" id="shareJobModalButton"
+                           data-job-id="{{ job.id }}">
+                            <i class="fa fa-share-square-o" aria-hidden="true"></i> &nbsp;Suggest
+                            Friend</a>
+                        <a href="{{ path('yarsha_job_seeker_add_to_job_basket', {'slug':job.slug}) }}"><i
+                                    class="fa fa-shopping-basket" aria-hidden="true"></i> &nbsp;Add
+                            to Basket</a>
+                    {% endif %}
+                {% else %}
+                    {{ render_login_alert_button('share_job') }}
+                    {{ render_login_alert_button('add_to_basket') }}
+                {% endif %}
+                {% if job.settings.uploadDocument == true %}
+                    {% if(job.path) %}
+                        {% set file = asset('uploads/jobsfile/'~job.path) %}
+                        <a href="{{ file }}" target="_blank"><i class="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;Download
+                            TOR</a>
+                    {% endif %}
+
+                {% endif %}
+            {% endif %}
+
+            {% if job.settings %}
+                {% if(job.settings.applyPost == true) %}
+                    <span style="margin-top:10px;display: block;color:#23527c;">Postal address: {{ job.postalAddress }}</span>
+                    {#{% set contactEmail = job.organization.contactPersons | first %}#}
+                    {#<a href="mailto:{{ contactEmail.email }}"><i class="fa fa-envelope-o"></i>&nbsp;Apply Email</a>#}
+                {% endif %}
+            {% endif %}
+        </div>
+
+
+        <div class="col-md-4 col-sm-4 job-info-det-soc-blk text-right">
+            <div class="sharethis-inline-share-buttons"></div>
+            {#<div class="share-wrap">#}
+            {#<span class='st_facebook_hcount' displayText='Facebook'></span>#}
+            {#<span class='st_twitter_hcount' displayText='Tweet'></span>#}
+            {#<span class='st_googleplus_hcount' displayText='post'></span>#}
+            {#<span class='st_linkedin_hcount' displayText='post'></span>#}
+            {#</div>#}
+        </div>
+
+    </div>
+{% endmacro %}
+
+{% macro jobDetailFullBanner(organization) %}
+    <div class="col-md-12 job-detail-full-banner-wrap">
+        <div class="banner-wrap img-responsive carousel slide">
+            <div class="carousel-inner">
+                {{ render_org_banners_carousel(organization.id) }}
+            </div>
+        </div>
+
+        <div class="col-md-12 banner-detail-section">
+            <div class="col-md-2 col-sm-2 img-responsive profile-image">
+                <img src="{{ organization_profile_image(organization)| imagine_filter('company_profile_pic_large') }} "
+                     alt="Company logo">
+            </div>
+
+            <div class="col-md-6 col-md-offset-2 org-name"><h4>{{ organization.name }}</h4></div>
+
+            <div class="col-md-4 text-right right-buttons">
+                <div class="row">
+                    <span class="follower-count"> ( {{ count_followers(organization) }} ) Followers </span>
+                    <span>({{ organization.visit }}) Visits</span>&nbsp;&nbsp;
+                    <span class="template-follow-verified">
+                        {{ render_follow_button(organization, app.user, 'btn btn-md btn-info') }}&nbsp;&nbsp;
+                        <button class="btn btn-md btn-success"><i class="fa fa-star" aria-hidden="true">
+                            </i> &nbsp;Verified
+                        </button>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro jobDetailDescriptionTable(job) %}
+    <table>
+        <tbody>
+        {% if(job.organization.isGovermentOrganization == false) %}
+
+            <tr>
+                <th>Jobs Function:</th>
+                <td>{{ job.category ? job.category.title : '' }}</td>
+                <th>Jobs Availability:</th>
+                <td>{{ job.availability|title~' Time' }}</td>
+            </tr>
+
+            <tr>
+                <th>Jobs Level:</th>
+                <td>{{ job.level ? job.level.name : '-' }}</td>
+                <th>Offered Salary:</th>
+                {% set salary = '' %}
+                {% if job.salaryType == 'fixed' %}
+                    {% set salary = job.salary|number_format %}
+                {% elseif job.salaryType == 'negotiable' %}
+                    {% set  salary = 'Negotiable' %}
+                {% elseif job.salaryType == 'range' %}
+                    {% set salary = job.minimumSalary|number_format ~ ' - ' ~ job.maximumSalary|number_format %}
+                {% else %}
+                    {% set salary = 'No salary details' %}
+                {% endif %}
+                <td>{{ salary }} {{ job.salaryType == 'negotiable' ? '': ' / '~ job.salaryPaymentBasis }}</td>
+            </tr>
+            <tr>
+                <th>Jobs Location:</th>
+                <td>
+                    {% for l in job.locations %}
+                        {% if loop.last %}
+                            {% set jobLocation = l %}
+                        {% else %}
+                            {% set jobLocation = l ~ ',' %}
+                        {% endif %}
+                        {{ jobLocation }}
+                    {% else %}
+                        --
+                    {% endfor %}
+                </td>
+                <th>Min. Experience Year:</th>
+                <td>{{ job.minimumExperienceYear?job.minimumExperienceYear~' Years':'Not Required' }} </td>
+            </tr>
+        {% endif %}
+
+        <tr>
+            <th>Education Degree:</th>
+            <td>{{ job.educationDegree ? job.educationDegree.name }}</td>
+            <th>No. of Openings:</th>
+            <td>{{ job.numberOfVacancies }}</td>
+        </tr>
+        <tr>
+            <th>Deadline:</th>
+            <td>{{ job.deadline | date('l, M d, Y') }} <span
+                        class="table-deadline">{{ date_difference(job.deadline | date('Y-m-d')) }}</span>
+            </td>
+            <th>Preferred Gender:</th>
+            <td>{{ job.preferredGender?job.preferredGender|capitalize:'Any' }}</td>
+        </tr>
+        </tbody>
+    </table>
+{% endmacro %}
+
+{% macro jobDetailPartialBanner(organization, showName = false) %}
+
+    <div class="company-info-blk dashboard-bg-color job-detail-new-cover clearfix">
+        <div class="row">
+            <div class="col-md-2 profile-image newpaper-temp-profile-img">
+                <img src="{{ organization_profile_image(organization)| imagine_filter('company_profile_pic_large') }} "
+                     alt="Company logo">
+            </div>
+            <div class="col-md-5 col-sm-6 job-detail-new-cover-ind">
+                {% if showName %}
+                    <h1>
+                        {{ organization.name }}
+                        {% if organization and organization.isGovermentOrganization != true %}
+                            ({{ count_followers(organization) }} Followers/ {{ organization.visit }} Visits )
+                        {% endif %}
+                    </h1>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endmacro %}
+
+{% macro jobDetailFeaturedBanner(organization) %}
+
+    <div class="company-info-blk dashboard-bg-color job-detail-new-cover clearfix featured-job-banner">
+        <div class="row">
+
+            <div class="col-md-12 col-sm-6 job-detail-new-cover-ind">
+                <div class="col-md-2 col-sm-4 profile-image">
+                    <img src="{{ organization_profile_image(organization)| imagine_filter('company_profile_pic_large') }} "
+                         alt="Company logo">
+                </div>
+                <div class="col-md-6 col-md-offset-2 col-sm-offset-4 pull-left-0">
+                    {{ organization.name }}<br>
+                    <span>
+                        {% if organization and organization.isGovermentOrganization != true %}
+                            ({{ count_followers(organization) }} Followers/ {{ organization.visit }} Visits )
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="col-md-4 col-sm-12 text-right">
+                    <div class="row buttons" style="margin-top: 20px;">
+                        <div class="col-md-6 col-xs-6 col-sm-3 pull-right">{{ render_follow_button(organization, app.user, 'btn-sq btn btn-md btn-info') }}</div>
+                        <div class="col-md-6 col-xs-6 col-sm-3 pull-right">
+                            <a href="javascript:void(0);" class="btn-sq btn btn-md btn-success">
+                                <i class="fa fa-star" aria-hidden="true"></i> &nbsp;Verified
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endmacro %}
+
+{% macro aboutCompany(organization) %}
+    <style>
+        .about-company ul li:not(.website) {
+            padding: 10px;
+        }
+
+        .about-company ul li.website {
+            background: #1c98d4 !important;
+            color: #FFF !important;
+            padding: 0;
+        }
+
+        .about-company ul li.website a {
+            display: inline-block;
+            color: #FFF;
+            width: 100%;
+            padding: 10px;
+        }
+    </style>
+    <div class="dashboard-section-dropdown dashboard-bg-color job-detail-blk about-company">
+        <h1 class="show-hide-blk dropdown-h1-title untoggable-title"><i class="fa fa-building-o"
+                                                                        aria-hidden="true"></i> &nbsp;about
+            company</h1>
+        <ul class=" profile-below-blk">
+            <div class="cntc-acc-manager-blk job-detail-company-blk clearfix">
+                <div class="col-md-12 col-sm-12">
+                    <div class="row">
+                        <ul>
+                            <li>
+                                <strong>Industry:</strong>
+                                {{ organization and organization.industry
+                                ? organization.industry.title : '' }}
+                            </li>
+                            <li>
+                                <strong>Ownership:</strong>
+                                {{ organization and  organization.ownershipType ? organization.ownershipType.name: '' }}
+                            </li>
+                            <li>
+                                <strong>Address:</strong>
+                                {{ organization ? organization.address : '' }}
+                            </li>
+
+                            {% set websiteCheck = check_website_path(organization.website) %}
+                            {% if websiteCheck != "" %}
+                                <li class="website">
+                                    {#<strong>Website:</strong>#}
+                                    {{ check_website_path(organization.website) }}
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </ul>
+    </div>
+
+{% endmacro %}
+
+{% macro jobListTemplateDetailPage(title,jobs) %}
+    <style>
+        .posted-jobs-blk-list-blk table tr td, .posted-jobs-blk-list-blk table tr th {
+            width: auto;
+        }
+
+        .fa.fa-newspaper-o {
+            color: #6ec309;
+        }
+
+        .glyphicon.glyphicon-fire {
+            color: #f2652a;
+            font-size: 13px;
+        }
+
+        .fa.fa-check-square-o {
+            color: #1899D3;
+        }
+    </style>
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color job-detail-related-blk clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">{{ title }}</div>
+
+            </div>
+        </div>
+
+        <div class="posted-jobs-blk-list-blk">
+            {% if jobs|length %}
+                <table>
+                    <tbody>
+                    {% for job in jobs %}
+                        <tr>
+                            <th style="width: 40%;">
+                                <a href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}"
+                                   style="font-size:13px;">
+                                    {{ render_job_type_icon(job) }}
+                                    &nbsp;
+                                    {{ job.title }}
+                                    <span class="posted-jobs-blk-list-blk-span">
+                                {{ job.organization ? job.organization.name : '' }}
+                            </span>
+                                </a>
+
+                            </th>
+                            <td style="width:15%; color: #d20808;"><i class="fa fa-circle-o" aria-hidden="true"></i>
+                                {% set jobAvailability = job.availability == 'full' ?
+                                'Full Time' : job.availability == 'part' ?
+                                'Part Time' : job.availability %}
+                                &nbsp;{{ jobAvailability | title }}</td>
+                            <td style="width: 15%;color:#0396d5;">
+                                {% if job.educationDegree is not empty %}
+                                    <i class="fa fa-graduation-cap"></i>&nbsp;
+                                {% endif %}
+                                {{ job.educationDegree ? job.educationDegree | title : '--' }}
+                            </td>
+                            <td style=""><i class="fa fa-clock-o" aria-hidden="true"></i>
+                                &nbsp;{{ job.deadline | date('M d, Y') }}</td>
+                            {% if app.user %}
+                                {% if 'ROLE_EMPLOYER' not in app.user.roles %}
+                                    <td>{{ check_job_applied(job,app.user) }}</td>
+                                {% endif %}
+                            {% else %}
+                                <td class="text-center">
+                                    <a href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}">
+                                        <i class="fa fa-hand-pointer-o"></i>&nbsp;
+                                        Apply Now
+                                    </a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                {{ ys_no_contents('No related jobs.') }}
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}

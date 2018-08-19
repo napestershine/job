@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12"><h2 style="color:#f2652a;"><span class="glyphicon glyphicon-fire"></span>
+                &nbsp;HOT JOBS</h2>
+        </div>
+
+        {% macro headerPart(e) %}
+        <div class="col-md-4 col-sm-6 hot-job-row-blk">
+            <div class="hot-job-sec-blk hot-job-ind-wrap clearfix">
+                <div class="col-md-2 col-sm-2 col-xs-2 hot-job-sec-blk-img-blk">
+                    <img src="{{ organization_profile_image(e)|imagine_filter('thumb_small') }}" height="68" width="108">
+                </div>
+                <div class="col-md-10 col-sm-10 col-xs-9 hot-job-blk-cnt">
+                    <h1>
+                        {% set path = path('yarsha_frontend_employer_detail_by_slug', {'slug':e.slug}) %}
+                        {{ set_total_link_content(path, e.name,45,'color: #1899D3;') }}
+                    </h1>
+                    {% endmacro %}
+
+                    {% macro footerPart() %}
+                </div>
+            </div>
+        </div>
+        {% endmacro %}
+
+        <div>
+
+            {% set totalBlocks = 0 %}
+            {% for k, employer in organizations %}
+
+                {{ _self.headerPart(employer.organization) }}
+
+                {% set count = 0 %}
+                {% for job in employer.jobs %}
+
+                    {% if count > 1 and count % 2 == 0 %}
+                        {% set count = 0 %}
+                        {{ _self.footerPart() }}
+                        {{ _self.headerPart(employer.organization) }}
+                        {% set totalBlocks = totalBlocks + 1 %}
+                    {% endif %}
+
+                    {% set path = path('yarsha_frontend_job_detail_view', {'slug':job.slug}) %}
+                    <span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        {{ set_total_link_content(path,job.title, 35) }}
+                    </span>
+                    {% set count = count + 1 %}
+                {% endfor %}
+
+                {{ _self.footerPart() }}
+                {% set totalBlocks = totalBlocks + 1 %}
+
+            {% endfor %}
+
+            {% if (totalBlocks > 3) %}
+                {% set overFlow = totalBlocks % 3 %}
+                {% set overFlow = overFlow == 0 ? 0 : 3 - overFlow %}
+            {% else %}
+                {% set overFlow = 3 - (totalBlocks % 3) %}
+            {% endif %}
+
+            {% if overFlow > 0 %}
+                {{ render_ads('hot', overFlow) }}
+            {% endif %}
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,146 @@
+<div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix" id="profile_{{ setting.section }}">
+
+    <div class="title">
+        <div class="row posted-jobs-blk">
+            <div class="col-md-9 col-sm-10">General Information</div>
+            <div class="col-md-3 col-sm-2 right">
+                {#<input onclick="window.location.href = '{{ path('yarsha_job_seeker_update_profile') }}' "#}
+                {#value="Update Information" type="submit">#}
+                {% if setting.employer == false %}
+                    <input type="submit" data-toggle="modal"
+                           data-target="#updateGeneralInformation"
+                           data-educationId=""
+                           data-title="Update General Information"
+                           value="General Information">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="posted-jobs-blk-list-blk">
+        <table class="user-info-table-general">
+            <tr>
+                <td style="width:20%;">
+                    <strong>Preferred Locations</strong>
+                </td>
+                <td>
+                    {% set locations = data.preferredLocations %}
+                    {% if locations | length > 0 %}
+                        <ul style="list-style: none;">
+                            <li>
+                                {% for location in locations %}
+                                    {% set location = loop.last == false ? location.name ~ ', ' : location.name %}
+                                    {{ location }}
+                                {% endfor %}
+                            </li>
+                        </ul>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Preferred Categories</strong>
+                </td>
+                <td>
+                    {% set categories = data.preferredCategories %}
+                    {% if categories | length > 0 %}
+                        <ul style="list-style: none;">
+                            <li>
+                                {% for category in categories %}
+                                    {% set category = loop.last  == false ? category.title ~ ', ' : category.title %}
+                                    {{ category }}
+                                {% endfor %}
+                            </li>
+                        </ul>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Preferred Industries</strong>
+                </td>
+                <td>
+                    {% set industries = data.preferredIndustries %}
+                    {% if industries | length > 0 %}
+                        <ul style="list-style: none;">
+                            <li>
+                                {% for industry in industries %}
+                                    {% set industry = loop.last  == false ? industry.title ~ ', ' : industry.title %}
+                                    {{ industry }}
+                                {% endfor %}
+                            </li>
+                        </ul>
+                    {% endif %}
+                </td>
+            </tr>
+            {% set seeker = data %}
+            <tr>
+                <td><strong>Preferred Job Level</strong></td>
+                <td>
+                    {{ seeker.preferredPosition ? seeker.preferredPosition.name : '' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Available For</strong></td>
+                <td>{{ seeker.availableFor|capitalize }} Time</td>
+            </tr>
+            <tr>
+                <td><strong>Years of Experience</strong></td>
+                {% if seeker.hasExperience %}
+                    {% if seeker.noOfYear %}
+                        <td>{{ seeker.noOfYear?seeker.noOfYear~' Years':'None' }}  {{ seeker.noOfMonth?seeker.noOfMonth~' Month':'' }}</td>
+                    {% else %}
+                        <td>{{ seeker.noOfMonth?seeker.noOfMonth~' Month':'None' }}</td>
+                    {% endif %}
+                {% else %}
+                    <td>No experience</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td><strong>Expected Salary</strong></td>
+                <td>
+                    {% set hasMin = false %}
+
+                    {% if seeker.minExpectedSalary %}
+                        {{ seeker.maxExpectedSalary ? '' : 'Starting From ' }}
+                        {{ seeker.minExpectedSalary }}
+                        {% set hasMin = true %}
+                    {% endif %}
+
+                    {% if seeker.maxExpectedSalary %}
+                        {{ hasMin ? ' - ' : 'Upto ' }}
+                        {{ seeker.maxExpectedSalary }}
+                    {% endif %}
+
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Career Summary</strong></td>
+                <td>{{ seeker.objectives?seeker.objectives:'none' }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<div class="modal fade" id="updateGeneralInformation" role="dialog" arial-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" class="close">&times</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="{{ asset('bundles/yarshamain/select2/select2.min.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        $('.select2').select2({});
+    });
+</script>
+

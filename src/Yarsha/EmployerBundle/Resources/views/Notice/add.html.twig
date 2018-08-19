@@ -1,0 +1,27 @@
+{% extends 'YarshaEmployerBundle::employer_layout.html.twig' %}
+{% block content %}
+   <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+    <div class="title">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">Add Notice</div>
+        </div>
+    </div>
+
+    <div class="table-listing-page-wrap">
+        <div class="row">
+            {{ form_start(form) }}
+
+            <div class="col-md-12 col-sm-12">
+                {{ form_widget(form.title) }}
+            </div>
+            <div class="col-md-12 col-sm-12">
+                {{ form_widget(form.description) }}
+            </div>
+            <div class="col-md-12 col-sm-12">
+                {{ form_widget(form) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

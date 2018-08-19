@@ -1,0 +1,221 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Job Detail{% endblock %}
+
+{% block page_description %}{{ job.title|capitalize }}{% endblock %}
+
+{% block action_block %}
+
+    {% set editJobPath = path('yarsha_admin_job_edit', {'id':job.id}) %}
+    {% if organization is defined %}
+        {% set editJobPath = path('yarsha_admin_job_edit', {'id':job.id, 'ref':organization.id}) %}
+    {% endif %}
+    <a href="{{ editJobPath }}" class="btn btn-primary btn-xs">
+        <i class="fa fa-pencil"></i> &nbsp; Edit
+    </a>
+
+    {% set addJobPath = path('yarsha_admin_job_add') %}
+    {% if organization is defined %}
+        {% set addJobPath = path('yarsha_admin_job_add', {'ref':organization.id}) %}
+    {% endif %}
+    <a href="{{ addJobPath }}" class="btn btn-success btn-xs">
+        <i class="fa fa-plus"></i> &nbsp; Post Job
+    </a>
+    <a href="{{ path('yarsha_admin_applicants_list', {'job':job.id, 'organization':job.organization.id}) }}"
+       class="btn btn-warning btn-xs">
+        <i class="fa fa-users"></i> &nbsp; List Applicants
+    </a>
+    <a href="#" class="btn btn-danger btn-xs">
+        <i class="fa fa-times"></i> &nbsp; Delete Job
+    </a>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="col-md-12 form-group info">
+                                <label>Title</label>
+                                <span class="form-control text-bold">{{ job.title }}</span>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="col-md-6 form-group info">
+                                <label>Job Provider</label>
+                                <span class="form-control text-bold">{{ job.organization.name }}</span>
+                            </div>
+
+                            <div class="col-md-6 form-group info">
+                                <label>Job Status</label>
+                                <span class="form-control text-bold">{{ render_job_status(job.status) }}</span>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="col-md-6 form-group info">
+                                <label>Category</label>
+                                <span class="form-control text-bold">{{ job.category ? : 'N/A' }}</span>
+                            </div>
+
+                            <div class="col-md-6 form-group info">
+                                <label>Industry</label>
+                                <span class="form-control text-bold">{{ job.industry ? : 'N/A' }}</span>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="col-md-6 form-group info">
+                                <label>Type</label>
+                                <span class="form-control text-bold">{{ job.type|title }}</span>
+                            </div>
+
+                            <div class="col-md-6 form-group info">
+                                <label>Deadline</label>
+                                <span class="form-control text-bold">{{ job.deadline |date('Y-m-d') }}</span>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Locations</label>
+                                <span class="form-control text-bold">
+                                    {% for location in job.locations %}
+                                        {{ location.name }}, &nbsp;
+                                    {% endfor %}
+                                </span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Job Description</label>
+                                <span class="form-control text-bold">
+                                    {{ job.description ? job.description|raw : 'N/A' }}
+                                </span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Job Specification</label>
+                                <span class="form-control text-bold">
+                                    {{ job.specification ? job.specification|raw : 'N/A' }}
+                                </span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Educational Description</label>
+                                <span class="form-control text-bold">
+                                    {{ job.educationDescription ? job.educationDescription|raw : 'N/A' }}
+                                </span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Specification Requirement</label>
+                                <span class="form-control text-bold">
+                                    {{ job.specificRequirement ? job.specificRequirement|raw : 'N/A' }}
+                                </span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Specific Instruction</label>
+                                <span class="form-control text-bold">
+                                    {{ job.specificInstruction ? job.specificInstruction|raw : 'N/A' }}
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="col-md-12 form-group info">
+                                <label>Vacancy Code</label>
+                                <span class="form-control text-bold">{{ job.vacancyCode ? : '-' }}</span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Positions</label>
+                                <span class="form-control text-bold">{{ job.numberOfVacancies }}</span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Availability</label>
+                                <span class="form-control text-bold">{{ job.availability|title~' Time' }}</span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Preferred Gender</label>
+                                <span class="form-control text-bold">{{ job.preferredGender ?job.preferredGender|title : 'Any' }}</span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Education Degree</label>
+                                <span class="form-control text-bold">{{ job.educationDegree ? job.educationDegree.name : 'Any' }}</span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Year Of Experience</label>
+                                <span class="form-control text-bold">
+                                    Min: {{ job.minimumExperienceYear ? : '0' }} &nbsp; &nbsp;
+                                    Max: {{ job.maximumExperienceYear ? : '0' }}
+                                </span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Salary Type</label>
+                                <span class="form-control text-bold">{{ job.salaryType }}</span>
+                            </div>
+
+                            {% if(job.salaryType == 'range') %}
+                                {% set value = 'Min: '~job.minimumSalary|number_format~' - Max: '~job.maximumSalary|number_format %}
+                                {% set basis = job.salaryPaymentBasis %}
+
+                                {
+                            {% elseif(job.salaryType == 'fixed') %}
+
+                                {% set value = job.salary|number_format %}
+                                {% set basis = job.salaryPaymentBasis %}
+                            {% else %}
+                                {% set value = '-' %}
+                                {% set basis = '' %}
+                            {% endif %}
+
+                            <div class="col-md-12 form-group info">
+                                <label>Salary</label>
+                                <span class="form-control text-bold">
+                                   {{ value }}
+
+
+
+                                    {#{% if job.salaryUnit %}({{ job.salaryUnit.name }}){% endif %} &nbsp; &nbsp;#}
+                                    {#Min: {{ job.minimumSalary ? : '-' }} &nbsp; &nbsp;#}
+                                    {#Max: {{ job.maximumSalary ? : '-' }}#}
+                                </span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Age</label>
+                                <span class="form-control text-bold">
+                                    Min: {{ job.minimumAge ? : '-' }} &nbsp; &nbsp;
+                                    Max: {{ job.maximumAge ? : '-' }}
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="clearfix"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
+{% block script %}
+
+{% endblock %}

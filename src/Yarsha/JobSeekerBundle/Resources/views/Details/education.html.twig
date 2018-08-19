@@ -1,0 +1,42 @@
+{{ form_start(form, {'attr':{'id':'addEducation', 'onsubmit':'return submitEducation(this)','data-id':id}}) }}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{#<input type="hidden" name="gtrack_bundle_companyregistrationbundle_contactperson[companyId]" value="{{ companyId }}">#}
+<div class="clearfix"></div>
+<div class="col-md-6">
+    {{ form_row(form.degree) }}
+</div>
+<div class="col-md-6">
+    {{ form_row(form.degreeName) }}
+</div>
+<div class="col-md-6">
+    {{ form_row(form.year) }}
+</div>
+<div class="col-md-6">
+    {{ form_row(form.board) }}
+</div>
+{#<div class="col-md-6">#}
+    {#{{ form_row(form.markSystem) }}#}
+{#</div>#}
+<div class="col-md-6">
+    {{ form_row(form.percentage) }}
+</div>
+<div class="col-md-6">
+    {{ form_row(form.specification) }}
+</div>
+<div class="col-md-12">
+    {{ form_row(form.institution) }}
+</div>
+<div class="col-md-12">
+    {{ form_row(form.country) }}
+</div>
+<div class="clearfix"></div>
+
+<div class="modal-footer">
+    <input type="submit" class="btn btn-primary" value="SAVE">
+
+    <button type="button" class="btn btn-danger" data-dismiss="modal">
+        CANCEL
+    </button>
+</div>
+{{ form_end(form) }}

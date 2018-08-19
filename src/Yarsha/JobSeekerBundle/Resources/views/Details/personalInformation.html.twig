@@ -1,0 +1,63 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        {#{% form_theme form 'bootstrap_3_layout.html.twig' %}#}
+        {#{{ form_start(form, {'action': path('yarsha_ajax_job_seeker_updateProfile')}) }}#}
+        {% form_theme form 'bootstrap_3_layout.html.twig' %}
+        {{ form_start(form) }}
+
+
+        <div class="row">
+            {% if errorMessage is defined %}
+                <div class="alert text-danger">{{ errorMessage }}</div>
+            {% endif %}
+            <div class="col-md-6">
+                {{ form_row(form.firstName) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.middleName) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.lastName) }}
+            </div>
+
+
+            <div class="col-md-6">
+                {{ form_row(form.contactEmail) }}
+                <div id="emailErrorMessage"></div>
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.gender) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.dob) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.mobile) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.phone) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_row(form.currentAddress) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.permanentAddress) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_row(form.religion) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.maritalStatus) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.nationality) }}
+            </div>
+
+
+        </div>
+        <input type="submit" value="Update Profile" class="btn btn-primary">
+        {{ form_end(form) }}
+    </div>
+</div>

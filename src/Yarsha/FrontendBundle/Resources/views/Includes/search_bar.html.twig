@@ -1,0 +1,34 @@
+<!-- navigation bottom background section -->
+
+{% if(banner) %}
+    {% set bannerImg = asset('uploads/banners/'~banner.path)|imagine_filter('home_banner') %}
+
+{% else %}
+    {% set bannerImg = asset('bundles/yarshafrontend/images/bg.jpg') %}
+{% endif %}
+<section class="navigation-btm-sec" style="background: url({{ bannerImg }}); background-size: cover;">
+    <div class="container">
+        <div class="row">
+            <h2>The best way to find a job.</h2>
+            <div class="col-md-12 ">
+                <div class="filter-wrap clearfix">
+                    <form action="{{ path('yarsha_frontend_jobs_search') }}" method="GET">
+                        <div class="col-md-6 col-sm-6"><input type="text" name="title" placeholder="Search by keyword">
+                        </div>
+                        <div class="col-md-4 col-sm-4">
+                            {{ display_categories(app.request.get('category'), 'Category','category') }}
+                        </div>
+                        <div class="col-md-2 col-sm-2">
+                            <input type="submit" value="Search">
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <h4 class="advanced-search clearfix"><a href="{{ path('yarsha_frontend_jobs_search') }}"> + Advanced
+                        Search </a></h4>
+            </div>
+        </div>
+    </div>
+</section>

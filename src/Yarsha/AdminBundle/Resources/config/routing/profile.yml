@@ -1,0 +1,9 @@
+
+yarsha_admin_profile_show:
+    path: /
+    defaults: { _controller: "FOSUserBundle:Profile:show" }
+    methods: "GET"
+
+yarsha_admin_profile_edit:
+    path: /edit
+    defaults: { _controller: "FOSUserBundle:Profile:edit" }

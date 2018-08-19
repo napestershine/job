@@ -1,0 +1,47 @@
+<div class="dashboard-section-right-cover-img">
+
+    {% if(banner) %}
+        {% set bannerImage = asset("uploads/employers/"~'resize'~banner.path) %}
+    {% else %}
+        {% set bannerImage = asset("images/kantipurjob-cover-foto.jpg") %}
+    {% endif %}
+
+    {% set icon = asset('images/icon.png') %}
+
+    {#<p id="msg"></p>#}
+    <img src="{{ bannerImage }}" id="coverPictureImage">
+
+    <div class="overlay">
+        <a href="#">
+            <form action="#" enctype="multipart/form-data">
+                <input type="file" name="coverPic" style="display: none;" id="coverPicUpload"/>
+                <p onclick="document.getElementById('coverPicUpload').click();">
+                    <i class="fa fa-camera"></i> Change Cover (Size:1268X350)
+
+                </p>
+            </form>
+        </a></div>
+</div>
+
+<div class="dashboard-cover-btm-sec clearfix">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3 col-sm-3 dashboard-cover-btm-sec-blk blk1">
+                <h3>Profile Visits</h3>
+                <span>{{ organization ? organization.visit : 0 }}</span>
+            </div>
+            <div class="col-md-3 col-sm-3 dashboard-cover-btm-sec-blk blk2">
+                <h3>Total Jobs Posted</h3>
+                <a href="{{ path('yarsha_employer_job_list') }}"> <span>{{ jobcount }}</span></a>
+            </div>
+            <div class="col-md-3 col-sm-3 dashboard-cover-btm-sec-blk blk3">
+                <h3>Followers</h3>
+                <a href="{{ path('yarsha_employer_followers') }}"><span>{{ follower }}</span></a>
+            </div>
+            <div class="col-md-3 col-sm-3 dashboard-cover-btm-sec-blk blk4">
+                <h3>Application Received</h3>
+                <a href="{{ path('yarsha_employer_job_list') }}"><span>{{ count }}</span></a>
+            </div>
+        </div>
+    </div>
+</div>

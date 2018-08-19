@@ -1,0 +1,212 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Posted Jobs{% endblock %}
+{% block page_description %}{{ organization is defined ? organization.name|capitalize : 'List' }}{% endblock %}
+
+{% block action_block %}
+
+    {{ render_show_filter_button() }}
+
+    {% set addJobPath = path('yarsha_admin_job_add') %}
+    {% if organization is defined %}
+        {% set addJobPath = path('yarsha_admin_job_add', {'ref':organization.id}) %}
+    {% endif %}
+    <a href="{{ addJobPath }}" class="btn btn-success btn-xs">
+        <i class="fa fa-plus"></i> Post New Job
+    </a>
+
+{% endblock %}
+
+{% block filter %}
+
+    <div class="row">
+
+        <div class="form-group-sm col-md-3">
+            <label for="function">Category</label>
+            {{ render_category_select_by_function(app.request.get('function')) }}
+        </div>
+
+        <div class="form-group-sm col-md-3">
+            <label for="industry">Industry</label>
+            {{ render_category_select_by_industry(app.request.get('industry')) }}
+        </div>
+
+        <div class="form-group-sm col-md-3">
+            <label for="location">Location</label>
+            {{ render_location_select(app.request.get('location')) }}
+        </div>
+
+        <div class="form-group-sm col-md-3">
+            <label for="status">Status</label>
+            {{ render_job_status_select(app.request.get('status')) }}
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="form-group-sm col-md-6">
+            <label for="title">Title</label>
+            <input type="text" name="title" value="{{ app.request.get('title') }}" placeholder="title"
+                   class="form-control">
+        </div>
+
+        <div class="form-group-sm col-md-3">
+            <label for="type">Type</label>
+            {{ render_job_type_select(app.request.get('type')) }}
+        </div>
+
+        {% if organization is not defined %}
+            <div class="form-group-sm col-md-3">
+                <label for="organization">Employer</label>
+                {{ render_organization_select(app.request.get('organization')) }}
+            </div>
+        {% endif %}
+
+        <div class="clearfix"></div>
+
+    </div>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="panel panel-default">
+
+                {% if jobs|length %}
+
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>SNo</th>
+                            <th>Job Title</th>
+                            <th>Categories</th>
+                            <th>Company</th>
+                            <th>Short Description</th>
+                            <th>Location</th>
+                            <th>Deadline</th>
+                            <th>Created</th>
+                            <th>Updated</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set count = pager_first_index(jobs) %}
+                        {% for job in jobs %}
+                            {% set jobDetailLink = path('yarsha_admin_job_detail' , {'id':job.id}) %}
+                            {% if organization is defined %}
+                                {% set jobDetailLink = path('yarsha_admin_job_detail' , {'id':job.id, 'ref':organization.id}) %}
+                            {% endif %}
+                            <tr id="tr_{{ job.id }}">
+                                <td>{{ count }}</td>
+                                <td>
+                                    <a href="{{ jobDetailLink }}">{{ job.title }}</a>
+                                    <br>
+                                    ({{ job.type }})
+                                </td>
+                                <td>{{ job.category ? job.category.title  : '-'}}</td>
+                                <td>
+                                    <a href="{{ path('yarsha_admin_organization_detail', {'id':job.organization.id}) }}">
+                                        {{ job.organization.name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    Position: {{ job.numberOfVacancies }} <br>
+                                    Minimum Exp: {{ job.minimumExperienceYear }} <br>
+                                    Education: {{ job.educationDegree ? job.educationDegree.name : 'Any' }} <br>
+                                    Availability: {{ job.availability }} <br>
+                                </td>
+                                <td>
+                                    {% for location in job.locations %}
+                                        {{ location.name }} <br>
+                                    {% else %}
+                                        -
+                                    {% endfor %}
+                                </td>
+                                <td>{{ job.deadline|date('Y-m-d') }}</td>
+                                <td>{{ job.createdDate|date('Y-m-d H:i:s') }}</td>
+                                <td>{{ job.updatedDate|date('Y-m-d H:i:s') }}</td>
+                                <td>{{ render_job_status(job.status) }}</td>
+                                <td>
+                                    {% set editJobPath = path('yarsha_admin_job_edit', {'id':job.id}) %}
+                                    {% if organization is defined %}
+                                        {% set editJobPath = path('yarsha_admin_job_edit', {'id':job.id, 'ref':organization.id}) %}
+                                    {% endif %}
+
+                                    <a href="{{ editJobPath }}" class="btn btn-xs btn-primary">
+                                        <i class="fa fa-pencil"></i> Edit
+                                    </a>
+
+                                    <a href="{{ jobDetailLink }}" class="btn btn-xs btn-info">
+                                        <i class="fa fa-eye"></i> View
+                                    </a>
+
+                                    {% set param = organization is defined ? {'organization':organization.id,'job':job.id} : {'job':job.id} %}
+                                    <a href="{{ path('yarsha_admin_applicants_list',param) }}" class="btn btn-xs btn-success">
+                                        <i class="fa fa-users"></i> Applicants
+                                    </a>
+
+                                    {% set status = job.status %}
+                                    <a href="{{ path('yarsha_admin_approve_job', {'id':job.id}) }}"
+                                       class="btn btn-xs btn-warning" title="Change Status">
+                                        <i class="fa fa-exchange"></i> {{ change_job_status(status) }}
+                                    </a>
+
+                                    <a href="#" class="btn btn-xs btn-danger"
+                                       onclick="deleteJob({{ job.id }})"
+                                    >
+                                        <i class="fa fa-times"></i> Delete
+                                    </a>
+
+                                </td>
+                            </tr>
+                            {% set count = count + 1 %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% if jobs.haveToPaginate %}
+                        {{ pagerfanta(jobs, 'twitter_bootstrap3') }}
+                    {% endif %}
+
+                {% else %}
+                    {{ ys_no_contents('No posted jobs found') }}
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock content %}
+
+
+{% block scripts %}
+
+    <script type="text/javascript">
+        function deleteJob(id) {
+            var trId = 'tr_' + id;
+            var result = confirm('Are you sure ?');
+            if (result) {
+                var remoteUrl = "{{ url('yarsha_admin_job_delete', {'id': 'USERID'}) }}";
+                var remoteUrl = remoteUrl.replace('USERID', id);
+
+                $.ajax({
+                    type: 'post',
+
+                    url: remoteUrl,
+                    success: function (res) {
+                        if (res && res.status == 'success') {
+                            $("#" + trId).remove();
+                        }
+                    }
+                });
+            }
+        }
+
+
+    </script>
+{% endblock %}

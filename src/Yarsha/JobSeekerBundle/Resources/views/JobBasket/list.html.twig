@@ -1,0 +1,47 @@
+{% extends "@YarshaJobSeeker/job_seeker_layout.html.twig" %}
+
+
+{% block content %}
+
+    {% if message != '' %}
+        <h1>{{ message }}</h1>
+    {% endif %}
+
+    {% for message in app.session.flashbag.get('messages') %}
+        {{ bootstrap_alert_message(message, 'info') | raw }}
+    {% endfor %}
+
+    {% for error in app.session.flashbag.get('errors') %}
+        {{ bootstrap_alert_message(error, 'warning') | raw }}
+    {% endfor %}
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">JOB SEEKER | Job Basket</div>
+        {% if jobsBucket | length %}
+        <div class="posted-jobs-blk-list-blk">
+
+            <table class="">
+                <tr>
+                    <td>Job name</td>
+                    <td>Actions</td>
+                </tr>
+                    {% for jb in jobsBucket %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('yarsha_frontend_job_detail_view', {'slug':jb.job.slug}) }}">{{ jb.job.title }}</a>
+                            </td>
+                            <td>
+                                <a href="{{ path('yarsha_job_seeker_remove_job_from_job_bucket', {'id':jb.id}) }}">
+                                    <button class="btn btn-danger btn-xs">Remove</button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+            </table>
+            {% else %}
+                {{ ys_no_contents('No jobs in basket.') }}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends '@YarshaFrontend/frontend_layout.html.twig' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ asset('bundles/yarshafrontend/css/error-page-style.css') }}">
+{% endblock %}
+{% block content %}
+    <div class="wrap">
+        <!-----start-content--------->
+        <div class="content">
+            <!-----start-logo--------->
+            <div class="logo">
+                <span>{{ status_code }} {{ status_text }}</span>
+                {#<h1><a href="#"><img src="images/error-page-logo.png"/></a></h1>#}
+                {#<span><img src="images/signal.png"/>Oops! The Page you requested was not found!</span>#}
+            </div>
+            <!-----end-logo--------->
+            <!-----start-search-bar-section--------->
+            <div class="buttom">
+                <div class="seach_bar">
+                    <p>
+                        you can go to
+                        <span>
+                            <a href="{{ path('yarsha_frontend_homepage') }}">home</a>
+                        </span> page
+                    </p>
+                    <!-----start-sear-box--------->
+                    {#<div class="search_box">#}
+                    {#<form>#}
+                    {#<input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}"><input type="submit" value="">#}
+                    {#</form>#}
+                    {#</div>#}
+                </div>
+            </div>
+            <!-----end-sear-bar--------->
+        </div>
+    </div>
+{% endblock %}

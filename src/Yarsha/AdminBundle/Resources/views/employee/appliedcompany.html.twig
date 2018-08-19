@@ -1,0 +1,92 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Applied Companies{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>
+    </button>
+
+
+{% endblock %}
+
+{% block filter %}
+    <div class="row">
+        <div class="form-group-sm col-md-3">
+            <label for="name">Job Title</label>
+            <input type="text" name="job_title" value="{{ app.request.get('name') }}" placeholder="Job Title"
+                   class="form-control">
+        </div>
+        <div class="form-group-sm col-md-3">
+            <label for="name">Company Name</label>
+            <input type="text" name="company_name" value="{{ app.request.get('company_name') }}"
+                   placeholder="Company Name"
+                   class="form-control">
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>SN</th>
+                        <th>Company Name</th>
+                        <th>Jobs Title</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if appliedcompanies is not empty %}
+                        {% for appliedcompany in appliedcompanies %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>
+                                    <a href="{{ path('yarsha_admin_organization_detail', {'id':appliedcompany.job.organization.id}) }}">
+                                        {{ appliedcompany.job.organization.name }}
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <a href="{{ path('yarsha_admin_job_detail', {'id':appliedcompany.job.id}) }}">
+                                        {{ appliedcompany.job.title }}
+                                    </a>
+                                </td>
+                                <td>{{ appliedcompany.type }}</td>
+                                <td>{{ appliedcompany.status }}</td>
+
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No Company exist.</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+
+                </table>
+
+                {% if appliedcompanies.haveToPaginate %}
+                    {{ pagerfanta(appliedcompanies, 'twitter_bootstrap3') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+            {% block scripts %}
+
+            {% endblock %}

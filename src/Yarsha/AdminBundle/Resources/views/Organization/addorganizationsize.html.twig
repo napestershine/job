@@ -1,0 +1,31 @@
+{% extends "YarshaAdminBundle::admin_layout.html.twig" %}
+{% block page_title %} Organization Size {% endblock %}
+{% block page_description %} {{ updating  ? 'Update' : 'Add' }} {% endblock %}
+{% block content %}
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            {{ form_row(form.name) }}
+                        </div>
+
+                        <div class="col-md-12">
+                            {{ form_row(form.description) }}
+                        </div>
+
+                        <div class="col-md-2">
+                            <input type="submit" value="Add" class="btn btn-primary">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

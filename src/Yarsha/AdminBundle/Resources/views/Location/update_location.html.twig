@@ -1,0 +1,17 @@
+{{ form_start(form,{'attr': {'onsubmit':'return submitUpdateLocationForm(this)', 'data-id':id}}) }}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+<div class="col-xs-12">
+    <div class="col-md-12 ">
+        {{ form_row(form.name) }}
+    </div>
+</div>
+
+<div class="modal-footer">
+    <input type="submit" class="btn btn-primary add-button" value="SAVE">
+
+    <button type="button" class="btn btn-danger add-button" data-dismiss="modal">
+        CANCEL
+    </button>
+</div>
+{{ form_end(form) }}

@@ -1,0 +1,15 @@
+{% extends 'YarshaJobSeekerBundle::job_seeker_layout.html.twig' %}
+
+{% block content %}
+
+    <div class="notice-msg-wrap">
+        <div class="row">
+            <div class="col-md-1 col-sm-1"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></div>
+            <div class="col-md-11 col-sm-11">
+                <h1>{{ notice.title }}</h1>
+                <p>{{ notice.description | raw }}</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

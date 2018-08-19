@@ -1,0 +1,119 @@
+{% extends "@YarshaMain/Emails/email_layout.html.twig" %}
+
+{#{% block header_right_image %}#}
+    {#<a href="#"><img src="{{ absolute_url(asset('bundles/yarshamain/images/email/2.jpg')) }}"></a>#}
+{#{% endblock %}#}
+
+{% block salutation %}
+    Dear <strong>{{ seeker.firstname|title }}</strong>,
+{% endblock %}
+
+{% block email_body %}
+
+    <style>
+        .highlight span {
+            background: #f2652a;
+            padding: 2px 10px;
+            color: #FFF;
+        }
+
+        .click-here {
+            text-decoration: none;
+            color: #1a98d3;
+        }
+
+        .click-here:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        li {
+            padding: 0;
+            color: #666
+        }
+
+        p {
+            text-align: justify;
+        }
+
+        /*.confirm-button{*/
+        /*padding: 20px 0;*/
+        /*display: block;*/
+        /*float: left;*/
+        /*background: #f2652a;*/
+        /*width: 100%;*/
+        /*text-align: center;*/
+        /*color: #FFF;*/
+        /*text-decoration: none;*/
+        /*}*/
+        .confirm-button:hover {
+            background: #ef4600;
+        }
+    </style>
+
+    <p style="margin-top: 0">Thank you for associating with us. Your profile has been successfully created at
+        kantipurjob.com.
+        To complete your registration please click in the link given below.</p>
+
+    {#<p style="text-align:center; text-transform: uppercase">#}
+    {#PLEASE <a href="{{ confirmation_link }}" class="click-here">CLICK HERE</a> TO CONFIRM YOUR REGISTRATION#}
+    {#</p>#}
+
+
+
+    <table style="background:#e3e3e3">
+        <tr style="border-bottom: 1px solid #FFF;">
+            <td style="background: #ccc; text-align: right; width: 50%">Username</td>
+            <td style="">{{ username }}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #FFF;">
+            <td style="background: #ccc; text-align: right; ">Email Address</td>
+            <td style="">{{ email }}</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding:0; margin:0; vertical-align: top; width:100%; background: #FFF">
+                <a href="{{ confirmation_link }}" class="confirm-button" style="padding: 20px 0;
+            display: block;
+            float: left;
+            background: #f2652a;
+            width: 100%;
+            text-align: center;
+            color: #FFF;
+            text-decoration: none;">
+                    CLICK HERE TO CONFIRM YOUR REGISTRATION
+                </a>
+            </td>
+        </tr>
+    </table>
+
+    <p style="padding-left: 20px; border-left: 4px solid #CCC;">
+        After the confirmation, please login at kantipurjob.com to proceed. We recommend you to update
+        your Profile Picture, Personal Information, General Information, Education Information, Professional
+        Information, Trainings, and Other Information to make employers find you for relevant job
+        opportunities.
+    </p>
+
+    <p style="text-decoration: underline; margin-bottom: 1px; text-transform: uppercase">Why verify the email
+        address?</p>
+    <ul>
+        <li>Confirms you are willing to register at kantipurjob.com with this email address</li>
+        <li>Adds credibility to your profile</li>
+    </ul>
+
+    <p>You will receive the job alerts (if you choose to receive) in above mentioned email address.</p>
+
+    <p style="font-size: 12px; line-height:12px; border-top: 1px solid #1a98d2; padding-top: 10px">
+        <strong>Note:</strong> If you have received this account verification email in error, it’s likely that another
+        user entered
+
+        your email address while creating an account. You do not need to take any further action, simply ignore
+
+        the email. The account won’t be verified.
+    </p>
+
+
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Agency Job List{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>&nbsp; Filter
+    </button>
+
+{% endblock %}
+
+{% block filter %}
+    <div class="row">
+        <div class="form-group-sm col-md-3">
+            <label for="name">Job Title</label>
+            <input type="text" name="job_title" value="{{ app.request.get('job_title') }}" placeholder="Job Title"
+                   class="form-control">
+        </div>
+
+        <div class="form-group-sm col-md-3">
+            <label for="name">Agency</label><br>
+           {{ render_agency(app.request.get('agency')) }}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                {% if jobs is not empty %}
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Job Reference</th>
+                            <th>Job Title</th>
+                            <th>Job Type</th>
+                            <th>Job Location</th>
+                            <th>Agency</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% set count = pager_first_index(jobs) %}
+                        {% for job in jobs %}
+                            <tr>
+                                <td>{{ count }}</td>
+                                <td>{{ job.jobReference }}</td>
+                                <td>{{ job.jobTitle }} </td>
+                                <td>{{ job.jobType }}</td>
+                                <td>{{ job.jobLocation }}</td>
+                                <td>{{ job.agency.name }}</td>
+                                <td>
+                                    <button
+                                            class="btn btn-xs btn-danger deleteAgencyJob"
+                                            data-job="{{ job.id }}"
+                                    >
+                                        <i class="fa fa-times"></i> Delete
+                                    </button>
+                                    <a href="#"  class="btn btn-xs btn-primary" >Convert to Job</a>
+                                </td>
+                            </tr>
+                            {% set count = count + 1 %}
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                {% else %}
+                    {{ ys_no_contents('No job found.') }}
+                {% endif %}
+
+                {% if jobs.haveToPaginate %}
+                    {{ pagerfanta(jobs, 'twitter_bootstrap3') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+    $('.deleteAgencyJob').on('click', function (e) {
+
+        if (confirm('Are you sure to delete?')) {
+            var obj = $(this),
+                id = obj.data('job');
+
+            $.ajax({
+                type: 'post',
+                url: '{{ path('yarsha_admin_ajax_agency_job_delete') }}',
+                data: {id: id},
+                success: function (res) {
+                    window.location = window.location;
+                },
+                error: function (xhr) {
+                    alert('Something went wrong. Please try again later.');
+                },
+                complete: function (xhr) {
+                }
+            });
+        }
+    });
+
+</script>
+
+{% endblock %}

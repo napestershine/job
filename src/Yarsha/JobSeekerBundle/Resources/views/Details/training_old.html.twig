@@ -1,0 +1,78 @@
+{#{{ form_start(form, {'attr':{'onsubmit':'return submitTraining(this)'}}) }}#}
+{{ form_start(form, {'attr':{'action':path('yarsha_job_seeker_ajax_add_training')}}) }}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+<div id="addTrainingWrapper" data-prototype="{{ _self.renderTrainingForm(form.trainings.vars.prototype) | e('html_attr') }}">
+    {% for training in form.trainings %}
+        {{ _self.renderTrainingForm(training) }}
+    {% endfor %}
+</div>
+
+<div class="clearfix"></div>
+
+<div class="modal-footer">
+    <a href="#" class="btn btn-primary addTrainingBtn pull-left">Add More</a>
+    <input type="submit" class="btn btn-primary" value="SAVE">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">
+        CANCEL
+    </button>
+</div>
+
+{{ form_end(form) }}
+
+{% macro renderTrainingForm(form) %}
+    <div class="row training-form col-md-6 col-md-offset-0">
+        <div class="col-md-6">{{ form_row(form.title) }}</div>
+        <div class="col-md-5">{{ form_row(form.institution) }}</div>
+        <div class="col-md-1">
+            <a href="#" class="btn btn-danger btn-xs delete-training-btn">Delete</a>
+        </div>
+        <div class="col-md-2">{{ form_row(form.year) }}</div>
+        <div class="col-md-2">{{ form_row(form.duration) }}</div>
+        <div class="col-md-7">{{ form_row(form.address) }}</div>
+        <div class="col-md-11">{{ form_row(form.objective) }}</div>
+    </div>
+{% endmacro %}
+
+<style>
+    .modal-dialog{
+        width: 80%;
+    }
+    .delete-training-btn{
+        margin-top: 25px;
+        margin-left:-10px;
+    }
+    .training-form{
+        margin-right: -5px;
+        margin-left: 10px;
+        width: 49%;
+    }
+</style>
+
+<script>
+    var trainingLength = "{{ form.trainings | length }}";
+    var trainingWrapper = $("#addTrainingWrapper");
+    var newWidget = trainingWrapper.attr('data-prototype');
+    if(trainingLength <= 0){
+        newWidget = newWidget.replace(/__name__/g, trainingLength);
+        trainingWrapper.append(newWidget);
+        trainingLength++;
+    }
+    $('.addTrainingBtn').on('click', function(e){
+        e.preventDefault();
+        newWidget = trainingWrapper.attr('data-prototype');
+        newWidget = newWidget.replace(/__name__/g,trainingLength);
+        trainingWrapper.append(newWidget);
+        trainingLength++;
+        $('.delete-training-btn').on('click', function(e){
+            e.preventDefault();
+            $(this).parent().parent().remove();
+        });
+    });
+
+    $('.delete-training-btn').on('click', function(e){
+        e.preventDefault();
+        $(this).parent().parent().remove();
+    });
+
+</script>

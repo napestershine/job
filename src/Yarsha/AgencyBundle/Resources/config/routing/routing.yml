@@ -1,0 +1,28 @@
+yarsha_agency_security_login:
+    path: /agency/login
+    defaults: { _controller: "FOSUserBundle:Security:login" }
+
+yarsha_agency_security:
+    resource: "@YarshaAgencyBundle/Resources/config/routing/security.yml"
+    prefix: /agency
+
+yarsha_agency_profile:
+    resource: "@YarshaAgencyBundle/Resources/config/routing/profile.yml"
+    prefix: /agency/profile
+
+yarsha_agency_register:
+    resource: "@YarshaAgencyBundle/Resources/config/routing/registration.yml"
+    prefix: /agency/register
+
+yarsha_agency_resetting:
+    resource: "@YarshaAgencyBundle/Resources/config/routing/resetting.yml"
+    prefix: /agency/resetting
+
+yarsha_agency_change_password:
+    resource: "@YarshaAgencyBundle/Resources/config/routing/change_password.yml"
+    prefix: /agency/profile
+
+yarsha_agency_controllers:
+    resource: "@YarshaAgencyBundle/Controller"
+    type: annotation
+

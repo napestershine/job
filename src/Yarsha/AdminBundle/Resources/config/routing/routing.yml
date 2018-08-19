@@ -1,0 +1,23 @@
+yarsha_admin_security:
+    resource: "@YarshaAdminBundle/Resources/config/routing/security.yml"
+    prefix: /admin
+
+yarsha_admin_profile:
+    resource: "@YarshaAdminBundle/Resources/config/routing/profile.yml"
+    prefix: /admin/profile
+
+yarsha_admin_register:
+    resource: "@YarshaAdminBundle/Resources/config/routing/registration.yml"
+    prefix: /admin/register
+
+yarsha_admin_resetting:
+    resource: "@YarshaAdminBundle/Resources/config/routing/resetting.yml"
+    prefix: /admin/resetting
+
+yarsha_admin_change_password:
+    resource: "@YarshaAdminBundle/Resources/config/routing/change_password.yml"
+    prefix: /admin/profile
+
+yarsha_admin_controllers:
+    resource: "@YarshaAdminBundle/Controller"
+    type: annotation

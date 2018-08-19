@@ -1,0 +1,68 @@
+<div class="government-job-wrap">
+        <h2 class="jobs-category-right-blk-title"><i class="fa fa-asterisk" aria-hidden="true"></i>
+            &nbsp;Hiring Companies
+        </h2>
+        <div class="govtJobs sidebar-common jobs-category-right-blk">
+            <div id="governmentJobsCarousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner" role="listbox">
+                    {{ _self.companyList(hiringOrgs) }}
+
+                </div>
+            </div>
+            {% if hiringOrgs | length > 12 %}
+                {#<a href="{{ path('yarsha_frontend_government_jobs_search') }}" class="btn btn-view-more no-border">View#}
+                {#All ({{ count_government_jobs() }})</a>#}
+                <nav>
+                    <ul class="control-box pager">
+                        <li>
+                            <a data-slide="prev" href="#governmentJobsCarousel">
+                                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-slide="next" href="#governmentJobsCarousel">
+                                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+
+
+
+{% macro companyList(hiringOrgs) %}
+    {% set orgCount = hiringOrgs | length %}
+    {% set totalSlides = (orgCount / 12 ) | round(0,'floor') %}
+    {% for i in range(0,totalSlides) %}
+        <div class="item {% if loop.index == 1 %} active {% endif %}">
+
+            <div class="row no-pad">
+                {% for org in hiringOrgs | slice(12*i, 12) %}
+                    <div class="col-sm-3 col-md-4 col-xs-3 carousel-pad">
+
+                        <a href="{{ path('yarsha_frontend_employer_detail_by_slug', {'slug':org.slug}) }}">
+                            {% if org.path == '' %}
+                                {% set imgSrc = asset('images/company_logo_default.jpg') %}
+                            {% else %}
+                                {% set imgSrc = asset('uploads/employers/'~ org.path) %}
+                            {% endif %}
+                            <img src="{{ imgSrc|imagine_filter('thumb_medium') }}"
+                                 alt="{{ org.name }}" title="{{ org.name }}">
+
+                        </a>
+
+                    </div>
+                {% endfor %}
+
+
+            </div>
+
+
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+
+

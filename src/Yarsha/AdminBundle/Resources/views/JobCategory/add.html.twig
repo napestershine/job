@@ -1,0 +1,23 @@
+{% extends '@YarshaAdmin/admin_layout.html.twig' %}
+
+{% block page_title %} Job Category{% endblock %}
+
+{% block page_description %}
+    {% if category is defined %} {{ category.title }} {% else %} New{% endif %}
+{% endblock %}
+
+{% block content %}
+
+
+    {% form_theme form "bootstrap_3_layout.html.twig" %}
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+
+{% endblock %}

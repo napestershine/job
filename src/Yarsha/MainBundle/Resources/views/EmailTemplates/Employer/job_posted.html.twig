@@ -1,0 +1,34 @@
+{% extends "@YarshaMain/EmailTemplates/email_notification_layout.html.twig" %}
+
+{% block email_body %}
+
+<p>Dear {{ employer.organization.name }} ABC</p>
+
+<p>Thank you for posting the job requirement. Kantipurjob will review the requirement details, approve
+
+    and then publish the vacancy. You will be notified via email once the approval is completed. If you have
+
+    any queries or concerns, please contact your account manager which is given in your dashboard.
+</p>
+
+<p>Following are the job requirement details.</p>
+
+<ul>
+    <li>Job Title: {{ job.title }}</li>
+    <li>Category: {{ job.category ? job.category.title : '' }}</li>
+    <li>Job Level: {{ job.level }}</li>
+    <li>Education: {{ job.educationDegree }}</li>
+    <li>Experience: {{ job.minimumExperienceYear }}</li>
+    <li>Deadline: {{ job.deadline | date('Y-m-d') }}</li>
+    <li>No of Positions: {{ job.numberOfVacancies }}</li>
+</ul>
+
+<p>
+    Thank you <br>
+    Kantipurjob.com Team <br>
+    +977 1 4435619, 4435620 <br>
+</p>
+
+<p style="font-size: 80%">This is a Computer generated email. Please do not reply to this message.</p>
+
+{% endblock %}

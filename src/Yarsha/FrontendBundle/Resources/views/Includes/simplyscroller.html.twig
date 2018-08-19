@@ -1,0 +1,24 @@
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="{{ asset('bundles/yarshafrontend/js/jquery.simplyscroll.js') }}"></script>
+
+<script type="text/javascript">
+    (function ($) {
+        $(function () {
+            $("#scroller").simplyScroll();
+        });
+    })(jQuery);
+
+    function showMoreServiceContent(e, id) {
+        e.preventDefault();
+        $this = $('#' + id);
+        services = $('.service-less-content').addClass('hidden-service');
+        $this.removeClass('hidden-service');
+    }
+
+    function hideDetails(e, id) {
+        e.preventDefault();
+        services = $('.service-less-content').removeClass('hidden-service');
+        $('#' + id).addClass('hidden-service');
+    }
+
+</script>

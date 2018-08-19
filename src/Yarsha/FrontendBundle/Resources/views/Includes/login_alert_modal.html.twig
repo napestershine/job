@@ -1,0 +1,73 @@
+<style>
+    .content-message a {
+        text-decoration: underline;
+        color: #0396d5;
+    }
+
+    .logo {
+        padding-bottom: 20px;
+        text-align: center;
+    }
+
+    .logo img {
+        width: auto;
+    }
+
+    .forgot-left {
+        float: left;
+    }
+
+    .terms-right {
+        float: right;
+    }
+
+    .login-register ul li a {
+        padding-left: 43px;
+        padding-right: 42px;
+    }
+
+</style>
+
+<div class="modal fade" id="login-alert-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     style="margin-top:100px;"
+>
+    <div class="modal-dialog " role="document">
+        <div class="modal-content modal-sm" style="border-radius: 6px;margin:auto;">
+
+            <div class="modal-body" style="padding-top:25px">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        style="position: absolute; top:5px; right:10px">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                {% set img = asset('images/logo.png') %}
+                <div class="logo">
+                    <img src="{{ img }}">
+                </div>
+
+
+                {#<blockquote style="float: left; border-left:none">#}
+                {#<i class="fa fa-exclamation-triangle fa-4x text-warning"></i> &nbsp; &nbsp;#}
+                {#</blockquote>#}
+
+                <div class="messageBody alert disabled alert-success text-center">
+
+                    <p class="content-message"></p>
+
+                </div>
+                <div class="login-register">
+                    <ul class="nav nav-tabs login-alert-pop-up">
+
+                    </ul>
+                </div>
+
+
+                <div class="clearfix"></div>
+                {#<div class="modal-footer">#}
+
+                {#</div>#}
+
+            </div>
+        </div>
+    </div>
+</div>

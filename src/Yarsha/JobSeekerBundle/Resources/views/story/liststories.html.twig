@@ -1,0 +1,61 @@
+{% extends '@YarshaJobSeeker/job_seeker_layout.html.twig' %}
+
+{% block page_title %} List Stories {% endblock %}
+
+{% block content %}
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+
+        <div class="title">Your Story | List</div>
+        <div class="posted-jobs-blk-list-blk">
+            {% if stories | length %}
+            <table>
+                <tr>
+                    <td>SN</td>
+                    <td>Title</td>
+                    <td>Company</td>
+                    <td>Status</td>
+                    <td>Actions</td>
+                </tr>
+                {% for story in stories %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ story.title }}</td>
+                        <td>{{ story.company }}</td>
+                        <td>{{ story.status == 1 ? "Published" : "Draft" }}</td>
+                        <td>
+                            {#<a href="#" data-story-id="{{ story.id }}" onclick="showStoryModal(this)">#}
+                                {#<button class="btn btn-success">#}
+                                    {#<i class="fa fa-eye"></i>#}
+                                {#</button>#}
+                            {#</a>#}
+                            <a href="{{ path('yarsha_job_seeker_update_story', {'id':story.id}) }}">
+                                <button class="btn btn-info">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </a>
+                            <a href="{{ path('yarsha_job_seeker_delete_story', {'id':story.id}) }}">
+                                <button class="btn btn-danger">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+                {{ ys_no_contents('You have not posted any stories.') }}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+//        function showStoryModal(obj){
+//            id = $(obj).data('story-id');
+//
+//        }
+    </script>
+{% endblock %}

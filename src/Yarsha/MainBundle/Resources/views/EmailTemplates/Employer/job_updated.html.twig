@@ -1,0 +1,32 @@
+{% extends "@YarshaMain/EmailTemplates/email_notification_layout.html.twig" %}
+
+{% block email_body %}
+<p>Dear {{ employer.organization.name }},</p>
+
+<p>
+    Since, you have updated job "{{ job.title }}". This job is temporarily disabled. You will be notified
+    via email as soon as this job is approved by admin. Please wait for admin approval.If you have
+    any queries or concerns, please contact your account manager which is given in your dashboard.
+</p>
+
+<p>Following are the job details.</p>
+
+<ul>
+    <li>Job Title: {{ job.title }}</li>
+    <li>Category: {{ job.category ? job.category.title : '' }}</li>
+    <li>Job Level: {{ job.level }}</li>
+    <li>Education: {{ job.educationDegree }}</li>
+    <li>Experience: {{ job.minimumExperienceYear }}</li>
+    <li>Deadline: {{ job.deadline | date('Y-m-d') }}</li>
+    <li>No of Positions: {{ job.numberOfVacancies }}</li>
+</ul>
+
+<p>
+    Thank you <br>
+    Kantipurjob.com Team <br>
+    +977 1 4435619, 4435620 <br>
+</p>
+
+<p style="font-size: 80%">This is a Computer generated email. Please do not reply to this message.</p>
+
+{% endblock %}

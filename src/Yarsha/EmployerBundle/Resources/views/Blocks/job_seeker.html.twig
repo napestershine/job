@@ -1,0 +1,116 @@
+<div class="follower-tab dashboard-bg-color">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Follower</a></li>
+        {#<li><a data-toggle="tab" href="#menu1">recommended</a></li>#}
+        {#<li><a data-toggle="tab" href="#menu2">Job appliers</a></li>#}
+
+    </ul>
+    <div class="tab-content">
+        <div id="home" class="fade in active">
+            <div class="row">
+                {% set count = 0 %}
+                {% for follower in followers %}
+                    {% if(count < 6) %}
+                        {{ render_employer_follower(follower) }}
+                    {% endif %}
+                    {% set count = count + 1 %}
+                {% endfor %}
+            </div>
+            {% if followers|length > 6 %}
+                <div style="text-align: center;"><a href="{{ path('yarsha_employer_followers') }}"
+                                                    class="btn btn-primary">More
+                        Followers >></a></div>
+            {% endif %}
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <div class="row">
+                <div class="col-md-3 col-sm-3 follower-tab-blk">
+                    <img src="images/dash-icon1.jpg">
+                    <h1>david warner</h1>
+                    <h3>Sr. Web Developer</h3>
+                    <span>4yrs Experience</span>
+                </div>
+                <div class="col-md-3 col-sm-3 follower-tab-blk">
+                    <img src="images/dash-icon.jpg">
+                    <h1>david warner</h1>
+                    <h3>Sr. Web Developer</h3>
+                    <span>4yrs Experience</span>
+                </div>
+                <div class="col-md-3 col-sm-3 follower-tab-blk">
+                    <img src="images/dash-icon1.jpg">
+                    <h1>david warner</h1>
+                    <h3>Sr. Web Developer</h3>
+                    <span>4yrs Experience</span>
+                </div>
+                <div class="col-md-3 col-sm-3 follower-tab-blk">
+                    <img src="images/dash-icon.jpg">
+                    <h1>david warner</h1>
+                    <h3>Sr. Web Developer</h3>
+                    <span>4yrs Experience</span>
+                </div>
+                <div class="col-md-3 col-sm-3 follower-tab-blk">
+                    <img src="images/dash-icon1.jpg">
+                    <h1>david warner</h1>
+                    <h3>Sr. Web Developer</h3>
+                    <span>4yrs Experience</span>
+                </div>
+                <div class="col-md-3 col-sm-3 follower-tab-blk">
+                    <img src="images/dash-icon.jpg">
+                    <h1>david warner</h1>
+                    <h3>Sr. Web Developer</h3>
+                    <span>4yrs Experience</span>
+                </div>
+                <div class="col-md-3 col-sm-3 follower-tab-blk">
+                    <img src="images/dash-icon1.jpg">
+                    <h1>david warner</h1>
+                    <h3>Sr. Web Developer</h3>
+                    <span>4yrs Experience</span>
+                </div>
+                <div class="col-md-3 col-sm-3 follower-tab-blk">
+                    <img src="images/dash-icon.jpg">
+                    <h1>david warner</h1>
+                    <h3>Sr. Web Developer</h3>
+                    <span>4yrs Experience</span>
+                </div>
+            </div>
+        </div>
+        <div id="menu2" class="tab-pane fade">
+            <div class="row">
+
+                {% set count = 0 %}
+                {% for applicant in applicants %}
+
+                    {% if(count < 18) %}
+                        {% if(applicant.employee.path != '') %}
+                            {% set imgSrc = asset('uploads/seekers/')~applicant.employee.path %}
+                        {% else %}
+                            {% set imgSrc = asset('images/20170226125105.png') %}
+                        {% endif %}
+                        <div class="col-md-2 col-sm-2 follower-tab-blk">
+                            <a href="{{ path('yarsha_employer_job_applicants_details',{'jobId': applicant.job.id,'id': applicant.employee.id}) }}"><img
+                                        src="{{ imgSrc }}"></a>
+                            <a href="{{ path('yarsha_employer_job_applicants_details',{'jobId': applicant.job.id,'id': applicant.employee.id}) }}">View
+                                More</a>
+
+                            {#<h1>{{ applicant.employee.firstName }} {{ applicant.employee.middleName }} {{ applicant.employee.lastName }}</h1>#}
+                            {#<h3>{{ applicant.job.title }}</h3>#}
+                            {#<span>{{ applicant.employee.noOfYear }}yr {{ applicant.employee.noOfMonth }}#}
+                            {#Month Experience</span>#}
+                            {#{% if(applicant.employee.curriculumVitaePath) %}#}
+                            {#<a target="_blank"#}
+                            {#href="{{ asset('/uploads/attachments/')~applicant.employee.curriculumVitaePath }}">Preview#}
+                            {#CV</a>#}
+                            {#{% endif %}#}
+                        </div>
+                    {% endif %}
+                    {% set count = count + 1 %}
+                {% endfor %}
+
+            </div>
+            <a href="{{ path('yarsha_employer_appliers') }}">More Appliers >></a>
+        </div>
+
+    </div>
+
+
+</div>

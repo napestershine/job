@@ -1,0 +1,99 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Testimonials{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>
+    </button>
+
+    {#<a href="#" class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i> Export</a>#}
+
+    <a href="{{ path('yarsha_admin_testimonial_create') }}" class="btn btn-info btn-xs">
+        <i class="fa fa-plus"></i> Add Testimonial
+    </a>
+
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="panel panel-default">
+
+                {% if testimonials | length %}
+                    <table class="table table-bordered table-striped table-hover">
+                        <tr>
+                            <th>S.N</th>
+                            <th>File</th>
+                            <th>Title</th>
+                            <th>Company</th>
+                            <th>Action</th>
+                        </tr>
+
+                        {% set count = pager_first_index(testimonials) %}
+                        {% for testimonial in testimonials %}
+                            <tr id="">
+                                <td>{{ count }}</td>
+                                <td><img src="{{ asset('uploads/testimonials/' ~ testimonial.path) }}"
+                                         width="100px"/></td>
+                                <td>{{ testimonial.title }}</td>
+                                <td>{{ testimonial.company }}</td>
+                                <td>
+                                    <a href="#" onclick="viewTestimonial(this)"
+                                       data-testimonial-id="{{ testimonial.id }}"
+                                       data-toggle="modal" data-target="myModal" class="btn btn-info btn-sm">
+                                        <i class="fa fa-eye"></i> View
+                                    </a>
+                                    <a href="{{ path('yarsha_admin_testimonial_update', {'id':testimonial.id}) }}"
+                                       class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>Edit</a>
+                                    <a href="{{ path('yarsha_admin_testimonial_delete', {'id':testimonial.id}) }}"
+                                       class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>Delete</a>
+                                </td>
+                            </tr>
+                            {% set count = count + 1 %}
+                        {% endfor %}
+
+                    </table>
+                {% else %}
+                    {{ ys_no_contents("No testimonials added yet.") }}
+                {% endif %}
+
+                {% if testimonials.haveToPaginate %}
+                    {{ pagerfanta(testimonials, 'twitter_bootstrap3') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+        function viewTestimonial(obj) {
+            tId = $(obj).data('testimonial-id');
+            url = "{{ path('yarsha_article_ajax_view', {'id':'TESTIMONIAL_ID'}) }}"
+            url = url.replace('TESTIMONIAL_ID', tId)
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function (data) {
+                    if (data.success) {
+                        $("#myModalLabel").html('View Testimonial');
+                        $('#myModal').find('.modal-body').html(data.testimonialdata)
+                    }
+                },
+                error: function () {
+                    console.log('error')
+                }
+            });
+            $("#myModal").modal('toggle');
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Advertisements{% endblock %}
+{% block page_description %}List{% endblock %}
+{% block action_block %}
+    {{ render_show_filter_button() }}
+    <button class="btn btn-xs btn-primary" data-toggle="collapse" data-target="#addAdvertisementWrapper">
+        <i class="fa fa-plus"></i> Add New Advertisement
+    </button>
+{% endblock %}
+
+{% block filter %}
+    <div class="row">
+        <div class="col-md-3 form-group">
+            <label for="section">Section</label>
+            {{ render_ad_section_select(app.request.get('section')) }}
+        </div>
+        <div class="col-md-3 form-group">
+            <label for="status">Status</label>
+            {{ render_ad_status_select(app.request.get('status')) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+
+    <div class="col-md-12 collapse {{ gotError is defined and gotError == true ? 'in' : '' }}" id="addAdvertisementWrapper">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {% form_theme form "bootstrap_3_layout.html.twig" %}
+                {{ form_start(form) }}
+                {{ form_row(form.section) }}
+                {{ form_row(form.caption) }}
+                {{ form_row(form.file) }}
+                {{ form_row(form.status) }}
+                <div>
+                    <input type="submit" class="btn btn-xs btn-success" value="SAVE">
+                    <input type="reset" class="btn btn-xs btn-danger" value="CANCEL">
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {% if advertisements|length %}
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>SNo</th>
+                            <th>Image</th>
+                            <th>Caption</th>
+                            <th>Section</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set count = pager_first_index(advertisements) %}
+                        {% for ad in advertisements %}
+                            <tr>
+                                <td>{{ count }}</td>
+                                <td>
+                                    <img src="{{ asset('uploads/advertisements/'~ad.path)|imagine_filter('ad_listing') }}"
+                                         alt="{{ ad.caption }}">
+                                </td>
+                                <td>{{ ad.caption }}</td>
+                                <td>{{ ad.section }}</td>
+                                <td class="form-group-sm">
+                                    {% set statusArr = {'1':'Active','0':'Inactive' } %}
+                                    <select name="status" class="changeStatus form-control" data-id="{{ ad.id }}" data-old="{{ ad.status }}">
+                                        <option value="1" {{ ad.status ? 'selected="selected"' }}>Active</option>
+                                        <option value="0" {{ ad.status == false ? 'selected="selected"' }}>Inactive</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button class="btn btn-xs btn-danger deleteAd" data-id="{{ ad.id }}">
+                                        <i class="fa fa-times"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            {% set count = count + 1 %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% if advertisements.haveToPaginate %}
+                        {{ pagerfanta(advertisements, 'twitter_bootstrap3') }}
+                    {% endif %}
+
+                {% else %}
+                    {{ ys_no_contents('No advertisements added.') }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $('.changeStatus').on('change', function(){
+            var self = $(this),
+                value = self.val(),
+                ad = self.data('id'),
+                old = self.data('old') ? '1' : '0'
+            ;
+
+            if( confirm('Are you sure to change status?') ){
+                self.attr('disabled', 'disabled');
+                $.ajax({
+                    type: 'post',
+                    url: '{{ path('yarsha_admin_ajax_advertisement_change_status') }}',
+                    data: {id:ad, value:value},
+                    success: function(res){
+                        alert('Status changed successfully.');
+                    },
+                    error: function(xhr){
+                        self.val(old);
+                        alert('Something went wrong. Please try again later.');
+                    },
+                    complete: function(xhr){
+                        self.removeAttr('disabled');
+                    }
+                });
+            }else{
+                self.val(old);
+            }
+        });
+        $('.deleteAd').on('click', function(){
+            var self = $(this),
+                    ad = self.data('id')
+                    ;
+
+
+
+            if( confirm('Are you sure to delete Advertisement?') ){
+                var url = '{{ path('yarsha_admin_ajax_advertisement_delete', {'id':'ADVERT_ID'}) }}';
+                url = url.replace(/ADVERT_ID/g, ad );
+                self.attr('disabled', 'disabled');
+                $.ajax({
+                    type: 'post',
+                    url: url,
+                    success: function(res){  },
+                    error: function(xhr){ },
+                    complete: function(xhr){
+                        window.location = window.location;
+                    }
+                });
+            }else{
+                self.val(old);
+            }
+        });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,277 @@
+{% extends "YarshaFrontendBundle::frontend_layout.html.twig" %}
+
+{% block content_title %} Job Search {% endblock %}
+{% block styles %}
+    <style>
+        .btnSubmit{
+            border: none;
+            background: #0396d5;
+            color: #fff;
+            padding: 4px 8px !important;
+            border-radius: 2px;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        @media (max-width: 991px){
+            .cv-search-blk li input[type="submit"] {
+                padding: 6px;
+                margin: 8px 1px;
+            }
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <section class="dashboard-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-12 dashboard-section-left">
+
+                    <div class="dashboard-section-dropdown dashboard-bg-color advanced-jov-search-sec">
+                        <h1 class="show-hide-blk dropdown-h1-title">advanced search job</h1>
+                        <ul class=" cv-search-blk">
+                            <li>
+                                <form action="" method="GET" id="job-search-form">
+                                    {{ render_organization_select(app.request.get('organization'), '') }}
+                                    {{ display_categories_by_section(app.request.get('category'), '','category','Jobs By Function','Jobs Category') }}
+                                    {{ display_categories_by_section(app.request.get('industry'), '','industry','Jobs By Industry','Jobs Industry') }}
+                                    {{ display_job_levels(app.request.get('level'), '') }}
+                                    {{ display_job_description_types(app.request.get('type'), '') }}
+                                    {{ display_job_availability_types(app.request.get('availability'), '') }}
+                                    {{ display_education_degrees(app.request.get('education'), '') }}
+                                    {{ display_job_locations(app.request.get('location'), '') }}
+                                    <input type="text" placeholder="Job title" name="title"
+                                           value="{{ app.request.get('title') }}"
+                                           id="title">
+
+                                    <div class="clearfix">
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-4 search-left-blk">
+                                                <input name="" value="Search" type="submit">
+                                                {#<button type="submit" class="btnSubmit">Search</button>#}
+                                            </div>
+                                            <div class="col-md-8 col-sm-8">
+                                                {#<input name="" value="Reset" type="submit">#}
+                                                <a href="{{ path('yarsha_frontend_jobs_search') }}" class="btnSubmit">Reset</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {{ sonata_block_render({'type':'yarsha.block.super_employer.job.frontend'}, {'limit':3,'additionalClass':'searchjob-super-employer-block'}) }}
+                    {% set template = 'YarshaFrontendBundle:Includes:topemployersblock.html.twig' %}
+                    {{ sonata_block_render({"type":"yarsha.block.top_employer.job.frontend"},{'template':template,'additionalClass':'searchjob-top-employer-block'}) }}
+
+
+                </div>
+
+
+                <div class="col-md-9 col-sm-12 dashboard-section-right">
+
+                    {#<div class="search-job-filter-wrap">#}
+                    {#<div class="clearfix">#}
+                    {#<div class="row">#}
+                    {#<div class="col-md-2 col-sm-2">Filtered Results: 0</div>#}
+                    {#<div class="col-md-10 col-sm-10">#}
+                    {#<ul class="filtered-job-search-listing">#}
+                    {#</ul>#}
+                    {#</div>#}
+                    {#</div>#}
+                    {#</div>#}
+                    {#</div>#}
+                    <div class="search-job-filter-wrap">
+                        <div class="clearfix">
+                            <div class="row">
+                                <div class="col-md-10 col-sm-10 filter-result">Results:
+
+                                    {{ app.request.get('organization')?render_organization_name(app.request.get('organization')):'' }}
+                                    {{ app.request.get('category')?render_category_name(app.request.get('category')):'' }}
+                                    {{ app.request.get('industry')?render_category_name(app.request.get('industry')):'' }}
+                                    {{ app.request.get('level')?render_job_level(app.request.get('level')):'' }}
+                                    {% if(app.request.get('type')) %}
+                                        <a class="btn btn-sm btn-primary">{{ app.request.get('type')|capitalize }}</a>
+                                    {% endif %}
+
+                                    {% if(app.request.get('availability')) %}
+                                        <a class="btn btn-sm btn-primary">{{ app.request.get('availability')|capitalize }}</a>
+                                    {% endif %}
+                                    {{ app.request.get('education')?render_degree_name(app.request.get('education')):'' }}
+                                    {{ app.request.get('location')?render_location_name(app.request.get('location')):'' }}
+
+                                    {% if(app.request.get('title')) %}
+                                        <a class="btn btn-sm btn-primary"> {{ app.request.get('title') }}</a>
+                                    {% endif %}
+
+                                </div>
+                                <div class="col-md-2 col-sm-2 filter-result">
+                                    {{ jobs|length~' results found.' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if(jobs|length > 0) %}
+                        {% set count = 1 %}
+                        {% for job in jobs %}
+                            <div class="company-info-blk dashboard-bg-color search-job-page new-job-search-blk clearfix">
+
+
+                                <div class="clearfix job-list-search-cnt">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-10 col-sm-10 job-search-desc-blk">
+                                                    <div class="job-image pull-left">
+                                                        {% if job.organization.path == '' %}
+                                                            {% set imgSrc = asset('images/company_logo_default.jpg') %}
+                                                        {% else %}
+                                                            {% set imgSrc = asset('uploads/employers/'~ job.organization.path) %}
+                                                        {% endif %}
+                                                        <img src="{{ imgSrc|imagine_filter('thumb_medium') }}"
+                                                             alt="Company Logo">
+                                                    </div>
+                                                    <h2>
+                                                        <a target="_blank"
+                                                           href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}">
+                                                            {{ job.title }}
+                                                        </a>
+                                                    </h2>
+                                                <span>{{ job.organization.name }}
+                                                    | {{ job.organization.address ? job.organization.address : '' }}
+                                                </span>
+                                                    {% set jdCount = job.description | length %}
+                                                    {% if jdCount >= 250 %}
+                                                        <p>{{ set_total_content(job.description, 250) | raw }}...</p>
+                                                    {% else %}
+                                                        <p>{{ set_total_content(job.description, 250) | raw }}</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-md-2 edit-job-search-btn clearfix">
+                                                    <a target="_blank"
+                                                       href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}"
+                                                       class="btn btn-default search-view-btn">View Details</a>
+
+                                                    <a href="#" id="suggestToFriendJobModalButton-{{ count }}"
+                                                       data-toggle="modal"
+                                                       data-target="#shareJobModal"
+                                                       data-job-id="{{ job.id }}"
+                                                       data-job-detail="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}"
+                                                       class="btn btn-default search-view-suggest">
+                                                        Suggest Friend
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                        <div class="col-md-12 job-list-search-cnt-btm-bar">
+                                            <div class="job-search-btm-bar-bg">
+                                                <div class="row">
+                                                    <div class="col-md-9">
+                                                        {% if job.organization.categoryType == 'super' %}
+                                                            <i class="fa fa-bookmark" aria-hidden="true"></i>
+                                                        {% elseif job.type == 'hot' %}
+                                                            <span class="glyphicon glyphicon-fire"></span>
+                                                        {% elseif job.type == 'newspaper' %}
+                                                            <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                                                        {% elseif job.type == 'featured' %}
+                                                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                                        {% else %}
+                                                            <i class="fa fa-history" aria-hidden="true"></i>
+                                                        {% endif %} &nbsp;
+
+                                                        Education: {{ job.educationDegree }} | Experience:
+                                                        {% set year =  job.minimumExperienceYear < 2 ? 'Year':'Years' %}
+                                                        &nbsp;{{ job.minimumExperienceYear ~' '~ year }} |
+                                                        Positions: {{ job.numberOfVacancies }}
+                                                    </div>
+                                                    <div class="col-md-3 right">
+                                                        {% set days_left =  date_difference(job.deadline|date('Y-m-d')) %}
+                                                        Deadline: {{ days_left != "Expired" ? days_left:"Expired" }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% set count = count + 1 %}
+                        {% endfor %}
+
+                        {% if jobs.haveToPaginate %}
+                            {{ pagerfanta(jobs, 'twitter_bootstrap3') }}
+                        {% endif %}
+                    {% else %}
+                        <div class="company-info-blk dashboard-bg-color search-job-page new-job-search-blk clearfix">
+                            {{ ys_no_contents('No jobs Found.') }}
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </section>
+    {% include 'YarshaFrontendBundle:Includes:suggesttofriendmodal.html.twig' %}
+{% endblock %}
+
+{% block scripts %}
+
+    <script>
+
+        //        $(document).ready(function(){
+        //
+        //            var inputs = $('#job-search-form input');
+        //            var selects = $('#job-search-form select');
+        //
+        //            inputs.on('keyup', function(e){
+        //                var input = $(this);
+        //                var inputName = input.attr('name');
+        //                var inputValue = input.val();
+        //                var isValueNull = inputValue == '' ? true : false;
+        //                console.log(inputValue, isValueNull);
+        //                appendSearchText(inputName, inputValue, isValueNull);
+        //            });
+        //
+        //            selects.on('change', function(e){
+        //                var select = $(this);
+        //
+        //                var selectName = select.attr('name');
+        //                var selectedValue = select.val();
+        //                var selectedValueName = $('select[name='+selectName+'] option:selected').text();
+        //                var isBlank = selectedValue == '' ? true : false;
+        //
+        //                appendSearchText(selectName, selectedValueName, isBlank);
+        //            });
+        //
+        //            inputs.trigger('keyup');
+        //            selects.trigger('change');
+        //
+        //        });
+
+        function appendSearchText(id, text, isValueNull) {
+            var filterListings = $('ul.filtered-job-search-listing');
+            var listObj = filterListings.find('li#' + id);
+
+            if (isValueNull === true) {
+                return listObj.length > 0 ? listObj.remove() : '';
+            }
+
+            if (listObj.length > 0) {
+                listObj.text(text);
+            } else {
+                var list = '<li id="' + id + '"><a href="#">' + text + '</a></li>';
+
+                filterListings.append(list);
+            }
+
+
+        }
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,83 @@
+{% macro jobSeekerJobEmailActionOld(seeker,message,jobs) %}
+
+<!-- saluation section -->
+<section style="background:#F2652A; padding: 1%;">
+    <div style="width: 80%; float: left;">
+        <span style="font-weight: 600;">Dear {{ seeker.firstname|title }},</span>
+        {{ message }}
+    </div>
+    <div style="text-align: right; width: 20%; float: right;">
+        <a href="{{ url('yarsha_job_seeker_profile_detail_view') }}" style="color: #fff;">(Update Profile)</a>
+    </div>
+    <div class="clear"></div>
+</section>
+
+<!-- job apply now section -->
+<section style="background:#fff; padding:1%;padding-top: 0px;padding-bottom: 20px;">
+    {% for job in jobs %}
+        <div class="" style="margin-top: 10px; padding-top:20px; ">
+            <div class="row">
+                <div style="width: 80%; float: left;">
+                    <h3 style="margin-top: 0px; font-size: 15px; color: #1A98D2; font-weight: 600;">{{ job.title }}</h3>
+                    <h4 style="font-weight: 600; font-size: 15px; color: #F2652A;">{{ job.organization.name }}</h4>
+                    <p style="padding-bottom: 0px;margin-bottom: 0;">{{ job.description|raw }}</p>
+                </div>
+                <div style="width: 20%; float: right;">
+                    <a href="{{ url('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}" style="border:none; color: #fff; padding: 4px 8px; background:#1A98D2; margin-bottom: 20px; width: 100%; text-decoration:none; ">Apply Now</a>
+                    <br>
+                    {% set locations = '' %}
+                    {% for location in job.locations %}
+                        {% set locations = locations ~ location.name ~ ', ' %}
+                    {% endfor %}
+
+                    <div style="color: #1A98D2; font-weight: 600; margin-top:10px;">Location: {{ locations | slice(0, locations | length - 2) }}</div>
+                </div>
+                <div class="clear"></div>
+                <div style="margin-top: 15px; width: 100%;">
+                    <div class="row" style="background: #e3e3e3; padding: 1%;">
+                        <div class="" style="width: 70%; float: left;">Education: {{ job.educationDegree ? job.educationDegree.name : '' }} | Experience: {{ job.minimumExperienceYear }} years | Position: {{ job.numberOfVacancies }}</div>
+                        <div class="" style="width: 30%; float: right;">Deadline: {{ job.deadline|date('M j, Y') }}</div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+</section>
+
+{% endmacro %}
+
+
+{% macro  jobSeekerJobEmailAction(seeker,message,jobs) %}
+    <table style="background: #fff;color: #404040;">
+        <tbody>
+        {% for job in jobs %}
+        <tr style="width: 97%; padding: 10px; display: block; padding-top: 20px;">
+            <td style="width: 10%;">
+                <img src="{{ organization_profile_image(job.organization)| imagine_filter('thumb_mini') }} " alt="Company logo">
+            </td>
+            <td style="width: 70%; padding-left: 10px; padding-top: 0px;">
+                <h1 style="margin-bottom: 0px; font-size: 13px; text-transform: uppercase; display: block; margin-top:-7px; ">
+                    {{ job.title }}
+                </h1>
+                <span style="font-size: 13px;">
+                    {{ job.organization  ~ ' | ' ~ job.organization.address }}
+                </span>
+                <p style="margin-top: 3px; font-size: 12px; margin-bottom: 0px;">
+                    {{ set_total_content(job.description, 150) | raw }}
+                </p>
+            </td>
+            <td style="width: 20%; border-left: 1px #e3e3e3 solid;padding:0px!important;padding-left: 10px!important;">
+                <a href="{{ url('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}" class="update-anchor" style="padding: 0px!important;">
+                    View Detail
+                </a>
+                <h2 style="color: #990000; font-size: 10px; font-weight: normal;">
+                    {{ job.deadline|date('M j, Y') }}
+                </h2>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

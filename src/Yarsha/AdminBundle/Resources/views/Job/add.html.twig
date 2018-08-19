@@ -1,0 +1,255 @@
+{% extends 'YarshaAdminBundle::admin_layout.html.twig' %}
+
+{% block styles %}
+    <style>
+        .hidden-form-field {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block page_title %} Job {% endblock %}
+
+{% block page_description %} {{ isUpdating ? "Edit" : "Create" }} {% endblock %}
+
+{% block content %}
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    {{ form_start(form) }}
+
+                    <div class="col-md-12 col-sm-12">
+                        {{ form_row(form.title) }}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.organization) }}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.type) }}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.availability) }}
+                    </div>
+
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.minimumExperienceYear) }}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.maximumExperienceYear) }}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.numberOfVacancies) }}
+                    </div>
+
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.vacancyCode) }}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.deadline) }}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.preferredGender) }}
+                    </div>
+
+                    <div class="col-md-12 col-sm-12 cked">
+                        {{ form_row(form.specification) }}
+                    </div>
+
+                    <div class="col-md-12 col-sm-12 cked">
+                        {{ form_row(form.description) }}
+                    </div>
+                    <div class="col-md-12 col-sm-12 cked">
+                        {{ form_row(form.specificRequirement) }}
+                    </div>
+                    <div class="col-md-12 col-sm-12 cked">
+                        {{ form_row(form.educationDescription) }}
+                    </div>
+
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.salaryType) }}
+                    </div>
+                    <div class="col-md-8 salary-section-wrap">
+                        <div class="col-md-3 col-sm-2 payment-basis hidden-form-field">
+                            {{ form_row(form.salaryPaymentBasis) }}
+                        </div>
+                        <div class="col-md-9 col-sm-6 job-salary hidden-form-field">
+                            {{ form_row(form.salary) }}
+                        </div>
+                        <div class="col-md-9 job-salary-range hidden-form-field">
+                            <div class="col-md-6 col-sm-6">
+                                {{ form_row(form.minimumSalary) }}
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                {{ form_row(form.maximumSalary) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.minimumAge) }}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.maximumAge) }}
+                    </div>
+
+
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.category) }}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.level) }}
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        {{ form_row(form.educationDegree) }}
+                    </div>
+
+                    <div class="col-md-6 col-sm-6">
+                        {{ form_row(form.locations) }}
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        {{ form_row(form.onlineLink) }}
+                    </div>
+
+                    <div class="col-md-12 col-sm-12">
+                        {{ form_label(form.settings) }}
+                        <div class="col-md-12 col-sm-12">{{ form_row(form.settings.applyOnline) }}</div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-3 col-sm-3">
+                            {{ form_row(form.settings.applyEmail) }}
+                        </div>
+                        <div class="col-md-9 col-sm-9">
+                            <br>
+                            <span class="contact-email hidden-form-field" id="organizationContactEmail"></span>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-3 col-sm-3">
+                            {{ form_row(form.settings.applyPost) }}
+                        </div>
+                        <div class="col-md-9 col-sm-9">
+                            <div class="postal-address hidden-form-field">{{ form_row(form.postalAddress) }}</div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-3 col-sm-3">
+                            {{ form_row(form.settings.uploadDocument) }}
+                        </div>
+                        <div class="col-md-9 col-sm-9">
+                            <div class="doc hidden-form-field">{{ form_row(form.file) }}</div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </div>
+
+                    <div class="col-md-2 col-sm-2">
+                        <input type="submit" value="Save">
+                    </div>
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $('.select2').select2({});
+        $('.js-datepicker').attr('type', 'text').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+
+        var offeredSalaryType = $('.jobs-salary-type');
+
+        offeredSalaryType.on('change', function () {
+            var selectedVal = $(this).val();
+            var salarySectionWrap = $('.salary-section-wrap');
+
+            salarySectionWrap.removeClass('hidden-form-field')
+            salarySection = $('.job-salary');
+            salaryRange = $('.job-salary-range');
+            paymentBasis = $('.payment-basis');
+
+            if (selectedVal == 'fixed' || selectedVal == 'range') {
+                paymentBasis.removeClass('hidden-form-field');
+            }
+
+            if (selectedVal == 'fixed') {
+                salarySection.removeClass('hidden-form-field');
+                salaryRange.addClass('hidden-form-field');
+            } else if (selectedVal == 'range') {
+                salarySection.addClass('hidden-form-field');
+                salaryRange.removeClass('hidden-form-field');
+
+            } else {
+                salarySectionWrap.addClass('hidden-form-field')
+            }
+        });
+
+        offeredSalaryType.trigger('change');
+
+
+        var applyJobEmail = $('.apply-job-email');
+        var applyJobPost = $('.apply-job-post');
+        var uploadDoc = $('.uploadDoc');
+
+        applyJobEmail.on('change', function () {
+            var contactEmailObj = $('.contact-email');
+
+            var orgId = $('#yarsha_jobsbundle_job_organization').val();
+
+            url = "{{ path('yarsha_ajax_admin_get_organization_contact_person_email', {'id':'ORG_ID'}) }}";
+            url = url.replace('ORG_ID', orgId);
+            $.ajax({
+                url: url,
+                success: function (data) {
+                    if (data.success) {
+                        $('#organizationContactEmail').html('<strong>Email: </strong>' + data.contactEmail);
+                    } else {
+                        $('#organizationContactEmail').html(data.message);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+
+            ( $(this).is(':checked') )
+                    ? contactEmailObj.removeClass('hidden-form-field')
+                    : contactEmailObj.addClass('hidden-form-field');
+        });
+
+        applyJobEmail.trigger('change');
+
+        applyJobPost.on('change', function () {
+            var postalAddress = $('.postal-address');
+
+            ( $(this).is(':checked') )
+                    ? postalAddress.removeClass('hidden-form-field')
+                    : postalAddress.addClass('hidden-form-field');
+        });
+
+        applyJobPost.trigger('change');
+
+        uploadDoc.on('change', function () {
+            var doc = $('.doc');
+
+            ( $(this).is(':checked') )
+                    ? doc.removeClass('hidden-form-field')
+                    : doc.addClass('hidden-form-field');
+        });
+
+        uploadDoc.trigger('change');
+
+
+    </script>
+{% endblock %}

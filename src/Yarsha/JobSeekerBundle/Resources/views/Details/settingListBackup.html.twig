@@ -1,0 +1,140 @@
+{% extends "@YarshaJobSeeker/job_seeker_layout.html.twig" %}
+{% block content %}
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+
+
+        <div class="title">
+            <div class="row">
+                <div class="col-md-10 col-sm-10">JOB SEEKER | Setting</div>
+                {% if settings|length == '' %}
+                    <div class="col-md-2 col-sm-2 right">
+                        <input type="submit" href="" data-toggle="modal"
+                               data-target="#addSetting"
+                               data-settingId=""
+                               data-title="Add Setting"
+                               value="+ Add Setting">
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <table class="table">
+            <tr>
+                <th>#</th>
+                <th>Travel For Job</th>
+                <th>Have License</th>
+                <th>License Of</th>
+                <th>Willing To Relocation</th>
+                <th>Have Vehicle</th>
+                <th>Vehicle Type</th>
+                <th>Profile Searchable</th>
+                <th>Profile Confidential</th>
+                <th>Job Alert</th>
+                <th>Facebook Alert</th>
+                <th>Action</th>
+            </tr>
+            {% if settings | length %}
+                {% for setting in settings %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ setting.travelForJob == true ? 'Yes':'No' }}</td>
+                        <td>{{ setting.haveLicense == true ? 'Yes':'No' }}</td>
+                        <td>{{ setting.haveLicenseOf }}</td>
+                        <td>{{ setting.willingToRelocation == true ? 'Yes':'No' }}</td>
+                        <td>{{ setting.haveVehicle == true ? 'Yes':'No' }}</td>
+                        <td>{{ setting.vehicleType }}</td>
+                        <td>{{ setting.profileSearchable == true ? 'Yes':'No' }}</td>
+                        <td>{{ setting.profileConfidential == true ? 'Yes':'No' }}</td>
+                        <td>{{ setting.jobAlertTable == true ? 'Yes':'No' }}</td>
+                        <td>{{ setting.facebookAlert == true ? 'Yes':'No' }}</td>
+                        <td>
+                            <a href="" data-toggle="modal"
+                               data-target="#addSetting"
+                               data-settingId="{{ setting.id }}"
+                               data-title="Update Setting"
+                            >Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+
+    </div>
+    <div class="modal fade" id="addSetting" role="dialog" arial-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" class="close">&times</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+{% block scripts %}
+    <script>
+        $('#addSetting').on('show.bs.modal', function (e) {
+            console.log('sdfsdfsdf');
+            var modal = $(this);
+            var button = $(e.relatedTarget);
+            var title = button.attr('data-title');
+            var settingId = button.attr('data-settingId');
+
+
+            if (settingId != '') {
+                var url = "{{ path('yarsha_job_seeker_ajax_update_setting', {'settingId':'SETTING_ID'}) }}";
+                var url = url.replace('SETTING_ID', settingId);
+            } else {
+                var url = "{{ path('yarsha_job_seeker_ajax_add_setting') }}";
+            }
+
+            modal.find('.modal-title').html(title);
+
+            $.ajax({
+                type: 'get',
+                url: url,
+                data: {'settingId': settingId},
+                success: function (res) {
+                    modal.find('.modal-body').html(res.template);
+
+                },
+                error: function (res) {
+                    alert(res.message);
+                }
+            });
+        });
+        function submitSetting(obj) {
+            var form = $(obj),
+                settingId = form.data('id'),
+                dataToSend = form.serialize();
+
+            if (settingId == '') {
+                var url = "{{ path('yarsha_job_seeker_ajax_add_setting') }}"
+            } else {
+                var url = "{{ path('yarsha_job_seeker_ajax_update_setting', {'settingId':'SETTING_ID'}) }}";
+                var url = url.replace('SETTING_ID', settingId);
+            }
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: dataToSend,
+                success: function (res) {
+                    window.location = window.location
+                },
+                error: function (res) {
+
+                }
+            });
+
+
+            return false;
+
+        }
+    </script>
+{% endblock %}

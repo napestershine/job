@@ -1,0 +1,31 @@
+<div class="col-md-4 col-sm-4">
+    <h3><i class="fa fa-lightbulb-o" aria-hidden="true"></i> &nbsp;Career Resources</h3>
+    <ul class="hot-job-list btm-job-search-blk">
+        {% for careerResource in careerResources %}
+            <li>
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 btm-job-left-blk">
+                        {% if careerResource.image | length %}
+                            <img src="{{ asset('images/career_resource_image.png') }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('images/career_resource_image.png') }}" alt="">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-9 col-sm-9 btm-job-right-blk">
+                        <h1><a href="{{ article_detail_url(careerResource) }}">{{ careerResource.title }}</a></h1>
+                        <p>{{ trim_content(careerResource.content) }}</p>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+
+    </ul>
+    <div class="row">
+        <div class="col-md-12 hot-job-more-btn">
+            <input
+                    type="submit"
+                    onclick="window.location.href = '{{ path('yarsha_frontend_career') }}'"
+                    value="BROWSE ALL">
+        </div>
+    </div>
+</div>

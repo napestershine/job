@@ -1,0 +1,19 @@
+
+yarsha_employer_registration_register:
+    path: /
+    defaults: { _controller: "FOSUserBundle:Registration:register" }
+
+yarsha_employer_registration_check_email:
+    path: /check-email
+    defaults: { _controller: "FOSUserBundle:Registration:checkEmail" }
+    methods: "GET"
+
+yarsha_employer_registration_confirm:
+    path: /confirm/{token}
+    defaults: { _controller: "FOSUserBundle:Registration:confirm" }
+    methods: "GET"
+
+yarsha_employer_registration_confirmed:
+    path: /confirmed
+    defaults: { _controller: "FOSUserBundle:Registration:confirmed" }
+    methods: "GET"

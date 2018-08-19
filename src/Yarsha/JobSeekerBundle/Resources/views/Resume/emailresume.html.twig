@@ -1,0 +1,21 @@
+{% extends '@YarshaJobSeeker/job_seeker_layout.html.twig' %}
+
+{% block page_title %} Email Resume {% endblock %}
+
+{% block content %}
+
+    {% form_theme form "bootstrap_3_layout.html.twig" %}
+
+    <style>
+        label.control-label{display:block!important;}
+    </style>
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        {{ form_start(form) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.message) }}
+        <input type="submit" value="Send" class="btn btn-primary">
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

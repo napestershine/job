@@ -1,0 +1,173 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Article{% endblock %}
+{% block page_description %}{{ updating?'Edit':'New' }}{% endblock %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block content %}
+    {#<div class="col-md-12 col-sm-12 col-xs-12">#}
+
+    {{ form_start(form) }}
+
+    {#<div class="x_panel">#}
+
+    <div class="row">
+        <div class="col-md-8 col-xs-12 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.category) }}
+                    {{ form_row(form.content) }}
+                    {{ form_row(form.tags) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12 col-sm-12">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ form_row(form.status) }}
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ form_row(form.metaKeywords) }}
+                    {{ form_row(form.metaDescriptions) }}
+                    {{ form_row(form.metaTags) }}
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {{ form_row(form.image) }}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="clearfix"></div>
+
+
+        <div class="col-md-12">
+            <div class="x_panel">
+                <input type="submit" class="btn btn-primary" value="Save">
+            </div>
+        </div>
+    </div>
+
+    {#</div>#}
+    {{ form_end(form) }}
+    {#</div>#}
+
+{% endblock content %}
+
+
+{% block scripts %}
+
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="{{ asset('bundles/yarshamain/bootstrap/css/bootstrap-tagsinput.css') }}">
+    <script src="{{ asset('bundles/yarshamain/bootstrap/js/bootstrap-tagsinput.min.js') }}"></script>
+    <script src="{{ asset('bundles/yarshamain/bootstrap/js/bootstrap3-typeahead.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+
+
+            $('.tags-autocomplete').tagsinput({
+                typeahead: {
+                    afterSelect: function (val) {
+                        this.$element.val("");
+                    },
+                    source: function (query) {
+                        var url = '{{ path('yarsha_ajax_tags_list') }}';
+                        return $.get(url, {q: query});
+                    }
+                }
+            })
+            ;
+
+        });
+    </script>
+
+
+
+    {#<script>#}
+    {#console.log('test');#}
+    {#var $collectionHolder;#}
+
+    {#// setup an "add a tag" link#}
+    {#var $addTagLink = $('<a href="#" class="add_tag_link">Add a tag</a>');#}
+    {#var $newLinkLi = $('<li></li>').append($addTagLink);#}
+
+
+    {#jQuery(document).ready(function () {#}
+
+    {#// Get the ul that holds the collection of tags#}
+    {#$collectionHolder = $('ul.tags');#}
+
+    {#// add the "add a tag" anchor and li to the tags ul#}
+    {#$collectionHolder.append($newLinkLi);#}
+
+    {#// count the current form inputs we have (e.g. 2), use that as the new#}
+    {#// index when inserting a new item (e.g. 2)#}
+    {#$collectionHolder.data('index', $collectionHolder.find(':input').length);#}
+
+    {#$addTagLink.on('click', function (e) {#}
+    {#// prevent the link from creating a "#" on the URL#}
+    {#e.preventDefault();#}
+
+    {#// add a new tag form (see next code block)#}
+    {#addTagForm($collectionHolder, $newLinkLi);#}
+    {#});#}
+
+
+    {#function addTagForm($collectionHolder, $newLinkLi) {#}
+    {#// Get the data-prototype explained earlier#}
+    {#var prototype = $collectionHolder.data('prototype');#}
+
+    {#// get the new index#}
+    {#var index = $collectionHolder.data('index');#}
+
+    {#// Replace '__name__' in the prototype's HTML to#}
+    {#// instead be a number based on how many items we have#}
+    {#var newForm = prototype.replace(/__name__/g, index);#}
+    {#console.log(newForm);#}
+
+    {#// increase the index with one for the next item#}
+    {#$collectionHolder.data('index', index + 1);#}
+
+    {#// Display the form in the page in an li, before the "Add a tag" link li#}
+    {#var $newFormLi = $('<li></li>').append(newForm);#}
+    {#$newLinkLi.before($newFormLi);#}
+    {#addTagFormDeleteLink($newFormLi);#}
+
+
+    {#}#}
+
+    {#function addTagFormDeleteLink($tagFormLi) {#}
+    {#var $removeFormA = $('<a href="#">delete this tag</a>');#}
+    {#$tagFormLi.append($removeFormA);#}
+
+    {#$removeFormA.on('click', function (e) {#}
+    {#// prevent the link from creating a "#" on the URL#}
+    {#e.preventDefault();#}
+
+    {#// remove the li for the tag form#}
+    {#$tagFormLi.remove();#}
+    {#});#}
+    {#}#}
+
+    {#});#}
+
+    {#function removeLi(id) {#}
+    {#console.log(id);#}
+    {#$("#delete-" + id).remove();#}
+    {#}#}
+    {#</script>#}
+
+{% endblock %}

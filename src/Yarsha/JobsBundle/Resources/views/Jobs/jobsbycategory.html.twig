@@ -1,0 +1,46 @@
+{% extends '@YarshaFrontend/frontend_layout.html.twig' %}
+
+{% block content %}
+    {% if(jobs | length) %}
+        <div class="col-md-12">
+            <table class="table table-striped table-hover table-condensed">
+                <tr>
+                    <td>Jobs</td>
+                    <td>Action</td>
+                </tr>
+                {% for job in jobs %}
+                    <tr>
+                        <td>{{ job.title }}</td>
+                        <td>
+                            {% if(isAlreadyApplied(job, app.user)) %}
+                                <a href="{{ path('yarsha_job_seeker_cancel_job_apply', {'jobId':job.id}) }}">
+                                    <button class="btn btn-warning">
+                                        Cancel Job Application
+                                    </button>
+                                </a>
+                            {% else %}
+                                <a href="{{ path('yarsha_job_seeker_job_apply_email', {'jobId':job.id}) }}">
+                                    <button class="btn btn-info">
+                                        Apply By email
+                                    </button>
+                                </a>
+                                <a href="{{ path('yarsha_job_seeker_job_apply_online', {'jobId':job.id}) }}">
+                                    <button class="btn btn-info">
+                                        Apply Online
+                                    </button>
+                                </a>
+                                <a href="{{ path('yarsha_job_seeker_add_to_job_basket', {'jobId':job.id}) }}">
+                                    <button class="btn btn-info">
+                                        Add to job Basket
+                                    </button>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        {{ "<h1>No jobs in this category</h1>" | raw }}
+    {% endif %}
+{% endblock %}

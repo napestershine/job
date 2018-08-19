@@ -1,0 +1,31 @@
+{% extends 'YarshaJobSeekerBundle::job_seeker_layout.html.twig' %}
+
+{% block content %}
+    {% if notices | length %}
+        {% for notice in notices %}
+            <div class="notice-msg-wrap">
+
+                <div class="row">
+
+                    <div class="col-md-1 col-sm-1"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></div>
+                    <div class="col-md-9 col-sm-9">
+                        <h1>{{ notice.title }}</h1>
+                        <p>{{ set_total_content(notice.description, 150) | raw }}</p>
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <a href="{{ path('yarsha_job_seeker_notice_detail', {'id':notice.id}) }}" class="heading">
+                            <button>View</button>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        {% endfor %}
+    {% else %}
+        {{ ys_no_contents('No notice available.') }}
+    {% endif %}
+    {% if notices.haveToPaginate %}
+        {{ pagerfanta(notices, 'twitter_bootstrap3') }}
+    {% endif %}
+
+{% endblock %}

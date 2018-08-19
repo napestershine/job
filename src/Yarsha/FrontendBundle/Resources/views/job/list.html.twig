@@ -1,0 +1,49 @@
+{% extends "YarshaFrontendBundle::frontend_layout.html.twig" %}
+
+{% block content %}
+    <section class="dashboard-section">
+
+
+        <div class="container">
+            {% if(jobs) %}
+            <div class="col-md-9 col-sm-9 dashboard-section-right">
+
+                <div class="company-info-blk dashboard-bg-color clearfix">
+                    <div class="title">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">job list</div>
+                        </div>
+                    </div>
+
+                    {% for job in jobs %}
+                        <div class="clearfix job-list-search-cnt">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2">
+                                    {% set imgSrc = job.organization.path %}
+                                    <img src="{{ asset('uploads/employers/')  ~ imgSrc }}" alt="Company Logo">
+                                </div>
+                                <div class="col-md-10 col-sm-10">
+                                    <h2>
+                                        <a target="_blank" href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}">
+                                            {{ job.title }}
+                                        </a>
+                                    </h2>
+                                    <span>Education: {{ job.educationDegree }} |
+                                        Experience: {{ job.minimumExperienceYear }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {% if jobs.haveToPaginate %}
+                        {{ pagerfanta(jobs, 'twitter_bootstrap3') }}
+                    {% endif %}
+
+                </div>
+                {% else %}
+                    <p>No jobs available</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

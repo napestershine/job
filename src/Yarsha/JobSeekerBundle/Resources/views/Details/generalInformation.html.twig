@@ -1,0 +1,55 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        {#{% form_theme form 'bootstrap_3_layout.html.twig' %}#}
+        {#{{ form_start(form, {'action': path('yarsha_ajax_job_seeker_general_information')}) }}#}
+        {% form_theme form 'bootstrap_3_layout.html.twig' %}
+        {{ form_start(form, {'attr':{ 'onsubmit':'return submitGeneralInformation(this)'}}) }}
+
+        <div class="row">
+
+
+            <div class="col-md-6">
+                {{ form_row(form.preferredPosition) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.available_for) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_row(form.no_of_year) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.no_of_month) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.minExpectedSalary) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.maxExpectedSalary) }}
+            </div>
+            <div class="col-md-12">
+                {{ form_row(form.preferredLocations) }}
+            </div>
+            <div class="col-md-12">
+                {{ form_row(form.preferredCategories) }}
+            </div>
+            <div class="col-md-12">
+                {{ form_row(form.preferredIndustries) }}
+            </div>
+
+            <div class="col-md-12">
+                {{ form_row(form.objectives) }}
+            </div>
+
+
+        </div>
+
+
+        <input type="submit" value="Update Profile" class="btn btn-primary">
+        {{ form_end(form) }}
+    </div>
+</div>
+
+<script>
+    $('.select2').select2({});
+</script>

@@ -1,0 +1,49 @@
+{% import "@YarshaFrontend/Macros/job_detail_macros.html.twig" as jobMacro %}
+
+<div class="company-info-blk dashboard-bg-color job-det-info-blk clearfix">
+    <div class="title">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">{{ job.title }}</div>
+        </div>
+    </div>
+
+    <div class="posted-jobs-blk-list-blk">
+        {{ jobMacro.jobDetailDescriptionTable(job) }}
+    </div>
+
+    <div class="new-job-spec-blk">
+        <div class="title" style="color: #d20808;">job description</div>
+        <div> {{ job.description | raw }} </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    {% if job.specification %}
+        <div class="new-job-spec-blk">
+            <div class="title" style="color: #d20808;">Job Specification</div>
+            <div> {{ job.specification | raw }} </div>
+        </div>
+        <div class="clearfix"></div>
+    {% endif %}
+
+    <div class="clearfix"></div>
+
+    {% if job.educationDescription %}
+    <div class="new-job-spec-blk">
+        <div class="title" style="color: #d20808;">Education description</div>
+        <div> {{ job.educationDescription | raw }} </div>
+    </div>
+    <div class="clearfix"></div>
+    {% endif %}
+
+    {% if job.specificRequirement %}
+    <div class="new-job-spec-blk">
+        <div class="title" style="color: #d20808;">Other Specific Requirement</div>
+        <div> {{ job.specificRequirement | raw }} </div>
+    </div>
+    <div class="clearfix"></div>
+    {% endif %}
+
+    {{ jobMacro.jobDescriptionFooter(job, app.user,appliedJob) }}
+
+</div>

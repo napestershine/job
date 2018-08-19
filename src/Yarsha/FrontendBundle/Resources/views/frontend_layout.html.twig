@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- meta viewport -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- title -->
+    <title> Jobs portal </title>
+
+    <meta name="description"
+          content="Jobs portal"/>
+
+    {% block seo %}{% endblock %}
+
+    {% include "@YarshaFrontend/Includes/styles.html.twig" %}
+
+    {% block styles %}{% endblock %}
+
+    <!--[if lt IE 9]>
+    <script src="{{ asset('bundles/yarshafrontend/js/html5shiv.js') }}"></script>
+    <script src="{{ asset('bundles/yarshafrontend/js/respond.min.js') }}"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+
+<!--[if lt IE 9]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your browsing experience.</p>
+<![endif]-->
+
+{% include "@YarshaFrontend/Includes/navigation_bar.html.twig" %}
+
+{% block content %}{% endblock %}
+
+{% include 'YarshaFrontendBundle:Includes:register_pop_up.html.twig' %}
+{% include 'YarshaFrontendBundle:Includes:login_pop_up.html.twig' %}
+{% include "YarshaFrontendBundle:Includes:commonmodal.html.twig" %}
+
+{% include "@YarshaFrontend/Includes/footer.html.twig" %}
+
+{% include "@YarshaFrontend/Includes/scripts.html.twig" %}
+
+<script>
+
+    function onlinejobapply(slug) {
+        var slug = slug;
+        path_url = "{{ path('yarsha_job_seeker_job_apply_online',{'slug':'JOB_SLUG' }) }}"
+        url = path_url.replace('JOB_SLUG', slug);
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: slug,
+            success: function (res) {
+                if (!res.hasApplied) {
+                    triggerJobAppliedEvent(slug);
+                }
+                var link = (typeof res.external_link) == 'string' ? res.external_link : false;
+                isUrl = link ? validator.isURL(link) : false;
+                if (isUrl) {
+                    console.log('valid link');
+                    window.location.href = res.external_link;
+                }   else    {
+                    if (res.message) {
+                        var modal = $('#thankyouModal');
+                        modal.find('.content-message').html(res.message);
+                        modal.modal('show');
+                    }
+                }
+            },
+            error: function (res) {
+                var modal = $('#thankyouModal').modal();
+                modal.find('.content-message').html("You have to login as job seeker to apply for the job.");
+                $('#thankyouModal').modal('show');
+            }
+        });
+        return false;
+    }
+
+
+    function jobapplyemail(slug, org, job) {
+        var org = org;
+        var job = job;
+        var slug = slug;
+        var modal = $("#myCommonModal");
+        var thankyoumodal = $('#thankyouModal');
+        url = "{{ path('yarsha_job_seeker_ajax_job_apply_email',{'slug':'SLUG'}) }}";
+        url = url.replace('SLUG', slug);
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function (data) {
+                var header_title = 'You are applying for ' + org + ' - ' + job;
+                modal.find('.modal-title').html(header_title);
+                modal.find('.modal-body').html(data.template);
+                modal.modal('show');
+                $(modal).find('form').on('submit', function (e) {
+                    modal.modal('hide');
+                    e.preventDefault();
+                    for (instance in CKEDITOR.instances) {
+                        CKEDITOR.instances[instance].updateElement();
+                    }
+
+                    form = $(this);
+                    finalData = new FormData($(this)[0]);
+                    // alert(finalData);
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: finalData,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data.success == true) {
+                                modal.modal('hide');
+                                thankyoumodal.find('.content-message').html(data.message);
+                                thankyoumodal.modal('show');
+                                if (!data.hasApplied) {
+                                    triggerJobAppliedEvent(slug);
+                                }
+                            } else {
+                                modal.find('.modal-body').html(data.template);
+                            }
+                        },
+                        error: function (err) {
+                            thankyoumodal.find('.content-message').html("Something went wrong.");
+                            $('#thankyouModal').modal('show');
+                            modal.modal('hide');
+                        }
+                    });
+                });
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+
+
+    function triggerJobAppliedEvent(slug) {
+        url = "{{ path('yarsha_job_seeker_trigger_job_applied_event',{'slug':'SLUG'}) }}";
+        url = url.replace('SLUG', slug);
+        $.ajax({
+            url: url,
+            method: 'GET'
+        });
+    }
+
+    $(".toggle-follow").on('click', function (e) {
+        e.preventDefault();
+        $this = $(this);
+        eid = $this.attr('data-employer-id');
+        status = $this.attr('data-status');
+        followUrl = '{{ path("yarsha_frontend_follow_employer", {"id":"EMP_ID"}) }}';
+        unfollowUrl = '{{ path("yarsha_frontend_unfollow_employer", {"id":"EMP_ID"}) }}'
+        url = (status == 1) ? unfollowUrl : followUrl;
+        targetText = $this.text().trim() == 'Follow Us' ? 'Unfollow' : 'Follow Us';
+        targetStatus = (status == 1) ? 0 : 1;
+        url = url.replace('EMP_ID', eid);
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function (data) {
+                if (data.success == true) {
+                    targetIcon = status == 1 ? '<i class="fa fa-plus" aria-hidden="true"></i>' : '<i class="fa fa-minus-circle" aria-hidden="true"></i>';
+                    $this.html(targetIcon + ' &nbsp;' + targetText);
+                    $this.attr('data-status', targetStatus);
+                }
+            }
+        });
+    });
+
+    $('#shareJobModalButton').on('click', function (e) {
+        e.preventDefault();
+        checkContactEmail = checkValidContactEmail();
+        if (checkContactEmail) {
+            $this = $(this);
+            id = $this.attr('data-job-id');
+            $('#shareJobModal').modal('toggle');
+            $('#shareJobModal').find('.modal-body textarea').html(document.URL)
+        } else {
+            $("#thankyouModal").modal('toggle');
+            $("#thankyouModal").find('.modal-title').html('Error Message');
+            $('#thankyouModal').find('.content-message').html("You have invalid contact email. Please set valid contact email first.");
+        }
+    });
+
+    function checkValidContactEmail() {
+        var contactPerson = {{ contact_email_json(app.user) }};
+        var isValidEmail = validateEmail(contactPerson.contactEmail);
+        return isValidEmail;
+    }
+
+    $('.testJobModalButton').on('click', function () {
+        $this = $(this)
+        id = $this.attr('data-job-id')
+        $('#shareJobModal').find('.modal-body textarea').html(id)
+    });
+
+
+    $('.row').on('click', 'a[id^="suggestToFriendJobModalButton-"]', function (e) {
+        e.preventDefault();
+        checkContactEmail = checkValidContactEmail();
+        if (checkContactEmail) {
+            $this = $(this)
+            id = $this.attr('data-job-id')
+            var url = $this.attr('data-job-detail')
+            $('#shareJobModal').find('.modal-body textarea').html(window.location.origin + url)
+        } else {
+            $("#thankyouModal").modal('toggle');
+            $("#thankyouModal").find('.modal-title').html('Error Message');
+            $('#thankyouModal').find('.content-message').html("Invalid contact email. Please set valid contact email first.");
+        }
+
+    });
+
+    $(document).ready(function () {
+        $('#carousel-example-generic').carousel({
+            interval: 6000
+        });
+
+        $('#myCarouselSuperEmployers').carousel({
+            interval: false
+        });
+
+        $("#governmentJobsCarousel").carousel({
+            interval: false
+        })
+    });
+
+    function suggestToFriend(e, obj) {
+        $("#shareJobModal").modal('toggle');
+        e.preventDefault();
+        fd = new FormData(obj);
+        email = $(obj).find("input[type='email']").val();
+        emailValidateStatus = validateEmail(email);
+        if (emailValidateStatus) {
+            $.ajax({
+                url: "{{ path('yarsha_ajax_job_seeker_suggest_job_to_friend') }}",
+                method: 'POST',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    $("#thankyouModal").modal('toggle');
+                    $("#thankyouModal").find('.modal-title').html('Suggest Job');
+                    if (data.success) {
+                        $('#thankyouModal').find('.content-message').html("You suggested this job to your friend.");
+                        $(obj).find('input').val('');
+                    } else {
+                        $('#thankyouModal').find('.content-message').html("Something went wrong. Unable to suggest this job to your friend.");
+                        $(obj).find('input').val('');
+                    }
+                },
+                error: function (err) {
+                    $("#thankyouModal").modal('toggle');
+                    $("#thankyouModal").find('.modal-title').html('Suggest Job Error Messge');
+                    $('#thankyouModal').find('.content-message').html("Something went wrong. Unable to suggest this job to your friend.");
+                    $(obj).find('input').val('');
+                }
+            });
+        } else {
+            $("#thankyouModal").modal('toggle');
+            $("#thankyouModal").find('.modal-title').html('Suggest Job Error Messge');
+            $('#thankyouModal').find('.content-message').html('Invalid email. Please enter a valid email address.');
+        }
+    }
+
+    function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        status = re.test(email);
+        if (re.test(email)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    function checkForm(obj) {
+
+        var form = $(obj);
+        var type = form.data('id');
+
+        var errors = [];
+        var pass = $('.pass').val();
+        var confirm_pass = $('.con_pass').val();
+
+        var username = $('.form-usr-name').val();
+        var email = $('.cont_email').val();
+
+        if (pass != confirm_pass) {
+            errors[errors.length] = "Password fields must match.";
+        }
+
+
+        $.ajax({
+            type: "POST",
+            url: "{{ path('yarsha_ajax_seeker_form_validation') }}",
+            data: {'username': username, 'email': email, 'type': type},    // multiple data sent using ajax
+            success: function (res) {
+
+                if (pass != confirm_pass) {
+                    errors[errors.length] = "Password fields must match.";
+                }
+
+
+                if (res.has_user == true) {
+                    errors[errors.length] = "username is already used.";
+                }
+
+                if (res.has_user_by_email == true) {
+                    errors[errors.length] = "Contact Email is already used.";
+                }
+
+                if (errors.length > 0) {
+                    reportErrors(errors);
+                    return false;
+                }
+
+                return true;
+
+
+            },
+            error: function (e) {
+                console.log(e);
+            }
+
+
+        });
+
+        // return false;
+    }
+
+
+    $('#reg-data').click(function (e) {
+
+        e.preventDefault();
+        $this = $(this)
+        var type = $this.attr('data-id')
+
+        var errors = [];
+        var pass = $('.pass').val();
+        var confirm_pass = $('.con_pass').val();
+
+        var username = $('.form-usr-name').val();
+        var email = $('.cont_email').val();
+
+        var url = "{{ path('yarsha_ajax_seeker_form_validation') }}";
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {'username': username, 'email': email, 'type': type},    // multiple data sent using ajax
+            success: function (res) {
+
+                if (pass != confirm_pass) {
+                    errors[errors.length] = "Password fields must match.";
+                }
+
+
+                if (res.has_user == true) {
+                    errors[errors.length] = "username is already used.";
+                }
+
+                if (res.has_user_by_email == true) {
+                    errors[errors.length] = "Contact Email is already used.";
+                }
+
+                if (errors.length > 0) {
+                    reportErrors(errors);
+                    return false;
+                }
+
+                if (res.formType == 'seeker') {
+                    $('#seekerform').submit();
+                } else {
+
+                    $('#employerfrom').submit();
+                }
+
+
+            },
+            error: function (e) {
+                console.log(e);
+            }
+
+
+        });
+    });
+
+    function validateRegistrationForm(form) {
+        $('.help-block').remove();
+        $.ajax({
+            url: "{{ path('yarsha_ajax_registration_form_validate') }}",
+            data: form.serialize(),
+            type: "POST",
+            success: function (data) {
+                if (data.result == 0) {
+                    for (var key in data.data) {
+                        var parent = $(form.find('[name*="' + key + '"]')[0]).parent();
+                        if (key == 'password') {
+                            passwordErr = data.data[key].first[0];
+                            parent.after(showError(passwordErr));
+                        } else {
+                            parent.after(showError(data.data[key]));
+                        }
+                        console.log(form.find('[name*="' + key + '"]')[0]);
+                    }
+                }
+            }
+        });
+    }
+
+    function showError(errorMsg) {
+        var output = '<span class="help-block">' +
+                '<ul class="list-unstyled">' +
+                '<li><span class="glyphicon glyphicon-exclamation-sign"></span>' +
+                errorMsg +
+                '</li></ul></span>';
+        return output;
+    }
+
+    //    function reportErrors(errors) {
+    //        var msg = "<p class='text-danger'>Please Enter Valid Data...</p>";
+    //        for (var i = 0; i < errors.length; i++) {
+    //            var numError = i + 1;
+    //            msg += "<p class='text-danger'>" + numError + ". " + errors[i]+"</p>";
+    //        }
+    //        modal = $("#myCommonModal");
+    //        modal.find('.modal-title').html('Validation Errors');
+    //        modal.find('.modal-body').html(msg);
+    //        modal.modal('show');
+    //    }
+
+    function renderLoginModal(e) {
+        e.preventDefault();
+        var loginAlertModal = $("#login-alert-modal");
+        loginAlertModal.modal('hide');
+        var modal = $('#myCommonModal');
+        modal.css({'z-index': '99999'});
+        var url = "{{ path('yarsha_frontend_ajax_render_login_form') }}";
+        modal.find('.modal-title').html('Login Form');
+        $.ajax({
+            url: url,
+            method: 'GET',
+            success: function (data) {
+                modal.find('.modal-body').html(data.template);
+                modal.modal('show');
+                modal.find('form').first().on('submit', function (e) {
+                    e.preventDefault();
+                    ajaxSeekerLogin($(this));
+                });
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+
+    function ajaxSeekerLogin(form) {
+        form = $(form);
+        console.log(form.serialize());
+        $.ajax({
+            url: "{{ path('yarsha_job_seeker_security_check') }}",
+            method: 'POST',
+            data: form.serialize(),
+            success: function (data) {
+//                window.location.href = "";
+//                console.log(data);
+            },
+            error: function (err) {
+//                console.log(err);
+            }
+        });
+    }
+
+    function saveRequestedUrl() {
+        {% set jobSlug = app.request.attributes.get('_route_params') %}
+        {{ app.session.set('requestPageSlug',jobSlug) }}
+    }
+
+
+</script>
+
+{% block scripts %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+parameters:
+    jobseeker.user_provider.class: Yarsha\JobSeekerBundle\Security\Core\JobSeekerUserProvider
+services:
+#    yarsha_job_seeker.example:
+#        class: Yarsha\JobSeekerBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+    yarsha_job_seeker_user_provider:
+        class: "%jobseeker.user_provider.class%"
+        arguments: ["@yarsha_job_seeker.user_manager", {facebook: facebook_id, google: google_id, linkedin: linkedin_id}]

@@ -1,0 +1,210 @@
+{% extends 'YarshaEmployerBundle::employer_layout.html.twig' %}
+{% block content %}
+    {#<div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">#}
+        {#<div class="title">#}
+            {#<div class="row">#}
+                {#<div class="col-md-10 col-sm-10">Job Details</div>#}
+                {#<div class="col-md-2 col-sm-2 right"><a href="{{ path('yarsha_employer_job_list') }}"><input#}
+                                {#type="submit" value="Back"></a></div>#}
+            {#</div>#}
+        {#</div>#}
+
+
+        <!-- job application section -->
+
+        <div class="company-info-blk dashboard-bg-color job-det-info-blk clearfix">
+            <div class="title">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12"><i class="fa fa-th-list" aria-hidden="true"></i>
+                        &nbsp;Job : {{ job.title }}</div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <h3>Job overview</h3>
+                    <p>{{ job.description|raw }}</p>
+
+
+                    <h3>Education Requirement</h3>
+                    {{ job.educationDescription|raw }}
+
+                    <h3>Specification</h3>
+                    {{ job.specification|raw }}
+
+                </div>
+                <div class="col-md-6 col-sm-6 job-det-info-ind-blk">
+                    <h3>job details</h3>
+                    <ul>
+
+                        <li>Job Function : {{ job.category ? job.category.title : '' }}</li>
+                        <li>Job By Industry : {{ job.industry ? job.industry.title : '' }}</li>
+                        <li>Job By Level : {{ job.level ? job.level.name : '' }}</li>
+
+                        <li>Job Availability : {{ job.availability }}</li>
+                        <li>Job Location :
+                            {% for location in job.locations %}
+                                {{ location.name ~ ',' }}
+                            {% endfor %}
+                        </li>
+                        <li>Education Degree: {{ job.educationDegree }}</li>
+                        <li>No. of Vacancy : {{ job.numberOfVacancies }}</li>
+                        <li>Prefered Gender : {{ job.preferredGender }}</li>
+                        <li>Deadline to Apply :{{ job.deadline|date('l F j, Y') }} <span>
+                                    {{ date_difference(job.deadline|date('Y-m-d')) }}
+                                    </span></li>
+                        <li>Job Viewed: <span>{{ job.viewCount }} Times</span></li>
+                    </ul>
+
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-2 job-info-det-soc-blk">
+                            <a href="#">
+                                <i class="fa fa-envelope" aria-hidden="true"></i> &nbsp;
+                                Apply Online
+                            </a>
+                        </div>
+                        {#<div class="col-md-2 col-sm-2 job-info-det-soc-blk">#}
+                        {#<a href="#"><i class="fa fa-share-square-o" aria-hidden="true"></i> &nbsp;Share#}
+                        {#a Job</a>#}
+                        {#</div>#}
+                        <div class="col-md-2 col-sm-2 job-info-det-soc-blk">
+                            <a href="#" id="shareJobModalButton" data-toggle="modal"
+                               data-target="#shareJobModal"
+                               data-job-id="{{ job.id }}">
+                                <i class="fa fa-lightbulb-o" aria-hidden="true"></i> &nbsp;Suggest
+                                Friend</a>
+                        </div>
+                        <div class="col-md-2 col-sm-2 job-info-det-soc-blk">
+                            <a href="{{ path('yarsha_job_seeker_add_to_job_basket', {'slug':job.slug}) }}"><i
+                                        class="fa fa-shopping-basket" aria-hidden="true"></i> &nbsp;Add
+                                to Basket</a>
+                        </div>
+                        <div class="col-md-4 col-sm-4 job-info-det-soc-blk">
+                            <a href="#"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
+                            <a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>
+                            <a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="posted-jobs-blk-list-blk" style="display: none;">
+            <table class="table table-stripe">
+                <tr>
+                    <td style="width:200px">Title</td>
+                    <td>{{ job.title }}</td>
+                </tr>
+                <tr>
+                    <td>Category</td>
+                    <td>{{ job.category.title }}</td>
+                </tr>
+                <tr>
+                    <td>Industry</td>
+                    <td>{{ job.category.title }}</td>
+                </tr>
+                <tr>
+                    <td>Location</td>
+                    <td>{% for location in job.locations %}
+                            {{ location.name }}<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Level</td>
+                    <td>{{ job.level }}</td>
+                </tr>
+                <tr>
+                    <td>Education Degree</td>
+                    <td>{{ job.educationDegree }}</td>
+                </tr>
+                <tr>
+                    <td>Salary Unit</td>
+                    <td>{{ job.salaryUnit ? job.salaryUnit.symbol :'' }}</td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>{{ job.type }}</td>
+                </tr>
+                <tr>
+                    <td>Availability</td>
+                    <td>{{ job.availability }}</td>
+                </tr>
+                <tr>
+                    <td>Minimum Experience Year</td>
+                    <td>{{ job.minimumExperienceYear }}</td>
+                </tr>
+                <tr>
+                    <td>Maximum Experience Year</td>
+                    <td>{{ job.maximumExperienceYear }}</td>
+                </tr>
+                <tr>
+                    <td>No. of Vacancy</td>
+                    <td>{{ job.numberOfVacancies }}</td>
+                </tr>
+                <tr>
+                    <td>Vacancy Code</td>
+                    <td>{{ job.vacancyCode }}</td>
+                </tr>
+                <tr>
+                    <td>Deadline</td>
+                    <td>{{ job.deadline |date('Y-m-d') }}</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>{{ job.description|raw }}</td>
+                </tr>
+                <tr>
+                    <td>Specification</td>
+                    <td>{{ job.specification|raw }}</td>
+                </tr>
+                <tr>
+                    <td>Education Description</td>
+                    <td>{{ job.educationDescription|raw }}</td>
+                </tr>
+                <tr>
+                    <td>Salary Negotiable</td>
+                    <td>{{ job.salaryNegotiable }}</td>
+                </tr>
+                <tr>
+                    <td>Minimum Salary</td>
+                    <td>{{ job.minimumSalary }}</td>
+                </tr>
+                <tr>
+                    <td>Maximum Salary</td>
+                    <td>{{ job.maximumSalary }}</td>
+                </tr>
+                <tr>
+                    <td>Preferred Gender</td>
+                    <td>{{ job.preferredGender }}</td>
+                </tr>
+                <tr>
+                    <td>Minimum Age</td>
+                    <td>{{ job.minimumAge }}</td>
+                </tr>
+                <tr>
+                    <td>Maximum Age</td>
+                    <td>{{ job.maximumAge }}</td>
+                </tr>
+                <tr>
+                    <td>Specific Requirement</td>
+                    <td>{{ job.specificRequirement|raw }}</td>
+                </tr>
+                <tr>
+                    <td>Specific Instruction</td>
+                    <td>{{ job.specificInstruction|raw }}</td>
+                </tr>
+
+            </table>
+        </div>
+    {#</div>#}
+
+{% endblock content %}
+{% block script %}
+
+{% endblock %}

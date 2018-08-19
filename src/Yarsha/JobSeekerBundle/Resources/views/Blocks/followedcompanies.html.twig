@@ -1,0 +1,29 @@
+{% macro followedCompanies(organization) %}
+    <div class=" {#col-md-2 col-sm-3#} img-responsive company-8-btm-logo"
+         style="float:left; border:1px solid #DAE9FE; padding:5px;margin: 5px;width:13%">
+
+        {% set imgSrc = organization ? asset('uploads/employers/') ~ organization.path : asset('images/company_logo.jpg') %}
+        <a href="{{ path('yarsha_frontend_employer_detail_by_slug', {'slug':organization.slug}) }}"
+           title="{{ organization.name|title }}">
+            <img src="{{ imgSrc|imagine_filter('company_profile_pic_large') }}" alt="">
+        </a>
+    </div>
+{% endmacro %}
+
+<div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix" style="margin-bottom: 15px;">
+    <div class="title">{{ setting.title }}</div>
+    <div class="posted-jobs-blk-list-blk">
+        {% for organization in followedcompanies %}
+            {{ _self.followedCompanies(organization) }}
+        {% else %}
+            {{ ys_no_contents('You have not followed any companies.') }}
+        {% endfor %}
+    </div>
+    {% if followedcompanies|length > 14 %}
+        <div class="row">
+            <div class="col-md-12 col-sm-12 see-more">
+                <a href="javascript:void(0)" id="loadMore">See More <i class="fa fa-chevron-down"></i> </a>
+            </div>
+        </div>
+    {% endif %}
+</div>

@@ -1,0 +1,173 @@
+{% import "@YarshaFrontend/Macros/job_detail_macros.html.twig" as jobDetailMacro %}
+
+<!-- dashboard wrap section -->
+<section class="dashboard-section">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-9 col-sm-9 dashboard-section-right">
+
+                <div class="company-info-blk dashboard-bg-color job-detail-new-cover clearfix">
+                    <div class="row">
+                        <div class="col-md-2">
+                            {% set imgSrc = employer.organization.path %}
+                            {% if(imgSrc != null or imgSrc != '') %}
+                                <img src="{{ asset('uploads/employers/') ~ imgSrc }}" alt="Company logo">
+                            {% else %}
+                                <img src="{{ asset('images/company_logo_default.jpg') }}" alt="Company logo">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-5 col-sm-6 job-detail-new-cover-ind">
+                            <h1>{{ job.organization.name }} (Followers {{ followers | length }})</h1>
+                        </div>
+                        <div class="col-md-2 col-sm-12 job-detail-new-cover-ind">
+                            {{ render_follow_button(job.organization, app.user,'btn btn-xs btn-info') }}
+
+                        </div>
+                        <div class="col-md-2 col-sm-12 job-detail-new-cover-ind right-btn"><a href="#">
+                                <button><i class="fa fa-star" aria-hidden="true"></i> &nbsp;Verified</button>
+                            </a></div>
+                    </div>
+                </div>
+
+
+                <div class="company-info-blk dashboard-bg-color clearfix">
+                    <div class="title">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">{{ job.organization.name }}</div>
+
+                        </div>
+                    </div>
+                    {{ filterProfile(job.organization.profile)|raw }}
+                </div>
+
+
+                <!-- job application section -->
+                <div class="company-info-blk dashboard-bg-color job-det-info-blk clearfix">
+                    <div class="title new-title-bg">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">{{ job.title }}</div>
+                        </div>
+                    </div>
+                    <div class="posted-jobs-blk-list-blk">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th>Jobs Function:</th>
+                                <td>{{ job.category ? job.category.title : '' }}</td>
+                                <th>Jobs By Industry:</th>
+                                <td>{{ job.industry ? job.industry.title : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Jobs Type:</th>
+                                <td>{{ job.type }}</td>
+                                <th>Jobs Availability:</th>
+                                <td>{{ job.availability }}</td>
+                            </tr>
+                            <tr>
+                                <th>Jobs Location:</th>
+                                <td>
+                                    {% set locations = '' %}
+                                    {% for location in job.locations %}
+                                        {% set locations = locations ~ location.name ~ ', ' %}
+                                    {% endfor %}
+                                    {{ locations | slice(0, locations | length - 2) }}
+                                </td>
+                                <th>Min. Experience Year:</th>
+                                <td>{{ job.minimumExperienceYear }} Years</td>
+                            </tr>
+                            <tr>
+                                <th>Education Degree:</th>
+                                <td>{{ job.educationDegree ? job.educationDegree.name : '' }}</td>
+                                <th>No. of Openings:</th>
+                                <td>{{ job.numberOfVacancies }}</td>
+                            </tr>
+                            <tr>
+                                <th>Deadline:</th>
+                                <td> {{ job.deadline|date('l, F j, Y') }} <span
+                                            class="table-deadline">{{ date_difference(job.deadline | date('Y-m-d')) }}</span>
+                                </td>
+                                <th>Preferred Gender:</th>
+                                <td>{{ job.preferredGender }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="new-job-spec-blk">
+                        <div class="title" style="color: #d20808;">job specification</div>
+                        <ul>
+                            {{ job.specification | raw }}
+                        </ul>
+
+
+                        {#<div class="row">#}
+                        {#<div class="col-md-7 col-sm-7 job-info-det-soc-blk text-left">#}
+                        {#{% if app.user %}#}
+                        {#{% if 'ROLE_EMPLOYER' not in app.user.roles %}#}
+                        {#<a href="{{ path('yarsha_job_seeker_job_apply_online', {'slug':job.slug}) }}">#}
+                        {#<i class="fa fa-envelope" aria-hidden="true"></i> &nbsp;#}
+                        {#Apply Online#}
+                        {#</a>#}
+                        {#<a href="#" id="shareJobModalButton"#}
+                        {#data-job-id="{{ job.id }}">#}
+                        {#<i class="fa fa-lightbulb-o" aria-hidden="true"></i> &nbsp;Suggest#}
+                        {#Friend</a>#}
+                        {#<a href="{{ path('yarsha_job_seeker_add_to_job_basket', {'slug':job.slug}) }}"><i#}
+                        {#class="fa fa-shopping-basket" aria-hidden="true"></i> &nbsp;Add#}
+                        {#to Basket</a>#}
+                        {#{% endif %}#}
+                        {#{% else %}#}
+                        {#{{ render_login_alert_button('apply') }}#}
+                        {#{{ render_login_alert_button('share_job') }}#}
+                        {#{{ render_login_alert_button('add_to_basket') }}#}
+                        {#{% endif %}#}
+                        {#</div>#}
+
+                        {#<div class="col-md-5 col-sm-5 job-info-det-soc-blk text-right">#}
+                        {#<div class="share-wrap">#}
+                        {#<span class='st_facebook_hcount' displayText='Facebook'></span>#}
+                        {#<span class='st_twitter_hcount' displayText='Tweet'></span>#}
+                        {#<span class='st_googleplus_hcount' displayText='post'></span>#}
+                        {#<span class='st_linkedin_hcount' displayText='post'></span>#}
+                        {#</div>#}
+                        {#</div>#}
+                        {#</div>#}
+
+                        {{ jobDetailMacro.jobDescriptionFooter(job, app.user) }}
+
+                    </div>
+
+                </div>
+
+                {{ sonata_block_render({'type':'yarsha.block.relatedjobs'},{'job':job}) }}
+
+
+            </div>
+
+
+            <div class="col-md-3 col-sm-3 dashboard-section-left">
+                {{ jobDetailMacro.aboutCompany(organization) }}
+
+                {% if otherJobs|length %}
+                    <div class="dashboard-section-dropdown dashboard-bg-color ">
+                        <h1 class="show-hide-blk dropdown-h1-title" data-toggle="collapse" data-target="#demo"><i
+                                    class="fa fa-files-o" aria-hidden="true"></i> &nbsp;Current Vacancy</h1>
+                        <ul id="demo" class="collapse in kj-list">
+                            {% for job in otherJobs %}
+                                <li>
+                                    <a href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}">{{ job.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+
+                {{ sonata_block_render({'type':'yarsha.block.super_employer.job.frontend'}) }}
+
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,22 @@
+{% extends "@YarshaEmployer/employer_layout.html.twig" %}
+{% block content %}
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">Followers</div>
+
+            </div>
+        </div>
+        <div class="row">
+            {% if followers|length %}
+                {% for follower in followers %}
+                    {{ render_employer_follower(follower) }}
+                {% endfor %}
+            {% else %}
+                {{ ys_no_contents('No result found.') }}
+            {% endif %}
+
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+{% block page_title %} Job Seeker {% endblock %}
+{% block page_description %}{{ is_updating ? 'Edit':'Add' }}{% endblock %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block content %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h4 class="separator-header">Personal Information</h4>
+
+                    <div class="row">
+
+                        <div class="col-md-4">{{ form_row(form.firstName) }}</div>
+                        <div class="col-md-4">{{ form_row(form.middleName) }}</div>
+                        <div class="col-md-4">{{ form_row(form.lastName) }}</div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-4">{{ form_row(form.currentAddress) }}</div>
+                        <div class="col-md-4">{{ form_row(form.contactEmail) }}</div>
+                        <div class="col-md-4">{{ form_row(form.mobile) }}</div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-4">{{ form_row(form.gender) }}</div>
+                        <div class="col-md-4">{{ form_row(form.dob) }}</div>
+
+                        <div class="clearfix"></div>
+
+                    </div>
+
+                    <h4 class="separator-header">General Information</h4>
+
+                    <div class="row">
+                        <div class="col-md-4">{{ form_row(form.permanentAddress) }}</div>
+                        <div class="col-md-4">{{ form_row(form.nationality) }}</div>
+                        <div class="col-md-4">{{ form_row(form.religion) }}</div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-4">{{ form_row(form.maritalStatus) }}</div>
+                        <div class="col-md-4">{{ form_row(form.phone) }}</div>
+                        <div class="col-md-4">{{ form_row(form.objectives) }}</div>
+                    </div>
+
+                    <h4 class="separator-header">Career & Application Information</h4>
+
+                    <div class="row">
+                        <div class="col-md-4">{{ form_row(form.preferredLocations) }}</div>
+                        <div class="col-md-4">{{ form_row(form.preferredCategories) }}</div>
+                        <div class="col-md-4">{{ form_row(form.preferredIndustries) }}</div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-4">{{ form_row(form.minExpectedSalary) }}</div>
+                        <div class="col-md-4">{{ form_row(form.maxExpectedSalary) }}</div>
+                        <div class="col-md-4">{{ form_row(form.degree) }}</div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-md-4">{{ form_row(form.hasExperience) }}</div>
+                        <div class="col-md-4">{{ form_row(form.noOfYear) }}</div>
+                        <div class="col-md-4">{{ form_row(form.noOfMonth) }}</div>
+
+
+                        <div class="col-md-4">{{ form_row(form.curriculumVitaeFile) }}</div>
+                        <div class="col-md-4">{{ form_row(form.file) }}</div>
+                        <div class="col-md-4">{{ form_row(form.isSearchable) }}</div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    {% if is_updating == false %}
+                        <h4 class="separator-header">Login Credentials</h4>
+
+                        <div class="row">
+                            <div class="col-md-4">{{ form_row(form.username) }}</div>
+                            <div class="col-md-4">{{ form_row(form.password.first) }}</div>
+                            <div class="col-md-4">{{ form_row(form.password.second) }}</div>
+                            <div class="clearfix"></div>
+
+                        </div>
+                    {% endif %}
+
+                    <input type="submit" value="SAVE" class="btn btn-primary">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $('.select2').select2({
+//            maximumSelectionLength: 3
+        });
+
+
+    </script>
+{% endblock %}

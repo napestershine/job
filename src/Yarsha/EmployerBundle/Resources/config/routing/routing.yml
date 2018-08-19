@@ -1,0 +1,27 @@
+yarsha_employer_security_login:
+    path: /employer/login
+    defaults: { _controller: "FOSUserBundle:Security:login" }
+
+yarsha_employer_security:
+    resource: "@YarshaEmployerBundle/Resources/config/routing/security.yml"
+    prefix: /employer
+
+#yarsha_employer_profile:
+#    resource: "@YarshaEmployerBundle/Resources/config/routing/profile.yml"
+#    prefix: /employer/view/profile
+
+#yarsha_employer_register:
+#    resource: "@YarshaEmployerBundle/Resources/config/routing/registration.yml"
+#    prefix: /employer/register
+#
+#yarsha_employer_resetting:
+#    resource: "@YarshaEmployerBundle/Resources/config/routing/resetting.yml"
+#    prefix: /employer/resetting
+
+yarsha_employer_change_password:
+    resource: "@YarshaEmployerBundle/Resources/config/routing/change_password.yml"
+    prefix: /employer
+
+yarsha_employer_controllers:
+    resource: "@YarshaEmployerBundle/Controller"
+    type: annotation

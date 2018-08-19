@@ -1,0 +1,54 @@
+<div class="dashboard-section-dropdown dashboard-bg-color">
+    <h1 class="show-hide-blk dropdown-h1-title untoggable-title">contact your account manager</h1>
+    <ul class=" profile-below-blk">
+        <div class="cntc-acc-manager-blk clearfix">
+
+            {% set name = 'N/A' %}
+            {% set designation = 'N/A' %}
+            {% set contactEmail = 'N/A' %}
+            {% set mobile = 'N/A' %}
+
+            {% if(contactPerson is defined and contactPerson != null) %}
+                {% set imgSrc = (contactPerson.photo != "") ? asset('uploads/users/')~contactPerson.photo : asset('images/20170226125105.png') %}
+                {% set name = contactPerson.name %}
+                {% set designation = contactPerson.designation %}
+                {% set contactEmail = contactPerson.contactEmail %}
+                {% set phone = contactPerson.phone %}
+                {% set mobile = contactPerson.mobile %}
+
+                <div class="row">
+
+                    <div class="col-md-5 col-sm-5">
+                        <img src="{{ imgSrc }}">
+                    </div>
+                    <div class="col-md-7 col-sm-7 cntc-acc-manager-blk-right">
+                        <h2>{{ name }} </h2>
+                        <span>{{ designation }}</span><br>
+                        <span>
+                            <i class="fa fa-phone-square" aria-hidden="true"></i> {{ phone }}
+                        </span><br>
+                         <span>
+                            <i class="fa fa-mobile" aria-hidden="true"></i> {{ mobile }}
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-12 col-sm-12">
+                    <div class="row">
+                        <ul>
+                            <li>
+
+                            </li>
+                            <li><a href="mailto:{{ contactEmail }}"> <i class="fa fa-envelope"
+                                                                        aria-hidden="true"></i>
+                                    &nbsp;{{ contactEmail }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            {% else %}
+                {{ ys_no_contents('No Account Manager Assigned') }}
+            {% endif %}
+
+        </div>
+    </ul>
+</div>

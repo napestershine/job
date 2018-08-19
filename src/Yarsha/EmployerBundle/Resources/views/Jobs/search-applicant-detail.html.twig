@@ -1,0 +1,294 @@
+{% extends 'YarshaEmployerBundle::employer_layout.html.twig' %}
+{% block styles %}
+    <link rel="stylesheet" href="{{ asset('bundles/yarshafrontend/css/loading.min.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="search-job-filter-wrap profile-detail-resume">
+        <div class="clearfix">
+            <div class="row">
+                <div class="profile-detail-resume-cover">
+                    <div class="circle-img">
+                        {% if(detail.path) %}
+                            {#{% set proImg = asset('uploads/seekers/'~detail.path) %}#}
+                            {% set proImg = check_path(detail.path) %}
+                        {% else %}
+                            {% set proImg = asset('images/20170226125105.png') %}
+                        {% endif %}
+                        <img src="{{ proImg }}"/>
+                    </div>
+                </div>
+                <h2>{{ detail.firstName|title }} {{ detail.middleName|title }} {{ detail.lastName|title }}</h2>
+                <h3>{{ detail.currentAddress }}</h3>
+
+                {% if(detail.hasExperience) %}
+                    <span>
+                            Experience: {{ detail.noOfYear? detail.noOfYear~'Y,':'' }} {{ detail.noOfMonth?detail.noOfMonth~'M':'' }}
+                         </span>
+                {% endif %}
+                {% if applicant is defined and applicant == true %}
+                    {% if(detail.curriculumVitaePath) %}
+                        {% set cvFile = asset('uploads/seekers/'~detail.curriculumVitaePath) %}
+                        <a target="_blank" href="{{ path('yarsha_employer_cv_download',{'id':detail.id}) }}"
+                           class="btn btn-default">Download CV</a>
+                        <a target="_blank" href="{{ cvFile }}" class="btn btn-default">View Uploaded CV</a>
+                    {% else %}
+                        {{ ys_no_contents('No cv uploaded yet.') }}
+                    {% endif %}
+                {% else %}
+
+                    <a href="#" onclick="sendMessageModal(event)" class="btn btn-default">Send Message</a>
+                    <a href="#" onclick="requestCv(event, this)" data-seeker-id="{{ detail.id }}"
+                       class="btn btn-default">Request CV</a>
+                {% endif %}
+                <p>{{ detail.objectives }}</p>
+                {% if applicant is defined and applicant == true %}
+                    <div class="profile-detail-resume-brm-bar">
+                        Mobile No: {{ detail.mobile }} | Home Phone: 01 {{ detail.phone }} | Email
+                        Address: {{ detail.contactEmail }}
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    {% set profileInfos = [
+    'personal_information',
+    'education_information',
+    'trainings'
+    ] %}
+
+    {% for p in profileInfos %}
+        {% set template = 'YarshaJobSeekerBundle:Blocks/Profile:'~p~'.html.twig' %}
+        {{ sonata_block_render({'type':'yarsha.block.seeker_profile'}, {'section':p,'template':template, 'seeker':detail, 'employer':true}) }}
+    {% endfor %}
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">Experiences</div>
+            </div>
+        </div>
+
+        <div class="posted-jobs-blk-list-blk">
+            {% if(detail.experiences|length > 0) %}
+                <table class="table table-stripe">
+
+
+                    {% for experience in detail.experiences %}
+                        <tr>
+                            <td style="width: 20%">
+                                <b>{{ experience.designation }}</b><br>
+                                {{ experience.employmentType|title }} Time<br>
+                                {{ experience.fromDay }} {{ experience.fromMonth~',' }} {{ experience.fromYear }} -
+                                {{ experience.toDay }} {{ experience.toMonth~',' }} {{ experience.toYear }}
+
+                            </td>
+                            <td>
+                                <b>{{ experience.organizationName }}</b>
+                                <p class="subDetails">
+                                <p><b>Job by
+                                        function:</b> {{ experience.organizationType ? experience.organizationType.title : '' }}
+                                </p>
+                                <p><b>Country:</b> {{ experience.country ? experience.country.name : '' }}</p>
+
+                                </p>
+                                <p><strong>Duties and Responsibilities:</strong> {{ experience.roles | raw }}</p>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+
+                </table>
+            {% else %}
+                {{ ys_no_contents('No Experiences added.') }}
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">Languages</div>
+            </div>
+        </div>
+
+        <div class="posted-jobs-blk-list-blk">
+
+
+            <div class="row">
+
+                {% if(detail.languages|length > 0) %}
+
+                    {% for language in detail.languages %}
+
+
+                        <div class="col-md-6 lng-rating-blk">
+                            <table>
+                                <tr>
+                                    <th style="width: 20%">Language</th>
+                                    <th>{{ language.language }}</th>
+                                </tr>
+                                <tr>
+                                    <td>Reading</td>
+                                    <td>
+
+                                        {% if(language.reading == 'poor') %}
+                                            {% set width1 = '25%' %}
+                                        {% elseif(language.reading == 'average') %}
+                                            {% set width1 = '50%' %}
+                                        {% elseif(language.reading == 'good') %}
+                                            {% set width1 = '75%' %}
+                                        {% else %}
+                                            {% set width1 = '100%' %}
+                                        {% endif %}
+
+                                        <div style="background: #0495D4; width: {{ width1 }}; color: #fff; text-align: center;">
+                                            {{ language.reading | title }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Writing</td>
+                                    <td>
+
+                                        {% if(language.writing == 'poor') %}
+                                            {% set width2 = '25%' %}
+                                        {% elseif(language.writing == 'average') %}
+                                            {% set width2 = '50%' %}
+                                        {% elseif(language.writing == 'good') %}
+                                            {% set width2 = '75%' %}
+                                        {% else %}
+                                            {% set width2 = '100%' %}
+                                        {% endif %}
+
+                                        <div style="background: #0495D4; width: {{ width2 }}; color: #fff; text-align: center;">
+                                            {{ language.writing | title }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Speaking</td>
+                                    <td>
+                                        {% if(language.speaking == 'poor') %}
+                                            {% set width3 = '25%' %}
+                                        {% elseif(language.speaking == 'average') %}
+                                            {% set width3 = '50%' %}
+                                        {% elseif(language.speaking == 'good') %}
+                                            {% set width3 = '75%' %}
+                                        {% else %}
+                                            {% set width3 = '100%' %}
+                                        {% endif %}
+                                        <div style="background: #0495D4; width: {{ width3 }}; color: #fff; text-align: center;">
+                                            {{ language.speaking | title }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    {% endfor %}
+                {% else %}
+
+                    {{ ys_no_contents('No languages added.') }}
+
+                {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+
+    {{ sonata_block_render({'type':'yarsha.block.seeker_followed_companies'},{'title':'Companies Followed', 'seeker':detail}) }}
+
+    {% include '@YarshaFrontend/Includes/commonmodal.html.twig' %}
+{% endblock content %}
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay.min.js
+"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay_progress.min.js
+"></script>
+    {#<script src="{{ asset('bundles/yarshafrontend/js/jquery.loading.min.js') }}"></script>#}
+    <script>
+        function requestCv(e, obj) {
+            $.LoadingOverlay("show");
+            e.preventDefault();
+            var seekerId = $(obj).data('seeker-id'),
+                    url = "{{ path('yarsha_ajax_employer_request_cv', {'seekerId':'SEEKER_ID'}) }}"
+                    ;
+            url = url.replace('SEEKER_ID', seekerId);
+            $.ajax({
+                url: url,
+                method: "POST",
+                success: function (data) {
+                    $.LoadingOverlay("hide");
+                    $("#thankyouModal").modal('toggle');
+                    $("#thankyouModal").find('.modal-title').html('CV Request');
+                    if (data.success) {
+                        $("#thankyouModal").find('.content-message').html('Your CV request has been sent to Job seeker.');
+                    } else {
+                        $("#thankyouModal").find('.content-message').html(data.errorMessage);
+                    }
+                },
+                error: function (err) {
+                    $.LoadingOverlay("hide");
+                    $("#thankyouModal").modal('toggle');
+                    $("#thankyouModal").find('.modal-title').html('CV Request');
+                    $("#thankyouModal").find('.content-message').html("Something went wrong. Unable to request cv of that user.");
+                }
+            });
+        }
+
+        function sendMessageModal(e) {
+            e.preventDefault();
+            var myModal = $("#myCommonModal");
+            $.ajax({
+                url: "{{ path('yarsha_ajax_employer_get_send_message_form') }}",
+                method: "GET",
+                success: function (data) {
+                    myModal.modal('toggle');
+                    myModal.find('.my-modal-content').html(data.template);
+                }
+            });
+        }
+
+        function sendMessageToSeeker(e, obj) {
+            e.preventDefault();
+            $.LoadingOverlay("show");
+            var myModal = $("#myCommonModal");
+            url = "{{ path('yarsha_ajax_employer_send_message', {'seekerId':'SEEKER_ID'}) }}";
+            url = url.replace('SEEKER_ID', {{ detail.id }});
+            fd = new FormData(obj);
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    $.LoadingOverlay("hide");
+                    myModal.modal('toggle');
+                    $("#thankyouModal").modal('toggle');
+                    $("#thankyouModal").find('.modal-title').html('Message to Seeker');
+                    if (data.success) {
+                        $("#thankyouModal").find('.content-message').html('Your message has been sent to Job seeker.');
+                    } else {
+                        $("#thankyouModal").find('.content-message').html("Something went wrong. Unable to send message.");
+                    }
+                },
+                error: function (data) {
+                    $.LoadingOverlay("hide")
+                    myModal.modal('toggle');
+                    $("#thankyouModal").modal('toggle');
+                    $("#thankyouModal").find('.modal-title').html('Message to Seeker');
+                    $("#thankyouModal").find('.content-message').html("Something went wrong. Unable to send message.");
+                }
+            });
+        }
+
+
+    </script>
+{% endblock %}

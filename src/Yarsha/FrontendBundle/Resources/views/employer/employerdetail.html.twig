@@ -1,0 +1,31 @@
+{% extends 'YarshaFrontendBundle::frontend_layout.html.twig' %}
+{% block styles %}
+    <style>
+        .carousel-indicators li {
+            display: none;
+        }
+
+        .company-info-blk p {
+            line-height: 24px;
+            text-align: justify;
+        }
+
+        .current-vacancy {
+            display: none;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% if organization.categoryType == 'featured' %}
+        {{ include("YarshaFrontendBundle:employer:featured_employer.html.twig") }}
+    {% elseif organization.categoryType in ['top', 'super','hiring'] %}
+
+        {{ include("YarshaFrontendBundle:employer:top_super_employerdetail.html.twig") }}
+    {% else %}
+        {{ include("YarshaFrontendBundle:employer:normal_employerdetail.html.twig") }}
+    {% endif %}
+
+    {% include 'YarshaFrontendBundle:Includes:suggesttofriendmodal.html.twig' %}
+{% endblock %}

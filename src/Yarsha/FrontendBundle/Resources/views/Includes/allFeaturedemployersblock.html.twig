@@ -1,0 +1,59 @@
+<style>
+    .inner-pages-footer-top-section {
+        display: none;
+    }
+</style>
+
+
+<!-- top employers detail page section -->
+<section class="top-employer-inner-page featured-emp-inner-page top-employer-list">
+    <div class="container">
+        <h2 class="title"><i class="fa fa-check-square-o" aria-hidden="true"></i> &nbsp;Featured employers</h2>
+        <div class="">
+
+            {% if(featuredEmployers) %}
+                {% for org in featuredEmployers %}
+
+                    <div class="col-md-4 col-sm-6">
+                        <div class="inner-top-emp-detail clearfix">
+                            <div class="col-md-12 img-detail-wrap">
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-3 employer-detail-page-logo">
+                                        <img src="{{ organization_profile_image(org)|imagine_filter('thumb_small') }}">
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 inner-top-emp-detail-right">
+                                        <h2>
+                                            <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':org.slug}) }}">{{ org.name }}</a>
+                                        </h2>
+                                        <span class="address">{{ org.address }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 follower-wrap">
+                                    <span class="jobs-count">
+                                        <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':org.slug}) }}">
+                                            <i class="fa fa-briefcase" aria-hidden="true"></i>
+                                            &nbsp;{{ count_jobs_by_organization(org) }} Jobs
+                                        </a>  |
+                                    </span>
+                                    <span class="follower-count">
+                                        {{ org.followers|length }}&nbsp; Followers |
+                                    </span>
+                                    <span class="follow-us">
+                                        {{ render_follow_button(org, app.user, 'text-danger text-bold') }}
+                                    </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                {% endfor %}
+            {% else %}
+                {{ ys_no_contents('Featured employer does not exist.') }}
+            {% endif %}
+
+
+        </div>
+    </div>
+</section>

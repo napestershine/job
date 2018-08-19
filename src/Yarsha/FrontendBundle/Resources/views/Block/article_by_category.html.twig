@@ -1,0 +1,111 @@
+<style>
+
+    .hot-job-list li h1 {
+        font-size: 14px;
+        color: #000;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-top: 0;
+        margin-bottom: 5px;
+        overflow: hidden;
+        height: 27px;
+    }
+</style>
+
+
+
+{#<section class="job-search-section">#}
+    {#<div class="container">#}
+        {#<div class="row">#}
+            {#<div class="col-md-12"><h2>get more from your job search</h2></div>#}
+            {#{% if careerResources|length %}#}
+            {#<div class="col-md-4 col-sm-4">#}
+                {#<h3><i class="fa fa-lightbulb-o" aria-hidden="true"></i> &nbsp;Career Resources</h3>#}
+                {#<ul class="hot-job-list btm-job-search-blk">#}
+                    {#{% for careerResource in careerResources %}#}
+                        {#<li>#}
+                            {#<div class="row">#}
+                                {#<div class="col-md-3 col-sm-3 btm-job-left-blk">#}
+                                    {#{% if careerResource.image | length %}#}
+                                        {#<img src="{{ asset('images/career_resource_image.png') }}" alt="">#}
+                                    {#{% else %}#}
+                                        {#<img src="{{ asset('images/career_resource_image.png') }}" alt="">#}
+                                    {#{% endif %}#}
+                                {#</div>#}
+                                {#<div class="col-md-9 col-sm-9 btm-job-right-blk">#}
+                                    {#<h1><a href="{{ article_detail_url(careerResource) }}">{{ careerResource.title }}</a></h1>#}
+                                    {#<p>{{ trim_content(careerResource.content) }}</p>#}
+                                {#</div>#}
+                            {#</div>#}
+                        {#</li>#}
+                    {#{% endfor %}#}
+
+                {#</ul>#}
+                {#<div class="row">#}
+                    {#<div class="col-md-12 hot-job-more-btn"><input type="submit" value="BROWSE ALL"></div>#}
+                {#</div>#}
+            {#</div>#}
+            {#{% endif %}#}
+
+            {#{% if loksewaResources|length %}#}
+            {#<div class="col-md-4 col-sm-4">#}
+                {#<h3><i class="fa fa-users" aria-hidden="true"></i> &nbsp;Resources Center - Loksewa</h3>#}
+                {#<ul class="hot-job-list btm-job-search-blk">#}
+                    {#{% for loksewaResource in loksewaResources %}#}
+                        {#<li>#}
+                            {#<div class="row">#}
+                                {#<div class="col-md-3 col-sm-3 btm-job-left-blk">#}
+                                    {#{% if loksewaResource.image | length %}#}
+                                        {#<img src="{{ asset('images/resource_center_image.png') }}" alt="">#}
+                                    {#{% else %}#}
+                                        {#<img src="{{ asset('images/resource_center_image.png') }}" alt="">#}
+                                    {#{% endif %}#}
+                                    {#<img src="{{ imgSrc }}" alt="">#}
+                                {#</div>#}
+
+                                {#<div class="col-md-9 col-sm-9 btm-job-right-blk">#}
+                                    {#<h1><a href="{{ article_detail_url(loksewaResource) }}">{{ loksewaResource.title }}</a></h1>#}
+                                    {#<p>{{ trim_content(loksewaResource.content) }}</p>#}
+                                {#</div>#}
+                            {#</div>#}
+
+                        {#</li>#}
+                    {#{% endfor %}#}
+                {#</ul>#}
+                {#<div class="row">#}
+                    {#<div class="col-md-12 hot-job-more-btn"><input type="submit" value="BROWSE ALL"></div>#}
+                {#</div>#}
+            {#</div>#}
+            {#{% endif %}#}
+
+            {#{% if news|length %}#}
+            {#<div class="col-md-4 col-sm-4">#}
+                {#<h3><i class="fa fa-newspaper-o" aria-hidden="true"></i> &nbsp;Latest News</h3>#}
+                {#<ul class="hot-job-list btm-job-search-blk">#}
+                    {#{% for new in news %}#}
+                        {#<li>#}
+                            {#<div class="row">#}
+                                {#<div class="col-md-3 col-sm-3 btm-job-left-blk">#}
+                                    {#{% if new.image | length %}#}
+                                        {#<img src="{{ asset('images/latest_news.png') }}" alt="">#}
+                                    {#{% else %}#}
+                                        {#<img src="{{ asset('images/latest_news.png') }}" alt="">#}
+                                    {#{% endif %}#}
+                                {#</div>#}
+                                {#<div class="col-md-9 col-sm-9 btm-job-right-blk">#}
+                                    {#<h1><a href="{{ article_detail_url(new) }}">{{ new.title }}</a></h1>#}
+                                    {#<p>{{ trim_content(new.content) }}</p>#}
+                                {#</div>#}
+                            {#</div>#}
+
+                        {#</li>#}
+                    {#{% endfor %}#}
+                {#</ul>#}
+                {#<div class="row">#}
+                    {#<div class="col-md-12 hot-job-more-btn"><input type="submit" value="BROWSE ALL"></div>#}
+                {#</div>#}
+            {#</div>#}
+            {#{% endif %}#}
+        {#</div>#}
+    {#</div>#}
+{#</section>#}

@@ -1,0 +1,120 @@
+<style>
+    label.control-label {
+        display: inline-block;
+    }
+
+    .table ul{margin-left:10px}
+    .table ul li{}
+</style>
+
+<div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix" id="profile_{{ setting.section }}">
+    <div class="title">
+        <div class="row">
+            <div class="col-md-10 col-sm-10">Training</div>
+            {% if setting.employer == false %}
+            <div class="col-md-2 col-sm-2 right">
+                <input type="submit" data-toggle="modal"
+                       data-target="#addTraining"
+                       data-trainingId=""
+                       data-title="Add Training"
+                       value="+ Add Or Edit">
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div class="posted-jobs-blk-list-blk">
+        {% if data | length %}
+        <table class="table">
+            <tr>
+
+                <th>Title</th>
+                <th>Institution</th>
+                <th style="width: 10%">Duration</th>
+                <th>Objectives</th>
+            </tr>
+            {% for training in data %}
+                <tr>
+
+                    <td>{{ training.title }}</td>
+                    <td>{{ training.institution }}</td>
+                    <td>{{ training.year ? training.year ~ ' years ': ''}} {{ training.duration }}</td>
+                    <td>{{ training.objective|raw }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            {{ ys_no_contents('No training added.') }}
+        {% endif %}
+
+    </div>
+    <div class="modal fade" id="addTraining" role="dialog" arial-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" class="close">&times</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#addTraining').on('show.bs.modal', function (e) {
+            var modal = $(this);
+            var button = $(e.relatedTarget);
+            var title = button.attr('data-title');
+            var url = "{{ path('yarsha_job_seeker_ajax_add_training') }}";
+            modal.find('.modal-title').html(title);
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function (res) {
+                    modal.find('.modal-body').html(res.template);
+//                    modal.find('.modal-body form').on('submit', function(){
+//                        for ( instance in CKEDITOR.instances ) {
+//                            CKEDITOR.instances[instance].updateElement();
+//                        }
+//                        submitTraining(url, $(this));
+//                    });
+                },
+                error: function (res) {
+                    alert(res.message);
+                }
+            });
+        });
+
+        function submitTraining(_obj){
+            var url = "{{ path('yarsha_job_seeker_ajax_add_training') }}";
+            for ( instance in CKEDITOR.instances ) {
+                CKEDITOR.instances[instance].updateElement();
+            }
+            $.LoadingOverlay('show');
+            var form = $(_obj);
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                success: function (res) {
+                    window.location = ''
+                },
+                error: function (res) {
+
+                },
+                then: function(res)
+                {
+                    $.LoadingOverlay('hide');
+                }
+            });
+
+
+            return false;
+        }
+
+    });
+</script>

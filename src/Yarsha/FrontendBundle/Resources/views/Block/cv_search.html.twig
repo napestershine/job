@@ -1,0 +1,94 @@
+<div id="cv-block">
+    <div class="container">
+        <div class="cv-Searchwrapper">
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-offset-0 col-md-push-8 col-md-4">
+                    <div class="rightCvSearchwrapper text-center">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h1>89%</h1>
+                                <p>of job seekers have received prompt response from kantipurjob.com after registration</p>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="did-you-know text-uppercase">
+                                    <p>
+                                        did you <br>
+                                        know?
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <h1>91%</h1>
+                                <p>of job seekers registered in their first attempt and applied for their dream job through
+                                    kantipurjob.com</p>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                {% if(jobSeekers|length > 0) %}
+
+
+                <!--                leftside section-->
+                <div class="col-xs-12 col-sm-12 col-md-pull-4 col-md-8">
+                    <!--                    cv header name block-->
+                    <div class="person-detailHead">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h3 class="text-uppercase">
+                                    hire me&nbsp;&nbsp;|&nbsp;&nbsp;search cv
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!--                    cv individual block-->
+                    <div class="row">
+
+                        {% for jobSeeker in jobSeekers%}
+
+                            <div class="col-sm-6 alter-width">
+                                <a href="{{ path('yarsha_frontend_seeker_cv_search',{'slug':jobSeeker.username}) }}">
+                                    <div class="person-detail">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="cv-image">
+
+                                                    {% if(jobSeeker.path) %}
+                                                        {% set proImg = check_path(jobSeeker.path) %}
+                                                    {% else %}
+                                                        {% set proImg = asset('bundles/yarshaadmin/images/user.png') %}
+                                                    {% endif %}
+                                                    <img src="{{ proImg }}" class="img-responsive"/>
+                                                    {#<img class="img-responsive" src="{{ asset('bundles/yarshafrontend/images/man.jpg') }}" alt="">#}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <h4>{{ jobSeeker.getFullName() | truncate(20) }}</h4>
+                                                <p>Education:<span title="{{ jobSeeker.degree?jobSeeker.degree.name:'' }}">{{ jobSeeker.degree?jobSeeker.degree.name:'' }}</span></p>
+                                                <p>Experience:
+                                                    {% if(jobSeeker.hasExperience) %}
+                                                        <span>
+                                                       {{ jobSeeker.noOfYear? jobSeeker.noOfYear~'Y,':'' }} {{ jobSeeker.noOfMonth?jobSeeker.noOfMonth~'M':'' }}
+                                                      </span>
+                                                    {% endif %}</p>
+                                                <p>Category:<span title="{{ jobSeeker.preferredCategories|first }}">{{ jobSeeker.preferredCategories|first }}</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        {% endfor %}
+                    </div>
+                </div>
+                <!--                rightside section-->
+
+
+              {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+</div>

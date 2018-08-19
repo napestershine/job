@@ -1,0 +1,134 @@
+{% extends 'YarshaEmployerBundle::employer_layout.html.twig' %}
+
+{% block content %}
+
+    <div class="company-info-blk dashboard-bg-color jobseeker-search-wrap clearfix">
+        <form action="" method="get">
+            <div class="title">
+                <div class="row">
+                    <div class="col-md-9 col-sm-9">search a job</div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-sm-3">
+                    <input type="text" name="title" placeholder="Keywords" value="{{ app.request.get('title') }}">
+                </div>
+                <div class="col-md-3 col-sm-3">
+                    {{ job_status(app.request.get('status')) }}
+                </div>
+                <div class="col-md-3 col-sm-3">
+                    <input type="submit" name="" value="Search">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-10 col-sm-10">Job List</div>
+                <div class="col-md-2 col-sm-2 right"><a href="{{ path('yarsha_employer_job_post') }}"><input
+                                type="submit" value="+ Add Jobs"></a></div>
+            </div>
+        </div>
+
+        <div class="posted-jobs-blk-list-blk">
+            {% if jobs | length %}
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>S.N</th>
+                        <th>Title</th>
+                        <th>Posted Date</th>
+                        <th>Deadline</th>
+                        <th>Applicants</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                    {% set count = pager_first_index(jobs) %}
+                    {% for job in jobs %}
+                        <tr id="tr_{{ job.id }}">
+                            <td>{{ count }}</td>
+                            <td>
+                                <a target="_blank"
+                                   href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}">
+                                    {{ job.title }}
+                                </a>
+                            </td>
+                            <td>{{ job.createdDate|date('M j,Y') }}</td>
+                            <td>{{ job.deadline|date('M j,Y') }}</td>
+                            {#<td>#}
+                            {#<a href="{{ path('yarsha_employer_job_applicants', {'id' : job.id}) }}">{{ total_applicant(job.id) }}#}
+                            {#&nbsp;View </a>#}
+                            {#</td>#}
+                            <td>
+                                <a href="{{ path('yarsha_employer_job_applicants', {'id' : job.id}) }}"  data-toggle="tooltip" title="View Applications">View
+                                    Applications</a>
+                            </td>
+                            <td>{{ render_employer_job_status(job.status) }}</td>
+                            <td>
+                                <a target="_blank"
+                                   href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}"
+                                   data-toggle="tooltip" title="View"
+                                >
+                                    <i class="fa fa-eye"
+                                       aria-hidden="true"></i>
+                                </a>
+                                |
+                                <a href="{{ path('yarsha_employer_job_update', {'id' : job.id}) }}"
+                                   data-toggle="tooltip" title="Edit"><i
+                                            class="fa fa-pencil-square-o" aria-hidden="true"></i></a> |
+                                <a href="{{ path('yarsha_employer_job_applicants', {'id' : job.id}) }}"
+                                   data-toggle="tooltip" title="Applicants"><i
+                                            class="fa fa-user" aria-hidden="true"></i></a>
+                                {#<a href="#"#}
+                                   {#onclick="deleteJob({{ job.id }})"#}
+                                   {#data-toggle="tooltip" title="Delete"><i class="fa fa-times"#}
+                                                                           {#aria-hidden="true"></i></a>#}
+                            </td>
+                        </tr>
+                        {% set count = count + 1 %}
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+
+            {% else %}
+                {{ ys_no_contents('No jobs added yet. Start Adding jobs by clicking on Post Job.') }}
+            {% endif %}
+
+            {% if jobs.haveToPaginate() %}{{ pagerfanta(jobs, 'twitter_bootstrap3') }}{% endif %}
+
+        </div>
+
+    </div>
+
+
+{% endblock content %}
+{% block scripts %}
+
+    <script type="text/javascript">
+
+        function deleteJob(id) {
+            var trId = 'tr_' + id;
+            var result = confirm('Are you sure ?');
+            if (result) {
+                var remoteUrl = "{{ url('yarsha_employer_job_delete', {'id': 'USERID'}) }}";
+                var remoteUrl = remoteUrl.replace('USERID', id);
+
+                $.ajax({
+                    type: 'GET',
+                    url: remoteUrl,
+                    success: function (res) {
+                        if (res && res.status == 'success') {
+                            $("#" + trId).remove();
+                        }
+                    }
+                });
+            }
+        }
+
+
+    </script>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "@YarshaEmployer/employer_layout.html.twig" %}
+{% block content %}
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">{{ title }} Candidates</div>
+
+            </div>
+        </div>
+        <div class="posted-jobs-blk-list-blk">
+            {% if applicants | length %}
+                <table>
+                    <tr>
+                        <th>S.N</th>
+                        <th>Profile</th>
+                        <th>Name</th>
+                        <th>Experience</th>
+                        <th>Education</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    {% set count = pager_first_index(applicants) %}
+                    {% for applicant in applicants %}
+                        {% set imgSrc = applicant.employee.path? asset('uploads/seekers/'~applicant.employee.path) : asset('images/20170226125105.png') %}
+                        <tr id="tr_{{ applicant.id }}">
+                            <td>{{ count }}</td>
+                            <td><img src="{{ imgSrc|imagine_filter('thumb_small') }}"
+                                /></td>
+                            <td>
+
+                                <a
+                                        href="{{ path('yarsha_employer_job_applicants_details',{'jobId':applicant.job.slug ,'id': applicant.employee.username}) }}"
+                                >  {{ applicant.employee.firstName|title }} {{ applicant.employee.lastName|title }}</a>
+                            </td>
+                            <td>
+                                {% if(applicant.employee.hasExperience) %}
+                                    {{ applicant.employee.noOfYear ? applicant.employee.noOfYear~ 'Year' : 'N/A' }}
+                                    {{ applicant.employee.noOfMonth ? applicant.employee.noOfMonth~ 'Month' : 'N/A' }}
+                                {% else %}
+                                    {{ 'N/A' }}
+                                {% endif %}
+                            </td>
+                            <td>{{ applicant.employee.degree }}</td>
+                            <td id="td_{{ applicant.id }}">
+                                {{ jobseeker_status(applicant.status) }}
+                            </td>
+                            <td>
+                                <a class="btn btn-xs btn-primary"
+                                        href="{{ path('yarsha_employer_job_applicants_details',{'jobId':applicant.job.slug ,'id': applicant.employee.username}) }}"
+                                        data-toggle="tooltip" title="View Details"><i
+                                            class="fa fa-eye"></i></a>
+                                <button title="Delete"
+                                        class="btn btn-xs btn-danger deleteApplicant"
+                                        data-employee="{{ applicant.id }}"
+                                >
+                                    <i class="fa fa-times"></i>
+                                </button>
+
+                            </td>
+
+                        </tr>
+                        {% set count = count + 1 %}
+                    {% endfor %}
+                </table>
+            {% else %}
+                {{ ys_no_contents('No candidates.') }}
+            {% endif %}
+            {% if applicants.haveToPaginate %}
+                {{ pagerfanta(applicants, 'twitter_bootstrap3') }}
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script>
+        $('.deleteApplicant').on('click', function (e) {
+
+            if (confirm('Are you sure to delete?')) {
+                var obj = $(this),
+                    employee = obj.data('employee');
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{ path('yarsha_employer_ajax_applicant_delete') }}',
+                    data: {employee: employee},
+                    success: function (res) {
+                        window.location = "";
+                    },
+                    error: function (xhr) {
+                        alert('Something went wrong. Please try again later.');
+                    },
+                    complete: function (xhr) {
+                    }
+                });
+            }
+        });
+
+
+    </script>
+
+
+
+{% endblock %}

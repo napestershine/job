@@ -1,0 +1,199 @@
+<div class="title">
+    Curriculam Vitae
+</div>
+<h1>Personal Profile</h1>
+<table>
+    <tbody>
+    <tr>
+        <td width="200">Full Name</td>
+        <td width="200">{{ jobseeker.firstName }} {{ jobseeker.middleName }} {{ jobseeker.lastName }}</td>
+    </tr>
+    <tr>
+        <td>Gender</td>
+        <td>{{ jobseeker.gender }}</td>
+    </tr>
+    <tr>
+        <td>Nationality</td>
+        <td>{{ jobseeker.nationality }}</td>
+    </tr>
+    <tr>
+        <td>Contact Email</td>
+        <td>{{ jobseeker.email }}</td>
+    </tr>
+    <tr>
+        <td>Current Address</td>
+        <td>{{ jobseeker.currentAddress }}</td>
+    </tr>
+    <tr>
+        <td>Permanent Address</td>
+        <td>{{ jobseeker.permanentAddress }}</td>
+    </tr>
+    <tr>
+        <td>Date of Birth</td>
+        <td>{{ jobseeker.dob|date('M j Y') }}</td>
+    </tr>
+    <tr>
+        <td>Contact Number</td>
+        <td>P:{{ jobseeker.phone }} M:{{ jobseeker.mobile }} OP:{{ jobseeker.officePhone }}</td>
+    </tr>
+    <tr>
+        <td>Marital Status</td>
+        <td>{{ jobseeker.maritalStatus }}</td>
+    </tr>
+    <tr>
+        <td>Available For</td>
+        <td>{{ jobseeker.availableFor }}</td>
+    </tr>
+
+    </tbody>
+
+</table>
+
+
+<h1>Work Experience</h1>
+
+
+{% for experience in jobseeker.experiences %}
+
+        <h2>{{ experience.organizationName }}</h2>
+        <p class="subDetails">{{ experience.fromYear }} {{ experience.fromMonth }}
+            - {{ experience.toYear }} {{ experience.toMonth }}</p>
+        <p>{{ experience.roles }}</p>
+        <ul class="keySkills">
+            <li>Designation: {{ experience.designation }}</li>
+            <li>Employment Type: {{ experience.employmentType }}</li>
+            <li>Organization Type: {{ experience.organizationType.name }}</li>
+            <li>Job Level: {{ experience.jobLevel.name }}</li>
+            <li>Countrty: {{ experience.country.name }}</li>
+        </ul>
+
+    </br>
+{% endfor %}
+
+
+<h1>Education</h1>
+
+
+<table>
+
+    <th>Institute</th>
+    <th>Degree</th>
+    <th>Year</th>
+    <th>Percentage</th>
+    </thead>
+
+
+    {% for education in educations %}
+        <tr>
+            <td>{{ education.institution }}</td>
+            <td>{{ education.degree }}</td>
+            <td>{{ education.year }}</td>
+            <td>{{ education.percentage }}</td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+
+<h1>Lamguages</h1>
+
+
+<table>
+
+    <th>Language</th>
+    <th>Reading</th>
+    <th>Writing</th>
+    <th>Speaking</th>
+
+    <tbody>
+
+    {% for language in jobseeker.languages %}
+        <tr>
+            <td>{{ language.language }}</td>
+            <td>{{ language.reading }}</td>
+            <td>{{ language.writing }}</td>
+            <td>{{ language.speaking }}</td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+
+<h1>Training</h1>
+
+
+<table align="center">
+
+    <th>Title</th>
+    <th>Institution</th>
+    <th>Year</th>
+    <th>Duration</th>
+
+    <tbody>
+
+    {% for training in jobseeker.trainings %}
+        <tr>
+            <td>{{ training.title }}</td>
+            <td>{{ training.institution }}</td>
+            <td>{{ training.year }}</td>
+            <td>{{ training.duration }}</td>
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+
+<h1>References</h1>
+
+
+<table>
+    <tbody>
+    {% for reference in jobseeker.references %}
+        <tr>
+            <td>organization</td>
+            <td>{{ reference.organization }} </td>
+        </tr>
+        <tr>
+            <td>Designation</td>
+            <td>{{ reference.designation }} </td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>{{ reference.name }} </td>
+        </tr>
+        <tr>
+            <td>Address</td>
+            <td>{{ reference.address }} </td>
+        </tr>
+        <tr>
+            <td>Home Phone Number</td>
+            <td>{{ reference.homePhone }} </td>
+        </tr>
+        <tr>
+            <td>Office Phone Number</td>
+            <td>{{ reference.officePhone }} </td>
+        </tr>
+        <tr>
+            <td>Email Address</td>
+            <td>{{ reference.email }} </td>
+        </tr>
+        <tr>
+            <td>Mobile Number</td>
+            <td>{{ reference.mobile }} </td>
+        </tr>
+    {% endfor %}
+    <br>
+
+
+    </tbody>
+
+</table>

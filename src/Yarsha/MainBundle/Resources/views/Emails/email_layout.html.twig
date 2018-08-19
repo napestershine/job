@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- meta viewport -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- title -->
+    <title>Kantipur Jobs - Email Notification</title>
+    <!-- stylesheet -->
+    <style type="text/css">
+        body {
+            background: #1899d3;
+            margin: 0;
+            padding: 0;
+        }
+
+        .em-wrapper {
+            width: 600px;
+            margin: 10px auto;
+        }
+
+        table {
+            width: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        img.logo-right-image {
+            width: 50%;
+            margin-top: 6px;
+        }
+
+        tr.table-header td {
+            padding: 30px 15px;
+        }
+
+        .personalInfo-table td, .personalInfo-table th {
+            border: 1px #b7b7b7 solid;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table.dear-blk td {
+            padding: 16px;
+        }
+
+        table.personalInfo-table td {
+            color: #ef4600;
+            font-style: italic;
+        }
+
+        table.personalInfo-table th {
+            color: #383838;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        table.personalInfo-table td a {
+            color: #0041ff;
+            text-decoration: none;
+        }
+
+        a.update-anchor {
+            display: block;
+            text-decoration: none;
+            background: transparent;
+            padding: 8px;
+            border-radius: 2px;
+            color: #404040;
+            text-transform: uppercase;
+            font-size: 12px;
+            padding-top: 9px;
+            border: 1px #1A98D3 solid;
+            text-align: center;
+        }
+
+        .requestAcall-blk td {
+            border: 1px #b7b7b7 solid;
+        }
+
+        table.requestAcall-blk td {
+            padding: 20px;
+            text-align: center;
+            font-size: 11px;
+            line-height: 20px;
+            font-weight: bold;
+            color: #1A98D3;
+            text-transform: uppercase;
+        }
+
+        table.requestAcall-blk td a {
+            text-decoration: none;
+            color: #0041ff;
+        }
+
+        table.recruiters-table td {
+            border: 1px #b7b7b7 solid;
+            text-align: center;
+            padding: 9px;
+            font-size: 14px;
+        }
+
+        table.recruiters-table {
+            background: #1A98D3;
+            color: #fff;
+            margin-top: 5px;
+        }
+
+        table.footer tr {
+            color: #e3e3e3;
+            font-size: 12px;
+        }
+
+        table.footer tr a {
+            color: #FFF;
+        }
+
+        table.footer tr td {
+            padding: 9px;
+            line-height: 17px;
+            text-align: justify;
+        }
+
+        .job-detail-list h4, .job-detail-list p {
+            margin: 0 0 0 0;
+            line-height: 20px;
+        }
+
+        .job-detail-list h4 {
+            color: #1899d3;
+        }
+
+        .job-detail-list tr td {
+            padding: 0;
+        }
+
+        .apply-now-btn {
+            border: none;
+            color: #fff;
+            padding: 8px 10px;
+            background: #1A98D2;
+            margin-bottom: 20px;
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .view-more-link {
+            color: #f2652a;
+            text-decoration: none;
+        }
+
+        .view-more-link span {
+            font-size: 8px;
+        }
+
+        .em-btn {
+            display: block;
+            float: left;
+            margin-right: 10px;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #FFF;
+            text-transform: capitalize;
+            font-size: 12px;
+            text-align: center
+        }
+
+        .em-visit-website-btn {
+            background: #1a98d3;
+        }
+
+        .em-view-all-btn {
+            background: #f2652a;
+        }
+
+        .em-job-desc {
+            padding: 0 10px 0 10px !important;
+        }
+
+        .em-lg-50 {
+            width: 30%
+        }
+
+        @media (max-width: 640px) {
+            .em-wrapper {
+                width: 100%;
+                margin: 0;
+            }
+
+            .em-btn {
+                width: 100%;
+                padding: 5px 0;
+                margin-bottom: 5px;
+            }
+
+            .em-job-desc {
+                padding: 0 !important;
+            }
+
+            .em-job-spec {
+                display: block;
+                width: 70%;
+                float: left
+            }
+
+            .em-apply-btn {
+                display: block;
+                width: 30%
+            }
+
+            .td-lf-lg-pad {
+                padding: 5px !important;
+            }
+        }
+    </style>
+
+    {% block styles %} {% endblock %}
+
+</head>
+
+<body style="background: #1899d3; margin: 0; padding: 5px 0 0 0; font-size:14px ">
+
+<div class="em-wrapper">
+    <table style="border:none; background: #FFF; margin-bottom:4px;">
+        <tbody>
+        <tr class="table-header">
+            <td style="text-align: left;">
+                <a href="{{ url('yarsha_frontend_homepage') }}">
+                    <img src="{{ absolute_url(asset('bundles/yarshamain/images/email/logo.png')) }}"
+                         style="width: auto;">
+                </a>
+            </td>
+            <td style="text-align: right; width: 20%">
+                {% block header_right_image %}{% endblock %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="dear-blk"
+           style="background: #fff;color: #404040; line-height: 24px; font-weight: 100;margin-bottom: 5px;text-align: justify; ">
+        <tr>
+            <td style="">
+                {% block salutation %}{% endblock %}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {% block email_body %}{% endblock %}
+            </td>
+        </tr>
+    </table>
+
+    {% block other_content %}{% endblock %}
+
+    <table style="background: #FFF; padding:2px; font-size: 12px; line-height: 16px;text-align: justify;">
+        <tr>
+            <td style="color: #1899d3; padding:10px 0 10px 10px; width: 60%">
+                <p style="border-right:1px solid #1899d3; padding-right: 10px ">
+                    Please add this email jobalert<span>@</span>kantipurjob<span>.</span>com to your contact list to
+                    prevent future job alerts
+                    from being
+                    directed to your junk/spam/bulk folder.
+                </p>
+            </td>
+            <td style="color:#f2652a; text-align:center">
+                <strong>Contact Us</strong><br>
+                <span>+977 1</span> 4435619, 4435620 <br>
+                info<span>@</span>kantipurjob<span>.</span>com
+            </td>
+        </tr>
+    </table>
+
+    <table class="footer">
+        <tr>
+            <td>
+                <span style="color:#fff;"> <strong>Disclaimer:</strong></span>
+
+                {% block disclaimer_intro %}{% endblock %}
+
+                This is a system generated email, please dont reply to this
+                message. For <a href="{{ url('yarsha_frontend_terms') }}" style="text-decoration: none;">Terms and
+                    Conditions</a> and other legal
+                disclaimers, please visit
+                kantipurjob<span>.</span>com
+                {% block disclaimer_closure %}{% endblock %}
+            </td>
+        </tr>
+    </table>
+
+
+</div>
+
+
+</body>
+</html>

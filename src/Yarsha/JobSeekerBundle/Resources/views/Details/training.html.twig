@@ -1,0 +1,24 @@
+{{ form_start(form) }}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+<div class="row">
+    <div class="col-md-12">{{ form_row(form.title) }}</div>
+    <div class="clearfix"></div>
+    <div class="col-md-8">{{ form_row(form.institution) }}</div>
+    <div class="col-md-2">{{ form_row(form.year) }}</div>
+    <div class="col-md-2">{{ form_row(form.duration) }}</div>
+    <div class="clearfix"></div>
+    <div class="col-md-12">{{ form_row(form.address) }}</div>
+    <div class="col-md-12">{{ form_row(form.objective) }}</div>
+</div>
+
+
+<div class="modal-footer">
+    <input type="submit" class="btn btn-primary" value="SAVE">
+
+    <button type="button" class="btn btn-danger" data-dismiss="modal">
+        CANCEL
+    </button>
+</div>
+
+{{ form_end(form) }}

@@ -1,0 +1,26 @@
+{% extends 'YarshaFrontendBundle::frontend_layout.html.twig' %}
+
+{% block content %}
+
+<div class="container">
+
+
+    {% if(employers) | length %}
+    {% for employer in employers %}
+    <div class="col-md-2">
+        {% set imgSrc = employer.organization.path %}
+        <img src="{{ asset('uploads/employers/')  ~ imgSrc }}" alt="Company Logo">
+        <span>
+                        <a href="{{ path("yarsha_frontend_follow_employer", {'id':employer.id}) }}">+ follow</a>
+                    </span>
+    </div>
+    <div class="col-md-10">
+        <p>Address: <span>{{ employer.organization.address }}</span></p>
+    </div>
+    {% endif %}
+    {% else %}
+        <h4>No available employers.</h4>
+    {% endif %}
+</div>
+
+{% endblock %}

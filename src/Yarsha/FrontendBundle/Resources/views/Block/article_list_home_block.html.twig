@@ -1,0 +1,58 @@
+<div class="col-md-4 col-sm-4 ">
+<div class="article-wrap article-wrap-side-list">
+    <h4 class="article-block-title">
+        {#<i class="fa {{ settings.iconClass }}" aria-hidden="true"></i> &nbsp;#}
+        {#<i class="fa bg-red" aria-hidden="true"></i> &nbsp;#}
+        {{ settings.title }}
+    </h4>
+    {#<h3><i class="fa {{ settings.iconClass }}" aria-hidden="true"></i> &nbsp;{{ settings.title }}</h3>#}
+    <ul class="hot-job-list btm-job-search-blk">
+        {% set articleCategory = 5 %}
+        {% for article in articles %}
+            {% set articleCategory = article.category %}
+            <li>
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 btm-job-left-blk">
+                        {% if article.image  %}
+                            <img src="{{ article.image }}" alt="">
+                        {% else %}
+                            {% if article.category == 5  %}
+                                <img src="{{ asset('images/career_resource_image.png') }}" alt="">
+                            {% elseif article.category == 9 %}
+                                <img src="{{ asset('images/resource_center_image.png') }}" alt="">
+                            {% else %}
+                                <img src="{{ asset('images/latest_news.png') }}" alt="">
+                            {% endif %}
+                        {% endif %}
+
+                    </div>
+                    <div class="col-md-9 col-sm-9 btm-job-right-blk">
+                        <h1><a href="{{ article_detail_url(article) }}">{{ article.title }}</a></h1>
+                        <p>{{ trim_content(article.content) }}</p>
+                    </div>
+                </div>
+            </li>
+
+        {% else %}
+            {% for i in range(1, settings.limit) %}<li></li>{% endfor %}
+        {% endfor %}
+
+    </ul>
+    <div class="row">
+        <div class="col-md-12 hot-job-more-btn">
+            {% if articleCategory == 5  %}
+            <input
+                    type="submit"
+                    onclick="window.location.href = '{{ path('yarsha_frontend_article_list', {'category':'career-resources'}) }}'"
+                    value="BROWSE ALL">
+            {% elseif articleCategory == 9 %}
+                <input type="submit" onclick="window.location.href = '{{ path('yarsha_frontend_article_list', {'category':'resources-center'}) }}'" value="BROWSE ALL">
+            {% else %}
+                <input type="submit" onclick="window.location.href = '{{ path('yarsha_frontend_article_list', {'category':'news'}) }}'" value="BROWSE ALL">
+
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+</div>

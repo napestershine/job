@@ -1,0 +1,45 @@
+<div class="follower-tab dashboard-bg-color jobseeker-tab">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#jobfeeds" aria-controls="home" role="tab"
+               data-toggle="tab">My Jobs Feed</a>
+        </li>
+        <li role="presentation">
+            <a href="#recommended" aria-controls="profile" role="tab" data-toggle="tab">Recommended</a>
+        </li>
+        <li role="presentation">
+            <a href="#applied" aria-controls="messages" role="tab" data-toggle="tab">Applied Jobs</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active follower-tab-blk" id="jobfeeds">
+            <div class="row">
+                {% for job in jobFeeds %}
+                    {% include 'YarshaJobSeekerBundle:includes:browsejobspanelbody.html.twig' %}
+                {% endfor %}
+            </div>
+
+        </div>
+        <div role="tabpanel" class="tab-pane follower-tab-blk" id="recommended">
+            <div class="row">
+                {% for job in recommendedJobs %}
+                    {% include 'YarshaJobSeekerBundle:includes:browsejobspanelbody.html.twig' %}
+                {% endfor %}
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane follower-tab-blk" id="applied">
+            <div class="row">
+                {% set loopIndex = 0 %}
+                {% for appliedJob in appliedJobs if loopIndex < 6 %}
+                    {% set loopIndex = loop.index %}
+                    {% set job = appliedJob.job %}
+                    {% include 'YarshaJobSeekerBundle:includes:browsejobspanelbody.html.twig' %}
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+</div>

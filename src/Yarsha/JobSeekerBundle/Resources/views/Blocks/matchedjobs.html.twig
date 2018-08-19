@@ -1,0 +1,40 @@
+<div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+    <div class="title">{{ setting.title }}</div>
+    <div class="posted-jobs-blk-list-blk">
+        {% if matchedjobs | length %}
+        <table>
+            <tr>
+                <th>Company and Job Position</th>
+                <th>Education</th>
+                <th>DeadLine</th>
+                <th>Actions</th>
+            </tr>
+            {% for job in matchedjobs %}
+                <tr>
+                    <td>
+
+                        {#<a href="{{ path('yarsha_frontend_employer_detail_by_slug', {'slug':job.organization.slug}) }}">#}
+                        <span style="color:#1C98D4;">
+                                {{ job.organization ? job.organization.name:'' }}
+                            </span>
+                        {#</a>#}
+                        <br>
+                        <a href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}">
+                            {{ job.title }}
+                        </a>
+                    </td>
+                    <td>{{ job.educationDegree }}</td>
+                    <td>{{ job.deadline | date('M d, Y') }}</td>
+                    <td>
+                        <a href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}">
+                            <span class="fa fa-pencil-square-o"></span> &nbsp; Apply Now
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            {{ ys_no_contents('No matched jobs.') }}
+        {% endif %}
+    </div>
+</div>

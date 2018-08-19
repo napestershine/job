@@ -1,0 +1,58 @@
+{% extends "@YarshaMain/EmailTemplates/email_template_layout.html.twig" %}
+
+{% block header_right_image %}
+    <a href="#"><img src="{{ absolute_url(asset('bundles/yarshamain/images/email/2.jpg')) }}"></a>
+{% endblock %}
+
+{% block email_body %}
+
+    <!-- job apply now section -->
+    <section style="background:#fff; padding:1%;padding-top: 0px;padding-bottom: 20px;">
+        <div style="width:80%;float: left;padding: 10px;background:#fff;">
+            <span style="font-weight: 600;padding: 1%; margin-bottom: 30px;margin-top: 10px;">Dear {{ name|title }},<br><br> </span>
+            New jobs
+            have
+            been posted
+            on kantipurjob.com.Please check new jobs.
+        </div>
+        <table style="background: #fff;color: #404040;">
+            {% for job in jobs %}
+
+                <tr style="width: 97%; padding: 10px; display: block; padding-top: 20px;">
+                    <td style="width: 10%;">
+                        <img src="{{ organization_profile_image(job.organization)|imagine_filter('company_profile_pic_large') }}"/>
+                    </td>
+                    <td style="width: 70%; padding-left: 10px; padding-top: 0px;">
+                        <h1 style="margin-bottom: 0px; font-size: 13px; text-transform: uppercase; display: block; margin-top:-7px; ">{{ job.title }}</h1>
+                        <span style="font-size: 13px;">
+                            <strong>{{ job.organization.name }}</strong> |
+                            {% set locations = '' %}
+                            {% for location in job.locations %}
+                                {% set locations = locations ~ location.name ~ ', ' %}
+                            {% endfor %}
+                            {{ locations | slice(0, locations | length - 2) }}
+                        </span>
+                        <p style="margin-top: 3px; font-size: 12px; margin-bottom: 0px;"{{ trim_content(job.description,150) }}</p>
+
+                    </td>
+                    <td style="width: 20%; border-left: 1px #e3e3e3 solid; padding-left: 10px;">
+                        <a href="{{ url('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}" class="update-anchor">View
+                            Detail</a>
+                        <h2 style="color: #990000; font-size: 10px; font-weight: normal;color:red;">Deadline:
+                            {{ date_difference(job.deadline | date('Y-m-d')) }}</h2>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <br>
+        <div>
+            <a href="{{ url('yarsha_frontend_jobs_search') }}"
+               style="border:none; color: #fff; padding: 4px 8px; background:#1A98D2; margin-bottom: 20px; width: 100%; text-decoration:none; ">View
+                More Jobs</a>
+        </div>
+
+    </section>
+
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "@YarshaEmployer/employer_layout.html.twig" %}
+{% block content %}
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">Search Result</div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            {% if results|length %}
+                {% for applicant in results %}
+                    <div class="col-md-6">
+                        <div class="search-detail-blk">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <a href="{{ path('yarsha_employer_job_applicants_details_from_search',{'username': applicant.username}) }}"
+                                       title="{{ applicant.fullname }}">
+                                        <img src="{{ seeker_profile_image(applicant, 'images/20170226125105.png')|imagine_filter('thumb_small') }}">
+                                    </a>
+                                </div>
+                                <div class="col-md-9">
+                                    <ul class="search-detail-cat-lead">
+                                        <li>
+                                            <a href="{{ path('yarsha_employer_job_applicants_details_from_search',{'username': applicant.username}) }}"
+                                               title="{{ applicant.fullname }}">{{ applicant.firstName~' '~applicant.lastName }}</a>
+                                        </li>
+                                        <li>Experience:
+                                            {% if(applicant.hasExperience) %}
+                                            {{ applicant.noOfYear? applicant.noOfYear~'Y,':'' }} {{ applicant.noOfMonth?applicant.noOfMonth~'M':'' }}</li>
+
+                                        {% else %}
+                                            {{ 'None' }}
+                                        {% endif %}
+
+                                        {% if(applicant.degree) %}
+                                            {% set edu = applicant.degree %}
+                                        {% else %}
+                                            {% set edu = applicant.educations %}
+                                            {% if(edu|length > 0) %}
+                                                {% set edu = (edu|last).degreeName %}
+                                            {% else %}
+                                                {% set edu = 'None' %}
+                                            {% endif %}
+                                        {% endif %}
+                                        <li title="{{ edu }}">Education: {{ set_total_content(edu, 30) }}</li>
+                                        <li title="{{ applicant.preferredCategories?applicant.preferredCategories | first :'None' }}">
+                                            Category: {{ applicant.preferredCategories? set_total_content((applicant.preferredCategories | first), 35) :'None' }}</li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            {% else %}
+                {{ ys_no_contents('No result found.') }}
+            {% endif %}
+
+            <div class="clearfix"></div>
+
+            <div class="col-md-12">
+                {% if results.haveToPaginate() %}
+                    {{ pagerfanta(results, 'twitter_bootstrap3') }}
+                {% endif %}
+            </div>
+
+
+        </div>
+
+
+    </div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'YarshaEmployerBundle::employer_layout.html.twig' %}
+
+{% block content %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" value="Save">
+    {{ form_end(form) }}
+{% endblock %}

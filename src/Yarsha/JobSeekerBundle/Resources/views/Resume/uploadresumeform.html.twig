@@ -1,0 +1,13 @@
+<div class="clearfix"></div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <span class="text-success"></span>
+        <span class="text-danger"></span>
+        {{ form_start(uploadcvform) }}
+        {#{{ form_start(uploadcvform, {'attr':{'onsubmit':'uploadResumeAction(event, this)', 'id':'uploadResumeFormModal'}}) }}#}
+        {{ form_widget(uploadcvform) }}
+        <br>
+        <input type="submit" value="Submit" class="btn btn-primary">
+        {{ form_end(uploadcvform) }}
+    </div>
+</div>

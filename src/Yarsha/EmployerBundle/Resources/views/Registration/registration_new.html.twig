@@ -1,0 +1,237 @@
+{% extends "@YarshaFrontend/frontend_layout.html.twig" %}
+
+{% block content_title %}Employer Registration Form{% endblock %}
+
+{% block styles %}
+    <style>
+        .help-block {
+            color: #9f0707;
+        }
+    </style>
+{% endblock %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block content %}
+
+    <!-- navigation bottom background section -->
+    <section class="navigation-btm-sec login-reg-bg-wrap registration-new-wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Create Your Job Account !</h2>
+                    <span class="login-register-quote"><a href="{{ path('yarsha_employer_security_login') }}">
+                            <button>Already have an account? Login</button>
+                        </a></span>
+                </div>
+            </div>
+
+            <div class="new-register-form-blk">
+                <div class="row">
+                    {{ form_start(form) }}
+                    {#{{ form_start(form, {'attr':{'onsubmit':'return checkForm(this)','id':'employerfrom','data-id':"1"}}) }}#}
+                    <div class="col-md-9 new-register-form-blk-left col-centered">
+                        {% if errorMessage is defined %}
+                            <div class="text-center text-danger alert">
+                                {{ errorMessage }}
+                            </div>
+                        {% endif %}
+
+                        <div class="new-register-form-blk-left-ind clearfix">
+                            <div class="col-md-12 new-register-form-blk-left-title">Company Information</div>
+                            <div class="col-md-6 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Organization Name: <sup
+                                            style="color:#ff0517">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-bank"></i></span>
+                                    {{ form_widget(form.organization.name) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.organization.name) }}</span>
+                            </div>
+
+                            {#<div class="col-sm-6 new-reg-form-blk">#}
+                                {#<label class="control-label" for="reg_title">Industry Type: <sup#}
+                                            {#style="color:#ff0517">*</sup></label>#}
+                                {#<div class="input-group">#}
+                                    {#<span class="input-group-addon"><i class="fa fa-industry"></i></span>#}
+                                    {#{{ form_widget(form.organization.industry) }}#}
+                                {#</div>#}
+                                {#<span class="text text-warning">{{ form_errors(form.organization.industry) }}</span>#}
+                            {#</div>#}
+                            {#<div class="col-sm-6 new-reg-form-blk">#}
+                                {#<label class="control-label" for="reg_title">Ownership: <sup#}
+                                            {#style="color:#ff0517">*</sup></label>#}
+                                {#<div class="input-group">#}
+                                    {#<span class="input-group-addon"><i class="fa fa-life-ring"></i></span>#}
+                                    {#{{ form_widget(form.organization.ownershipType) }}#}
+                                {#</div>#}
+                                {#<span class="text text-warning">{{ form_errors(form.organization.ownershipType) }}</span>#}
+                            {#</div>#}
+
+                            <div class="col-sm-6 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Organization Website URL: </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-ellipsis-h"></i></span>
+                                    {{ form_widget(form.organization.website) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.organization.website) }}</span>
+                            </div>
+                            <div class="col-sm-6 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Organization Phone: <sup
+                                            style="color:#ff0517">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                    {{ form_widget(form.organization.phone) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.organization.phone) }}</span>
+                            </div>
+                            <div class="col-sm-6 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Organization Address: <sup
+                                            style="color:#ff0517">*</sup></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                                    {{ form_widget(form.organization.address) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.organization.address) }}</span>
+                            </div>
+                            <div class="col-sm-12 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Company Profile: <sup
+                                            style="color:#ff0517">*</sup> &nbsp;<span style="color: red;">(Please write in one
+                                        paragraph)</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                    {{ form_widget(form.organization.profile) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.organization.profile) }}</span>
+                            </div>
+
+                        </div>
+
+                        <div class="new-register-form-blk-left-ind clearfix">
+                            <div class="col-md-12 new-register-form-blk-left-title">Contact Information</div>
+
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">First Name: <sup
+                                            style="color:#ff0517">*</sup></label></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                    {{ form_widget(form.organization_contact_person.firstName) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.organization_contact_person.firstName) }}</span>
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Last Name: <sup
+                                            style="color:#ff0517">*</sup></label></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                    {{ form_widget(form.organization_contact_person.lastName) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.organization_contact_person.lastName) }}</span>
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Contact Email: <sup
+                                            style="color:#ff0517">*</sup></label></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                    {{ form_widget(form.organization_contact_person.email) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.organization_contact_person.email) }}</span>
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Designation: <sup
+                                            style="color:#ff0517">*</sup></label></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-certificate"></i></span>
+                                    {{ form_widget(form.organization_contact_person.designation) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.organization_contact_person.designation) }}</span>
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Phone Number: </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                    {{ form_widget(form.organization_contact_person.phone) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.organization_contact_person.phone) }}</span>
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Mobile Number: </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                                    {{ form_widget(form.organization_contact_person.mobile) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.organization_contact_person.mobile) }}</span>
+                            </div>
+                        </div>
+                        <div class="new-register-form-blk-left-ind clearfix">
+                            <div class="col-md-12 new-register-form-blk-left-title">User Information</div>
+
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Username: <sup
+                                            style="color:#ff0517">*</sup></label></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-envelope"
+                                                                       aria-hidden="true"></i></span>
+                                    {{ form_widget(form.user_login_credential.username) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.user_login_credential.username) }}</span>
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Password: <sup
+                                            style="color:#ff0517">*</sup></label></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                    {{ form_widget(form.user_login_credential.password.first) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.user_login_credential.password.first) }}</span>
+                            </div>
+                            <div class="col-md-4 new-reg-form-blk">
+                                <label class="control-label" for="reg_title">Confirm Password: <sup
+                                            style="color:#ff0517">*</sup></label></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
+                                    {{ form_widget(form.user_login_credential.password.second) }}
+                                </div>
+                                <span class="text text-warning">{{ form_errors(form.user_login_credential.password.second) }}</span>
+                            </div>
+                            <div class="row register-new-btn-blk">
+                                <div class="col-md-12 buttons">
+                                    <div class="col-md-2 col-sm-2 col-xs-6">
+                                        <button type="submit">Register</button>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-6">
+                                        <button type="reset" style="background: #f2652a">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function checkWordLength(obj) {
+            var words = obj.value.match(/\S+/g).length;
+            console.log(words)
+            if (words > 1000) {
+                // Split the string on first 200 words and rejoin on spaces
+                var trimmed = $(obj).val().split(/\s+/, 1000).join(" ");
+                // Add a space at the end to make sure more typing creates new words
+                $(obj).val(trimmed + " ");
+                $(obj).attr('disabled', 'disabled');
+                $(obj).focusout();
+            } else {
+                $(obj).removeAttr('disabled');
+            }
+        }
+    </script>
+{% endblock %}

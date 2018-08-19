@@ -1,0 +1,771 @@
+{% extends "@YarshaFrontend/frontend_static_layout.html.twig" %}
+{% block styles %}
+<style>
+    .services-popup-class li {
+        list-style: none;
+    }
+    .close{
+        opacity: inherit;
+    }
+    section.inner-pages-cnt h1{
+        text-align: left;
+    }
+
+    .bg-title-wrap{
+        display: none;
+    }
+    .modal{
+        z-index: 99999999999;
+    }
+    div#myModal{
+        background: rgba(0, 0, 0, 0.41);
+    }
+
+    .services-overlay h1{
+        text-align: center;
+    }
+    .services-overlay .carrer-blk{
+        margin-top: 5px;
+    }
+    .overlay-pad{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    /*.services-overlay li{
+        background: url(images/list-type2.png) no-repeat !important;
+        padding-right: 20px !important;
+    }*/
+    .services-overlay .services-popup-class li{
+        padding-left: inherit;
+    }
+    .services-overlay .services-popup-class li{
+        padding-left: 20px !important;
+    }
+    .services-overlay h1{
+        margin-top: 10px !important;
+    }
+    .inner-pages-cnt ul li{
+        margin-bottom: 4px;
+    }
+    @media (max-width: 1199px){
+        .right-overlay {
+            margin-top: 15%;
+        }
+
+        .right-overlay p:after{
+            display: none;
+        }
+
+
+    }
+    @media (max-width: 991px){
+
+        .bg-title-wrap{
+            display: block;
+        }
+        .left-overlay,.right-overlay{
+            display: none;
+        }
+    }
+    @media (max-width: 767px){
+        .carrer-blk .services-overlay{
+            display: none;
+        }
+    }
+    @media (min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+
+
+
+    .close{
+        opacity: inherit;
+    }
+
+    .bg-title-wrap{
+        display: none;
+    }
+    .modal{
+        z-index: 99999999999;
+    }
+    div#myModal{
+        background: rgba(0, 0, 0, 0.41);
+    }
+    .services-overlay h1{
+        text-align: center;
+    }
+    .services-overlay .carrer-blk{
+        margin-top: 5px;
+    }
+    /*.modal-header{*/
+        /*display: none;*/
+    /*}*/
+    .overlay-pad{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    /*.services-overlay li{
+        background: url(images/list-type2.png) no-repeat !important;
+        padding-right: 20px !important;
+    }*/
+    .services-overlay .services-popup-class li{
+        padding-left: inherit;
+    }
+    .services-overlay .services-popup-class li{
+        padding-left: 20px !important;
+    }
+    .services-overlay h1{
+        margin-top: 10px !important;
+    }
+    .inner-pages-cnt ul li{
+        margin-bottom: 4px;
+    }
+    @media (max-width: 1199px){
+        .right-overlay {
+            margin-top: 15%;
+        }
+
+        .right-overlay p:after{
+            display: none;
+        }
+
+
+    }
+    @media (max-width: 991px){
+
+        .bg-title-wrap{
+            display: block;
+        }
+        .left-overlay,.right-overlay{
+            display: none;
+        }
+    }
+    @media (max-width: 767px){
+        .carrer-blk .services-overlay{
+            display: none;
+        }
+    }
+    @media (min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+    .modal {
+        background: #0006;
+    }
+
+    .service-area {
+        width: 100%;
+        min-height: 200px;
+        height: auto;
+        padding: 0px;
+        margin-bottom: 0px;
+        border-radius: 0px;
+        overflow: hidden;
+        transition: box-shadow 1s;
+        border: 1px solid #eee;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .service-area:hover {
+        /*box-shadow: 0 5px 15px rgba(0,0,0,0.3);*/
+    }
+
+    .service-area img {
+        height: 150px;
+        width: 100%;
+    }
+
+    .service-area .caption h4{
+        color: #0088cc;
+    }
+
+    .service-area .caption p{
+        text-align: justify;
+        padding: 10px 10px 0px 10px;
+        color: #5F5E5C;
+        font-size: 15px;
+    }
+
+    #same-two{
+        margin-top: 20px;
+    }
+
+    .second-line{
+        min-height: 265px;
+    }
+
+    .service-area .fa{
+        font-size: 60px;
+        margin-bottom: 7px;
+        color: #5d96cc;
+        margin-top: 10px;
+    }
+
+    .service-area .read-more{
+        color:#337ab7;
+    }
+
+    .second-line .fa{
+        font-size: 200px;
+    }
+    .service-area-icon{
+        margin-top: 40px !important;
+        padding-bottom: 42px;
+    }
+    @media (max-width: 1271px) {
+        .service-area-icon{
+            margin-top: 30px !important;
+            padding-bottom: 30px;
+        }
+
+    }
+    @media (max-width: 991px) {
+        .service-area-icon{
+            margin-top: 120px !important;
+            padding-bottom: 88px;
+        }
+
+    }
+
+
+</style>
+{% endblock %}
+
+{% block static_content_title %} Services{% endblock %}
+
+{% block static_short_content %}
+    <section class="bg-title-wrap">
+        <div class="container">
+            <div class="row">
+                <h1>your platform <span>to redefine future</span></h1>
+                <p>Kantipur Management Private Limited (KMPL) is an expertise on human resources solutions and has been
+                    providing Human Resource Management and related solutions to organizations across the country.</p>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+
+{% block static_content %}
+
+    <section class="inner-pages-cnt">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 inner-pages-cnt-title">what we do</div>
+                <ul class="nav nav-tabs innerpages-mdl-tab">
+                    <li class="active"><a data-toggle="tab" href="#home">corporate services</a></li>
+                    {#<li><a data-toggle="tab" href="#menu1">employer services</a></li>#}
+                    {#<li><a data-toggle="tab" href="#menu2">Jobseeker services</a></li>#}
+                </ul>
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                        <div class="row">
+                            {% set contents = [
+                            {
+                            'title':'HUMAN RESOURCE CONSULTING',
+                            'content': 'Kantipur Management Private Limited (KMPL) is an expertise on human resources
+                                            solutions and has been providing...',
+                            'contentDetail':"Kantipur Management Private Limited (KMPL) is an expertise on human resources solutions and has been providing Human Resource Management and related solutions to organizations across the country since 2012. The company is involved in committed to provide the best services to clients and job seekers in different field and profession of varied diversity of candidates from entry level associates, mid-level managers to first level managers.
+                                            <ul class='services-popup-class'>
+                                            <li>Job Need Analysis</li>
+                                            <li>Recruitment and Selection</li>
+                                            <li>Developing HR Policies and Procedures</li>
+                                            <li>Compensation and Benefits</li>
+                                            <li>Training and Development</li>
+                                            <li>Performance Management System</li>
+                                            <li>HR Research and Survey</li>
+                                            <li>Strategy Development</li>
+                                            <li>Consultation</li>
+                                            </ul>",
+                            'id': 'hrConsulting',
+                            'image':'human-resource-consulting.jpg'
+                            },
+                            {
+                            'title':'E-RECRUITMENT AND JOB PORTAL',
+                            'content': 'Today’s job seekers and employers rely heavily on internet and social media.
+                                            Around the globe, 83% candidates...',
+                            'contentDetail':"Today’s job seekers and employers rely heavily on internet and social media. Around the globe, 83% candidates check for job online. Kantipur Management has been operating online recruitment services through its own job portal www.kantipurjob.com for job seekers and employers since 2012 AD.
+                                                <ul class='services-popup-class'>
+                                                 <li>Lower costs to the organization. Also, posting jobs online is cheaper than advertising in the newspapers</li>
+                                                 <li>No intermediaries</li>
+                                                 <li>Reduction in the time for recruitment (over 65 percent of the hiring time)</li>
+                                                 <li>Facilitates the recruitment of right type of people with the required skills</li>
+                                                 <li>Improved efficiency of recruitment process</li>
+                                                 <li>Gives a 24*7 access to an online collection of resumes</li>
+                                                 <li>Online recruitment helps the organizations to weed out the unqualified candidates in an automated way</li>
+                                                 <li>Provides job providers unlimited access to scan the candidate profiles/resumes</li>
+                                                 </ul>",
+                            'id': 'eRecruitment',
+                            'image':'erecruitment-and-jobprotal.jpg'
+                            },
+                            {
+                            'title':'TRAINING AND DEVELOPMENT',
+                            'content': 'The literal function of training is to produce change. It is the upgrading of
+                                            an individual’s skill or the addition of a new skill...',
+                            'contentDetail':"The literal function of training is to produce change. It is the upgrading of an individual’s skill or the addition of a new skill, which in turn can bring about the desired change an organization is seeking. It is important to understand that training in and of itself cannot motivate a work force. However, it is an essential part of what is needed to accomplish the long-term goals of the agency. In addition to the trainings, it is important to identify the appropriate medium of motivation to appraise the performance. Kantipur Management provides wide range of trainings focused on corporate world and individual attributes and identify motivation plans as per the job profile.
+                                                <br>Trainings provided by Kantipur Management:
+                                                <ul class='services-popup-class'>
+                                                <li>Effective corporate communication and personality development</li>
+                                                <li>Office management and secretarial training</li>
+                                                <li>Customer care etiquettes- telephony and face to face</li>
+                                                <li>Leadership- managerial skills and situational leadership</li>
+                                                <li>Conflict and stress management</li>
+                                                <li>Effective performance management</li>
+                                                <li>Sales and marketing skills</li>
+                                                </ul>",
+                            'id': 'training',
+                            'image':'Training-and-development.jpg'
+                            },
+                            {
+                            'title':'VALUABLE STAFFING SERVICE',
+                            'content': 'Employee are key to every organization. The employee make, create and break
+                                            the organization. Company invest hu...',
+                            'contentDetail':"Employee are key to every organization. The employee make, create and break the organization. Company invest huge on the recruitment, selection and training of individuals to fit in a position, it calls for time and monetary investment for the appropriate candidacy. In this fast changing business environment, organizations want easy accessibility to right candidate. Kantipur Management aids to save the cost and time of organization through its staff outsourcing service and comply the existing labor laws in course of providing the services with our clients.
+                                                 Why outsource the staff?
+                                                 <ul class='services-popup-class'>
+                                                 <li><b>Save cost:</b> minimize operational cost; Kantipur Management takes responsibility to find right candidate if any employee resigns.</li>
+                                                 <li><b>Save time:</b> outsourcing saves time for recruitment and selection process and allows organization to continue focus on organizational goals.</li>
+                                                 <li><b>Identify right candidate:</b> staff outsourcing helps find the right candidate; Kantipur Management holds large database of job seekers and dedicated recruitment team works on fulfilling the client needs.</li>
+                                                 <li><b>Reduce risk:</b> organizations struggle in performance due to employee turnover. With staffing service, Kantipur Management takes accountability to take care of any turnover or related HR issues.</li>
+                                                </ul>",
+                            'id': 'staffing',
+                            'image':'valuable-staffing-service.jpg'
+                            },
+                            {
+                            'title':'SALES, DISTRIBUTION AND MARKETING',
+                            'content': 'Organizations earn through sales and a strong sales channel is the key to
+                                            success, strong sales channel is effective w...',
+                            'contentDetail':"Organizations earn through sales and a strong sales channel is the key to success, strong sales channel is effective with skilled sales personnel. Kantipur Management helps foster the business through its involvement in sales, distribution and marketing. In present context companies make products but due to inefficient sales people they bear huge opportunity losses. Sales team of Kantipur Management provides diverse support from identifying sales personnel and training to distributing them across the country on need basis. Our team expertise on choosing the right sales strategy and brand promotion. Kantipur Management is not limited to providing sales, we regularly study and identify the potential areas for different businesses to promote sales. We study sales and promotion opportunities for telecom, internet service providers, advertising, automobiles and many more. This has helped companies to expand their sales channel in various regions which were unmapped prior to our research.",
+                            'id': 'sales',
+                            'image':''
+                            },
+                            {
+                            'title':'BUSINESS PROCESS OUTSOURCING',
+                            'content': 'Business process outsourcing is a subset of outsourcing which involves the
+                                            contracting of the operations and responsi...',
+                            'contentDetail':"Business process outsourcing is a subset of outsourcing which involves the contracting of the operations and responsibilities of specific business functions (or processes) to a third-party service provider. BPO is typically categorized into back office outsourcing, which includes internal business functions such as human resources or finance and accounting, and front office outsourcing, which includes customer-related services such as contact center services. The main advantage of BPO is the way in which it helps increase a company's flexibility. Companies have attained higher profitability as well as time to focus on core business by outsourcing specific functions. Kantipur Management is a partner for outsourcing such businesses. We run outsourcing businesses for following functions.
+                                                <ul class='services-popup-class'>
+                                                <li>Contact centre management- inbound and outbound</li>
+                                                <li>Back office functions- data entry</li>
+                                                <li>Help desk and product inquiry support</li>
+                                                <li>Satisfaction surveys and analysis</li>
+                                                <li>Recruitment service</li>
+                                                <li>Front desk</li>
+                                                <li>Sales services</li>
+                                                <li>Telemarketing</li>",
+                            'id': 'bussiness',
+                            'image':''
+                            }
+                            ] %}
+
+                            {% for v in contents | slice(0,4) %}
+                                {{ _self.serviceLessContentNew(v.title, v.contentDetail, v.id, v.image, loop.index) }}
+                            {% endfor %}
+
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <div class="service-area">
+                                    {{ _self.serviceLessContentNew(contents[4].title, contents[4].contentDetail, contents[4].id, contents[4].image, 5) }}
+                                    <hr>
+                                    {{ _self.serviceLessContentNew(contents[5].title, contents[5].contentDetail, contents[5].id, contents[5].image, 6) }}
+                                </div>
+                            </div>
+
+
+
+                            {#{% for v in contents %}#}
+                                {#{{ _self.serviceDetail(v.title, v.contentDetail, v.id, v.iconClass) }}#}
+                            {#{% endfor %}#}
+
+                        </div>
+                    </div>
+
+
+                    <div id="menu1" class="tab-pane fade" style="display: none;">
+                        <div class="row">
+
+                            {% set contents = [
+                            {
+                            'title':"SUPER EMPLOYER",
+                            'content':"Make your job posting visible and prioritized. Access to paper advertisement,
+                                            unlimited data base search, cus... ",
+                            'contentDetail':"Make your job posting visible and prioritized. Access to paper advertisement, unlimited data base search, customized page, hot job, feature job and general job facility with dedicated recruitment and selection service support. For details contact us.",
+                            'id':"superEmployer",
+                            'image':'superemployer.jpg'
+                            },
+                            {
+                            'title':"FEATURED JOB(S)",
+                            'content':"Post your job at kantipurjob.com and save cost. Get access to customized page
+                                            and support to create job descriptions... ",
+                            'contentDetail':"Post your job at kantipurjob.com and save cost. Get access to customized page and support to create job descriptions. For details contact us.",
+                            'id':"featuredJob",
+                            'image':'featured_blog.jpg'
+                            },
+                            {
+                            'title':"DATABASE SEARCH",
+                            'content':"Access the applicant directory as per your requirement. For details contact
+                                            us. ",
+                            'contentDetail':"Access the applicant directory as per your requirement. For details contact us.",
+                            'id':"databaseSearch",
+                            'image':'databasesearch.png'
+                            },
+                            {
+                            'title':"HOT JOB",
+                            'content':"Visualize your job posting with customized page and access feature job and
+                                            general job facility. We create job descrip... ",
+                            'contentDetail':"Visualize your job posting with customized page and access feature job and general job facility. We create job descriptions, for details contact us.",
+                            'id':"hotJob",
+                            'image':'hotjobs.jpg'
+                            },
+                            {
+                            'title':"GENERAL JOB(S)",
+                            'content':"Post your job at kantipurjob for free of cost. For details contact us.",
+                            'contentDetail':"Access the applicant directory as per your requirement. For details contact us.",
+                            'id':"generalJob",
+                            'image':''
+                            },
+                            {
+                            'title':"BANNER ADVERTISEMENT",
+                            'content':"Advertise online and make your brand visible to job seekers and get free hot
+                                            job facility with banner advertiseme ...",
+                            'contentDetail':"Advertise online and make your brand visible to job seekers and get free hot job facility with banner advertisement. For details contact us.",
+                            'id':"bannerManagement",
+                            'image':''
+                            }
+                            ] %}
+
+                            {% for v in contents | slice(0, 4) %}
+                                {{ _self.serviceLessContentNew(v.title, v.contentDetail,v.id, v.image, loop.index) }}
+                            {% endfor %}
+
+                            <div class="col-xs-12 col-sm-4 col-md-4">
+                                <div class="service-area">
+                                    {{ _self.serviceLessContentNew(contents[4].title, contents[4].contentDetail, contents[4].id, contents[4].image, 5) }}
+                                    <hr>
+                                    {{ _self.serviceLessContentNew(contents[5].title, contents[5].contentDetail, contents[5].id, contents[5].image, 6) }}
+                                </div>
+                            </div>
+
+                            {#{% for v in contents %}#}
+                                {#{{ _self.serviceDetail(v.title, v.contentDetail, v.id, v.iconClass) }}#}
+                            {#{% endfor %}#}
+
+                        </div>
+
+                    </div>
+
+                    <div id="menu2" class="tab-pane fade" style="display: none;">
+                        <div class="row">
+
+                            {% set contents = [
+                            {
+                            'title':"APPLY ONLINE",
+                            'content':"Create a profile and post your application for the job online. Get
+                                            notification of the selection",
+                            'contentDetail':"Create a profile and post your application for the job online. Get notification of the selection process instantly.",
+                            'id':"applyOnline",
+                            'image':'apply-online-pic-.jpg'
+                            },
+                            {
+                            'title':"POST YOUR RESUME",
+                            'content':"Post your resume and make it searchable for employers to find you for the job",
+                            'contentDetail':"Post your resume and make it searchable for employers to find you for the job. Receive job notifications as per your preference.",
+                            'id':"postResume",
+                            'image':'resume.png'
+                            },
+                            {
+                            'title':"CREATE OWN CURRICULUM VITAE",
+                            'content':"Want a professional CV? Create one online or contact us for assistance...",
+                            'contentDetail':"Want a professional CV? Create one online or contact us for assistance.",
+                            'id':"createResume",
+                            'image':'CV.png'
+                            }
+                            ] %}
+
+                            {% for v in contents %}
+                                {{ _self.serviceLessContentNew(v.title, v.contentDetail, v.id, v.image, loop.index) }}
+                            {% endfor %}
+
+                            {#{% for v in contents %}#}
+                                {#{{ _self.serviceDetail(v.title, v.contentDetail, v.id, v.iconClass) }}#}
+                            {#{% endfor %}#}
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <section class="inner-pages-cnt inter-paralax-scroll" style="background:#d5d5d5;">
+        <div class="inter-paralax-scroll-overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 inner-pages-cnt-title parallax-title">why kantipur management</div>
+
+                <div class="col-md-3 col-sm-3 carrer-blk services-btm-blk">
+                    <div class="services-btm-blk-icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
+                    <h1>Cost Effective</h1>
+                    <p>Utilize opportunity cost, build revenue and save cost.</p>
+                </div>
+
+
+                <div class="col-md-3 col-sm-3 carrer-blk services-btm-blk">
+                    <div class="services-btm-blk-icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
+                    <h1>Sales and Distribution</h1>
+                    <p>Qualified and effective sales team with experience from travel, telecom and banking.</p>
+                </div>
+
+
+                <div class="col-md-3 col-sm-3 carrer-blk services-btm-blk">
+                    <div class="services-btm-blk-icon"><i class="fa fa-sitemap" aria-hidden="true"></i></div>
+                    <h1>Presence</h1>
+                    <p>KMPL’s presence all across the country to find you the right job.</p>
+                </div>
+
+
+                <div class="col-md-3 col-sm-3 carrer-blk services-btm-blk">
+                    <div class="services-btm-blk-icon"><i class="fa fa-group" aria-hidden="true"></i></div>
+                    <h1>Human Resource Counsulting</h1>
+                    <p>Expertise on human resource field.</p>
+                </div>
+
+                <div class="col-md-3 col-sm-3 carrer-blk services-btm-blk">
+                    <div class="services-btm-blk-icon"><i class="fa fa-user" aria-hidden="true"></i></div>
+                    <h1>Staffing</h1>
+                    <p>Find right candidate for the right position.</p>
+                </div>
+
+                <div class="col-md-3 col-sm-3 carrer-blk services-btm-blk">
+                    <div class="services-btm-blk-icon"><i class="fa fa-laptop" aria-hidden="true"></i></div>
+                    <h1>Job portal</h1>
+                    <p>Access to skilled resources and employers.</p>
+                </div>
+
+                <div class="col-md-3 col-sm-3 carrer-blk services-btm-blk">
+                    <div class="services-btm-blk-icon"><i class="fa fa-tty" aria-hidden="true"></i></div>
+                    <h1>Contact Centre</h1>
+                    <p>Experienced in handling contact centre operations.</p>
+                </div>
+
+
+                <div class="col-md-3 col-sm-3 carrer-blk services-btm-blk">
+                    <div class="services-btm-blk-icon"><i class="fa fa-history" aria-hidden="true"></i></div>
+                    <h1>Reliability</h1>
+                    <p>Quick business correspondence and quality service.</p>
+                </div>
+                <div class="col-md-3 col-sm-3 carrer-blk services-btm-blk">
+                    <div class="services-btm-blk-icon"><i class="fa fa-search" aria-hidden="true"></i></div>
+                    <h1>Executive search</h1>
+                    <p>Reliable and quick access to qualified candidates.</p>
+                </div>
+                <div class="col-md-3 col-sm-3 carrer-blk services-btm-blk">
+                    <div class="services-btm-blk-icon"><i class="fa fa-child" aria-hidden="true"></i></div>
+                    <h1>Training</h1>
+                    <p>National and international certified trainers.</p>
+                </div>
+                <div class="col-md-3 col-sm-3 carrer-blk services-btm-blk">
+                    <div class="services-btm-blk-icon"><i class="fa fa-rocket" aria-hidden="true"></i></div>
+                    <h1>Confidentiality</h1>
+                    <p>Respect the privacy of user.</p>
+                </div>
+                <div class="col-md-3 col-sm-3 carrer-blk services-btm-blk">
+                    <div class="services-btm-blk-icon"><i class="fa fa-cubes" aria-hidden="true"></i></div>
+                    <h1>Outsourcing</h1>
+                    <p>Description about something.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include '@YarshaFrontend/Includes/commonmodal.html.twig' %}
+
+{% endblock %}
+
+{% macro serviceLessContentNew(title, content, id, image, index) %}
+
+
+    {% if index <= 4 %}
+
+        {% if index == 4 %} <div class="clearfix"></div> {% endif %}
+
+        <div class="col-xs-12 {{ index == 4 ? 'col-sm-8 col-md-8' : 'col-sm-4 col-md-4' }}">
+            {% if index == 4 %}
+                <div class="service-area second-line">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-4 col-md-4 " style="background-color: rgba(56, 56, 60, 0.20); overflow: hidden">
+                            {#<i class="fa {{ iconClass }} service-area-icon"></i>#}
+                            <img src="{{ asset('static/images/'~image) }}" style="width: 385px;height:250px;">
+
+                        </div>
+                        <div class="caption col-xs-12 col-sm-8 col-md-8">
+                            <h4>{{ title }}</h4>
+                            <p>{{ content | raw | slice(0,630) ~ '..'}}</p>
+                            <p>
+                                <a href="#" class="read-more"
+                                   data-content="{{ content }}"
+                                   data-title="{{ title }}"
+                                   >Read More...</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="service-area">
+                    <div style="background-color: rgba(56, 56, 60, 0.20)">
+                        <img src="{{ asset('static/images/'~image) }}" >
+
+                    </div>
+                    <div class="caption">
+                        <h4>{{ title }}</h4>
+                        <p>{{ content | raw | slice(0,140) ~ '..' }}</p>
+                        <p>
+                            <a href="#" class="read-more"
+                               data-content="{{ content }}"
+                               data-title="{{ title }}"
+                               >Read More...</a>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+    {% else %}
+        <div class="caption" id="same-one">
+            <h4>{{ title }}</h4>
+            <p>{{ content | raw | slice(0, 105) ~ '..' }}</p>
+            <p>
+                <a href="#" class="read-more"
+                   data-content="{{ content }}"
+                   data-title="{{ title }}"
+                    >Read More...</a>
+            </p>
+        </div>
+    {% endif %}
+
+{% endmacro %}
+
+{% macro serviceLessContent(title,content,id, image) %}
+    <div
+            class="col-md-4 col-sm-6 carrer-blk career-icon service-less-content success"
+            data-hidden="0"
+            data-content = "{{ content }}"
+            data-title = "{{ title }}"
+            id="{{ id ~'Less' }}"
+    >
+        <div class="row">
+            <div class="col-md-4">
+                <i class="fa {{ iconClass }}"></i>
+            </div>
+            <div class="col-md-8">
+                <h1>{{ title }}</h1>
+                <p>
+                    {{ content | raw | slice(0, 90) }} ...
+                    <span class="hidden-sm hidden-md hidden-lg">
+                    <a href="#" onclick="showMoreServiceContent(event,'{{ id }}')">> More..</a>
+                </span>
+                </p>
+            </div>
+        </div>
+        {#{{ _self.serviceOverlay(title, content, id, iconClass) }}#}
+    </div>
+
+{% endmacro %}
+
+{% macro serviceOverlay(title, content, id, iconClass) %}
+
+    <div class="services-overlay">
+        <div class="col-md-12 col-sm-12 col-xs-12 carrer-blk" data-hidden="1">
+            <div class="text-center career-icon services-late-class">
+                <i class="fa {{ iconClass }} service-detail-icon"></i>
+            </div>
+            <div class="col-md-offset-1 col-md-10 col-sm-11 col-xs-12" style="margin-bottom: 10px;">
+                <h1>{{ title }}</h1>
+                {{ content | raw }}
+            </div>
+        </div>
+    </div>
+
+{% endmacro %}
+
+{% macro serviceDetail(title,content,id,iconClass) %}
+    <div class="col-md-12 col-sm-12 col-xs-12 carrer-blk hidden-service" data-hidden="1" id="{{ id }}">
+        <div class="col-md-1 text-center career-icon services-late-class">
+            <i class="fa {{ iconClass }}"></i>
+        </div>
+        <div class="col-md-11 col-sm-11 col-xs-12">
+            <h1>{{ title }}</h1>
+            <p>{{ content | raw }}</p>
+            <a href="#" class="services-back-btn" onclick="hideDetails(event,'{{ id }}')">back</a>
+        </div>
+    </div>
+{% endmacro %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function(){
+//            if($(window).width() > 991){
+//                var modal = $("#serviceDetailModal");
+//                $('.success').click(function(){
+//                    if(!modal.hasClass('in')){
+//                        modal.addClass('in').fadeIn(400);
+//                    }
+//                    var content = $(this).attr('data-content');
+//                    var title = $(this).attr('data-title');
+//                    var iconClass = $(this).attr('data-iconClass');
+//                    modal.find('.modal-title').html(title);
+//                    modal.find('.modal-main-content').html(content);
+//                    modal.find('.services-late-class>.fa')
+//                        .removeClass()
+//                        .addClass('fa '+iconClass);
+//                });
+//
+////            $('.modal-dialog').mouseleave(function(){
+////                modal.removeClass('in').css('display', 'none');
+////            })
+//
+//                $('body, .success').hover(function(){
+//                    modal.removeClass('in').fadeOut(400);
+//                });
+//            }
+
+            var modal = $("#serviceDetailModal");
+
+            $('.read-more').on('click', function(e){
+                e.preventDefault();
+                var content = $(this).attr('data-content');
+                var title = $(this).attr('data-title');
+                var iconClass = $(this).attr('data-iconClass');
+                modal.find('.modal-title').html(title);
+                modal.find('.modal-main-content').html(content);
+                modal.find('.services-late-class>.fa')
+                    .removeClass()
+                    .addClass('fa '+iconClass);
+                if(!modal.hasClass('in')){
+                    modal.addClass('in').fadeIn(400);
+                }
+            });
+
+            $('button.close').on('click', function(){
+                if(modal.hasClass('in')){
+                    modal.removeClass('in').fadeOut(400);
+                }
+            });
+
+        });
+    </script>
+{% endblock %}

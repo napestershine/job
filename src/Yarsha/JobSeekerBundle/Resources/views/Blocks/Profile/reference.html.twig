@@ -1,0 +1,73 @@
+<div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix" id="profile_{{ setting.section }}">
+    <div class="title">
+        <div class="row">
+            <div class="col-md-10 col-sm-10">Reference</div>
+            {% if setting.employer == false %}
+            <div class="col-md-2 col-sm-2 right">
+                <input type="submit" data-toggle="modal"
+                       data-target="#addReference"
+                       data-referenceId=""
+                       data-title="Add Reference"
+                       value="+ Add Reference">
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div class="posted-jobs-blk-list-blk">
+        {% if data.references | length %}
+
+        <table class="table">
+            <tr>
+
+                <th>Name</th>
+                <th>Organization</th>
+                <th>Designation</th>
+                <th>Mobile/Phone</th>
+                <th>Email</th>
+                {% if setting.employer == false %}
+                <th>Action</th>
+                {% endif %}
+            </tr>
+                {% for reference in data.references %}
+                    <tr>
+
+                        <td>{{ reference.name }}</td>
+                        <td>{{ reference.organization }}</td>
+                        <td>{{ reference.designation }}</td>
+                        <td>{{ reference.mobile ~ '/' ~reference.homePhone }}</td>
+                        <td>{{ reference.email }}</td>
+                        {% if setting.employer == false %}
+                        <td>
+                            <a href="" data-toggle="modal"
+                               data-target="#addReference"
+                               data-referenceId="{{ reference.id }}"
+                               data-title="Update Reference"
+                            >Edit</a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+        </table>
+        {% else %}
+            {{ ys_no_contents('No reference added.') }}
+        {% endif %}
+
+
+    </div>
+    <div class="modal fade" id="addReference" role="dialog" arial-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" class="close">&times</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

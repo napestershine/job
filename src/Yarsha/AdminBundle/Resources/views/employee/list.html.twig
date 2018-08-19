@@ -1,0 +1,401 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Employee{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>&nbsp; Filter
+    </button>
+
+    <a href="{{ path('yarsha_admin_jobseeker_add') }}" class="btn btn-info btn-xs">
+        <i class="fa fa-plus"></i> Add New Employee
+    </a>
+
+{% endblock %}
+
+{% block filter %}
+    <div class="row">
+        <div class="form-group-sm col-md-3">
+            <label for="name">Name</label>
+            <input type="text" name="name" value="{{ app.request.get('name') }}" placeholder="Seeker name"
+                   class="form-control">
+        </div>
+
+        <div class="form-group-sm col-md-3">
+            <label for="name">Email</label>
+            <input type="text" name="email" value="{{ app.request.get('email') }}"
+                   placeholder="Contact Email"
+                   class="form-control">
+        </div>
+
+        <div class="form-group-sm col-md-3">
+            <label for="address">Address</label>
+            <input type="text" name="address" value="{{ app.request.get('address') }}" placeholder="address"
+                   class="form-control">
+        </div>
+        <div class="form-group-sm col-md-3">
+            <label for="salary">Expected Salary</label>
+            <input type="text" name="salary" value="{{ app.request.get('salary') }}" placeholder="Expected Salary"
+                   class="form-control">
+        </div>
+        <div class="form-group-sm col-md-3">
+            <label for="salary">Age</label>
+            <input type="text" name="age" value="{{ app.request.get('age') }}" placeholder="Age"
+                   class="form-control">
+        </div>
+        <div class="form-group-sm col-md-3">
+            <br>
+            <label for="status">Education Level:</label>
+            {{ display_education_degrees(app.request.get('education'), '') }}
+        </div>
+        <div class="form-group-sm col-md-3">
+            <br>
+            <label for="status">Preferred Locations:</label>
+            {{ display_job_locations(app.request.get('location'), '') }}
+        </div>
+        <div class="form-group-sm col-md-3">
+            <br>
+            <label for="status">Preferred Category:</label>
+            {{ display_categories_by_section(app.request.get('category'), '','category','Jobs By Function','Jobs Category') }}
+        </div>
+        <div class="form-group-sm col-md-3">
+            <br>
+            <label for="status">Preferred Industry:</label>
+            {{ display_categories_by_section(app.request.get('industry'), '','industry','Jobs By Industry','Jobs Industry') }}
+        </div>
+        <div class="form-group-sm col-md-3">
+            <br>
+            <label for="gender">Gender:</label>
+            <select name="gender">
+                <option value="">Select Gender</option>
+                <option value="female">Femle</option>
+                <option value="male">Male</option>
+                <option value="any">Any</option>
+            </select>
+        </div>
+        <div class="form-group-sm col-md-3">
+            <br>
+            <label for="status">Status:</label>
+            <select name="status">
+                <option value="">Select Status</option>
+                <option value="1">Enable</option>
+                <option value="0">Disable</option>
+            </select>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <style>
+        #yarsha_adminbundle_JobSeekerCallRecord_seeker {
+            display: none;
+        }
+    </style>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                {% if jobSeekers is not empty %}
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Full name</th>
+                            <th>Email</th>
+                            <th>Registered Date</th>
+                            <th>Company</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for jobseeker in jobSeekers %}
+                            {% if(jobseeker.path) %}
+                                {% set imgPath = check_path(jobseeker.path) %}
+                            {% else %}
+                                {% set imgPath = asset('bundles/yarshaadmin/images/user.png') %}
+                            {% endif %}
+
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>
+
+                                    <a href="{{ path('yarsha_admin_seeker_detail', {'id':jobseeker.id}) }}">
+                                        <img src="{{ imgPath }}" width="50"/><br>
+                                        {{ jobseeker.firstName ~ ' ' ~ jobseeker.lastName }}
+
+                                    </a>
+                                </td>
+                                <td>{{ jobseeker.contactEmail }}</td>
+                                <td>
+                                    {{ jobseeker.createdAt | date('Y-m-d') }}
+                                    {#<a href="{{ path('yarsha_admin_jobseekers_appliedjobs', {'id':jobseeker.id}) }}"#}
+                                    {#class="btn btn-warning btn-xs">#}
+                                    {#<i class="fa fa-list"></i>#}
+                                    {#Applied Jobs#}
+                                    {#</a>#}
+                                </td>
+                                <td>
+                                    <a href="{{ path('yarsha_admin_jobseekers_appliedcompany', {'id':jobseeker.id}) }}"
+                                       class="btn btn-info btn-xs">
+                                        <i class="fa fa-list"></i>
+                                        Applied
+                                    </a>
+                                    <a href="{{ path('yarsha_admin_jobseekers_followedcompany', {'id':jobseeker.id}) }}"
+                                       class="btn btn-info btn-xs">
+                                        <i class="fa fa-list"></i>
+                                        Followed
+                                    </a>
+                                </td>
+                                <td>{{ jobseeker.enabled == 1 ? 'enabled':'disabled' }}</td>
+                                <td>
+                                    <a href="{{ path('yarsha_admin_jobseeker_edit',{'id':jobseeker.id}) }}"
+                                       class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                                    <a href="{{ path('yarsha_admin_jobseeker_other_information',{'id':jobseeker.id}) }}"
+                                       class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i> Other
+                                        Informations
+                                    </a>
+                                    {% if(jobseeker.enabled) %}
+                                        <a onclick="jobSeekerAction(this, '{{ path('yarsha_admin_jobseeker_disable', {'id':jobseeker.id }) }}')">
+                                            <button class="btn btn-xs btn-warning">Disable</button>
+                                        </a>
+                                    {% else %}
+                                        <a onclick="jobSeekerAction(this, '{{ path('yarsha_admin_jobseeker_enable', {'id':jobseeker.id }) }}')">
+                                            <button class="btn btn-xs btn-success">Enable</button>
+                                        </a>
+                                    {% endif %}
+                                    <button
+                                            class="btn btn-xs btn-danger deleteSeeker"
+                                            data-seeker="{{ jobseeker.id }}"
+                                    >
+                                        <i class="fa fa-times"></i> Delete
+                                    </button>
+                                    {% if(jobseeker.blacklisted == 0) %}
+                                        <a href="{{ path('yarsha_admin_jobseeker_blacklist',{'id':jobseeker.id}) }}">
+                                            <button class="btn btn-xs btn-danger"><i class="fa fa-plus"></i> Add To
+                                                Blacklist
+                                            </button>
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ path('yarsha_admin_jobseeker_blacklist',{'id':jobseeker.id}) }}">
+                                            <button class="btn btn-xs btn-danger"><i class="fa fa-minus"></i> Remove
+                                                From Blacklist
+                                            </button>
+                                        </a>
+                                    {% endif %}
+                                    <a href="{{ path('yarsha_admin_change_employee_password', {'id':jobseeker.id}) }}"
+                                       class="btn btn-xs btn-success">
+                                        change password
+                                    </a>
+                                    <a href="#"
+                                       class="btn btn-xs btn-info"
+                                       onclick="sendResetPasswordLink(event,{{ jobseeker.id }})"
+                                    >
+                                        send password reset link
+                                    </a>
+
+                                    {{ phone_call(jobseeker.id) }}
+
+                                    {% if(jobseeker.isSearchable) %}
+                                        <a onclick="jobSeekerCVAction(this, '{{ path('yarsha_admin_jobseeker_unsearcheable', {'id':jobseeker.id }) }}')">
+                                            <button class="btn btn-xs btn-warning">Make It Unsearcheable</button>
+                                        </a>
+                                    {% else %}
+                                        <a onclick="jobSeekerCVAction(this, '{{ path('yarsha_admin_jobseeker_searcheable', {'id':jobseeker.id }) }}')">
+                                            <button class="btn btn-xs btn-success">Make It Searcheable</button>
+                                        </a>
+                                    {% endif %}
+
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                {% else %}
+                    {{ ys_no_contents('No job seekers exist.') }}
+                {% endif %}
+
+                {% if jobSeekers.haveToPaginate %}
+                    {{ pagerfanta(jobSeekers, 'twitter_bootstrap3') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="seekerCallRecord" role="dialog" arial-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #0396d5;
+    color: #fff;">
+                    <button type="button" data-dismiss="modal" class="close">&times</button>
+                    <h4 class="modal-title">Add Phone Calls</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+
+        $('#seekerCallRecord').on('show.bs.modal', function (e) {
+            var modal = $(this);
+            var button = $(e.relatedTarget);
+            var seekerId = button.attr('data-id');
+
+            var url = "{{ path('yarsha_admin_seeker_call_record_add', {'seekerId':'SEEKER_ID'}) }}";
+            var url = url.replace('SEEKER_ID', seekerId);
+
+            $.ajax({
+                type: 'get',
+                url: url,
+                data: {'seekerId': seekerId},
+                success: function (res) {
+                    modal.find('.modal-body').html(res.template);
+
+                },
+                error: function (res) {
+                    alert(res.message);
+                }
+            });
+        });
+
+        function submitSeekerCallRecord(obj) {
+            var form = $(obj),
+                    seekerId = form.data('id'),
+                    dataToSend = form.serialize();
+
+            var url = "{{ path('yarsha_admin_seeker_call_record_add', {'seekerId':'SEEKER_ID'}) }}";
+            var url = url.replace('SEEKER_ID', seekerId);
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: dataToSend,
+                success: function (res) {
+                    window.location = ''
+
+                },
+                error: function (res) {
+                }
+            });
+
+
+            return false;
+
+        }
+
+
+        $('.deleteSeeker').on('click', function (e) {
+
+            if (confirm('Are you sure to delete?')) {
+                var obj = $(this),
+                        seeker = obj.data('seeker');
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{ path('yarsha_admin_ajax_seeker_delete') }}',
+                    data: {seeker: seeker},
+                    success: function (res) {
+                        window.location = window.location;
+                    },
+                    error: function (xhr) {
+                        alert('Something went wrong. Please try again later.');
+                    },
+                    complete: function (xhr) {
+                    }
+                });
+            }
+        });
+
+        function jobSeekerAction(element, url) {
+            var $this = $(element);
+            var $child = $this.children().first();
+            var childClass = $child.attr('class');
+            var targetClass = childClass == "btn btn-xs btn-success" ? "btn btn-xs btn-warning" : "btn btn-xs btn-success";
+            $.ajax({
+                url: url,
+                method: 'POST',
+                success: function () {
+                    $parent = $this.parent().prev();
+                    $statusText = $parent.html();
+                    $targetStatus = $parent.html() == 'enabled' ? 'disabled' : 'enabled';
+                    $parent.html($targetStatus);
+                    $child.removeClass(childClass).addClass(targetClass);
+                    $childText = $child.html() == "Enable" ? "Disable" : "Enable";
+                    $child.html($childText);
+                }
+            });
+        }
+
+        function jobSeekerCVAction(element, url) {
+            var $this = $(element);
+            var $child = $this.children().first();
+            var childClass = $child.attr('class');
+            var targetClass = childClass == "btn btn-xs btn-success" ? "btn btn-xs btn-warning" : "btn btn-xs btn-success";
+            $.ajax({
+                url: url,
+                method: 'POST',
+                success: function (res) {
+                    if(res.message == 'success'){
+                        $child.removeClass(childClass).addClass(targetClass);
+                        if(res.value == true){
+                            $child.html('Make It Unsearcheable');
+                        }else{
+                            $child.html('Make It Searcheable');
+                        }
+                    }
+                }
+            });
+        }
+
+
+
+
+        function sendResetPasswordLink(e, id) {
+            e.preventDefault();
+            modal = $("#myModal");
+            if (!isNaN(id)) {
+                url = "{{ path('yarsha_admin_ajax_reset_password_link_send',{'id':'EMPLOYEE_ID'}) }}";
+                url = url.replace('EMPLOYEE_ID', id);
+            }
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function (res) {
+                    if (res.message) {
+                        modal.find('.modal-title').html('Message');
+                        modal.find('.modal-body').html(res.message);
+                    } else {
+                        modal.find('.modal-title').html('Error Message');
+                        modal.find('.modal-body').html("Something went wrong. Unable to send reset password link.");
+                    }
+                    modal.modal('show');
+                },
+                error: function (err) {
+                    modal.find('.modal-title').html('Error Message');
+                    modal.find('.modal-body').html("Something went wrong. Unable to send reset password link.");
+                    modal.modal('show');
+                }
+            });
+        }
+
+        $('.alert').delay(3000).slideUp('slow');
+    </script>
+{% endblock %}

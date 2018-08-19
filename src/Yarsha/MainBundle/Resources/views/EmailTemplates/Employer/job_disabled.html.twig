@@ -1,0 +1,19 @@
+{% extends "@YarshaMain/EmailTemplates/email_notification_layout.html.twig" %}
+
+{% block email_body %}
+    <p>Dear {{ employer.organization.name }},</p>
+
+    <p>
+        Job "{{ job.title }}" is disabled. If you have
+        any queries or concerns, please contact your account manager which is given in your dashboard.
+    </p>
+
+    <p>
+        Thank you <br>
+        Kantipurjob.com Team <br>
+        +977 1 4435619, 4435620 <br>
+    </p>
+
+    <p style="font-size: 80%">This is a Computer generated email. Please do not reply to this message.</p>
+
+{% endblock %}

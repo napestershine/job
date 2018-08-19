@@ -1,0 +1,58 @@
+<div class="col-md-6 col-sm-6 company-info-blk profile-user-blk-single">
+    <div class="title">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">profile summary | {{ Status.overall | round ~ '%' }}</div>
+            <!-- <div class="col-md-4 col-sm-4 right"><a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;Edit</a></div> -->
+        </div>
+    </div>
+    <div class="row bar-guide">
+        <div class="col-md-6 col-sm-6">
+            <ul>
+                <li>Personal Information</li>
+                <li>General Information</li>
+                <li>Education</li>
+                <li>Training</li>
+                <li>Professional</li>
+                <li>Other Information</li>
+            </ul>
+        </div>
+        <div class="col-md-6 col-sm-6">
+            <ul class="bar-guide-blk-ul">
+                <li>
+                    <div class="bar-guide-ind-blk"
+                         style="background: red; width: {{ Status.personal_information ~ '%' }};">
+                        {{ Status.personal_information ~ '%' }}
+                    </div>
+                </li>
+                <li>
+                    <div class="bar-guide-ind-blk"
+                         style="background: green; width: {{ Status.general_information ~ '%' }};">
+                        {{ Status.general_information ~ '%' }}
+                    </div>
+                </li>
+                <li>
+                    <div class="bar-guide-ind-blk" style="background: orange; width: {{ Status.education_information ~ '%' }};">
+                        {{ Status.education_information ~ '%' }}
+                    </div>
+                </li>
+                <li>
+                    <div class="bar-guide-ind-blk" style="background: #f2ae44; width: {{ Status.trainings ~ '%' }};">
+                        {{ Status.trainings ~ '%' }}
+                    </div>
+                </li>
+                <li>
+                    <div class="bar-guide-ind-blk" style="background: blue; width: {{ Status.professional_information ~ '%' }};">
+                        {{ Status.professional_information ~ '%' }}
+                    </div>
+                </li>
+                <li>
+                    <div class="bar-guide-ind-blk"
+                         style="background: #e5e5e5; width: {{ Status.other_information ~ '%' }};">
+                        {{ Status.other_information ~ '%' }}
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+{{ form_start(form) }}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% if errorMessage is defined %}
+    <div class="alert text-danger">
+        {{ errorMessage }}
+    </div>
+{% endif %}
+
+<style>
+    .custom-select {
+        width: 32%;
+        padding-right: 0px;
+        padding-left: 0px;
+
+    }
+
+    .custom-select .form-control {
+        border-radius: 0px;
+        margin-bottom: 10px;
+    }
+
+    .checkbox {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-right: 0px;
+    }
+</style>
+
+
+{#<input type="hidden" name="gtrack_bundle_companyregistrationbundle_contactperson[companyId]" value="{{ companyId }}">#}
+<div class="clearfix"></div>
+<div class="col-md-12">
+    {{ form_row(form.organizationName) }}
+</div>
+<div class="col-md-6">
+    {{ form_row(form.employmentType) }}
+</div>
+<div class="col-md-6">
+    {{ form_row(form.designation) }}
+</div>
+{#<div class="col-md-12">#}
+    {#{{ form_row(form.currentlyWorking) }}#}
+{#</div>#}
+
+
+<div class="col-md-6">
+    <label>From</label><br>
+    <div class="col-md-2 custom-select">{{ form_widget(form.fromYear) }}</div>
+    <div class="col-md-2 custom-select">{{ form_widget(form.fromMonth) }}</div>
+    <div class="col-md-2 custom-select">{{ form_widget(form.fromDay) }}</div>
+</div>
+
+
+<div class="col-md-6">
+    <label>To &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form_widget(form.currentlyWorking) }}</label> <br>
+    <div class="col-md-2 custom-select">{{ form_widget(form.toYear) }}</div>
+    <div class="col-md-2 custom-select">{{ form_widget(form.toMonth) }}</div>
+    <div class="col-md-2 custom-select">{{ form_widget(form.toDay) }}</div>
+</div>
+<br>
+<div class="col-md-4">
+    {{ form_row(form.organizationType) }}
+</div>
+<div class="col-md-4">
+    {{ form_row(form.jobLevel) }}
+</div>
+<div class="col-md-4">
+    {{ form_row(form.country,{value: "149" }) }}
+</div>
+<div class="col-md-12">
+    {{ form_row(form.roles) }}
+</div>
+<div class="clearfix"></div>
+
+<div class="modal-footer">
+    <input type="submit" class="btn btn-primary" value="SAVE">
+
+    <button type="button" class="btn btn-danger" data-dismiss="modal">
+        CANCEL
+    </button>
+</div>
+{{ form_end(form) }}

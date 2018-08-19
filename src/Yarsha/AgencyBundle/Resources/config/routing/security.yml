@@ -1,0 +1,13 @@
+
+#yarsha_agency_security_login:
+#    path: /login
+#    defaults: { _controller: "FOSUserBundle:Security:login" }
+
+yarsha_agency_security_check:
+    path: /login_check
+    defaults: { _controller: "FOSUserBundle:Security:check" }
+    methods: "POST"
+
+yarsha_agency_security_logout:
+    path: /logout
+    defaults: { _controller: "FOSUserBundle:Security:logout" }

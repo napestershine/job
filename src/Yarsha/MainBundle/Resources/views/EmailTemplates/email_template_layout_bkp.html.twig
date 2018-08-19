@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- meta viewport -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- title -->
+    <title>Email Confirmation | Kantipur Jobs</title>
+    <style>
+        .clear{clear: both;}
+    </style>
+</head>
+
+
+<body style="background: #e3e3e3">
+<div class="container" style="width: 625px;margin:0 auto;">
+
+    <header style="background: #fff; padding: 2%;">
+        <div class="row">
+            <div style="width: 50%; float: left;">
+                <a href="{{ url('yarsha_frontend_homepage') }}">
+                    <img src="{{ absolute_url(asset('bundles/yarshamain/images/email/logo.png')) }}">
+                </a>
+            </div>
+            <div style="text-align: right;width: 50%; float: right;">
+                {% block header_right_image %}{% endblock %}
+            </div>
+        </div>
+        <div class="clear"></div>
+    </header>
+
+    <!-- header btm section -->
+    <section style="background:#b4ecf9; padding: 1%; text-align: center; margin-bottom: 10px; border: 1px solid #80d1e4;">
+        <p style="margin-bottom: 0; margin-top: 0;">Please add this email jobalert@kantipurjob.com to your contact list to prevent future job alerts from being directed to your junk/bulk folder</p>
+    </section>
+
+    {% block email_body %} {% endblock %}
+
+    <!-- readmore section -->
+    <section style="border:1px #000 solid; ">
+        <div style="text-align: center; padding-top: 15px; padding-bottom: 15px; width: 33.33333333%; float: left;">
+            <a href="{{ url('yarsha_frontend_services') }}" style="font-weight: 600;">Read More</a> about our Resume Services
+        </div>
+        <div style="text-align: center; padding-top: 15px; padding-bottom: 15px; width: 33.33333333%; float: left;">
+            {#<a href="#" style="font-weight: 600;">Request a Call Back</a>#}
+            &nbsp;
+        </div>
+        <div style="text-align: center; padding-top: 15px; padding-bottom: 15px; width: 33.33333333%; float:right;">
+            Call us on 00977 1 4435620<br/>
+            <span style="color: #717171;">(10 AM to 5 PM) </span>
+        </div>
+        <div class="clear"></div>
+    </section>
+
+    <!-- requiters section -->
+    <section style="text-align: center; background: #b4ecf9; padding-top: 10px; padding-bottom: 10px; border:1px solid #80d1e4;">
+        <h4 style="margin-top: 0;">Get more Recruiters to view your Profile</h4>
+        <p style="margin-bottom: 0;">Showcase the best of your professionalism with a Professional Resume and Cover Letter</p>
+    </section>
+
+    <!-- disclaimer section -->
+    <section style="padding:2%; border:1px #000 solid ;font-size:12px;">
+        <span style="color: #F2652A; font-weight: 600;">Disclaimer:</span>
+        You have received this mail because you are registered member on kantipurjob.com.
+        This is a system generated email, please dont reply to this message.
+        For <a href="{{ url('yarsha_frontend_terms') }}">Terms and Conditions</a> and other legal disclaimers,
+        please visit kantipurjob.com.
+        {#If you do not want to receive this mail,<a href="#">Unsubscribe.</a>#}
+    </section>
+
+</div>
+
+
+
+</body>
+</html>

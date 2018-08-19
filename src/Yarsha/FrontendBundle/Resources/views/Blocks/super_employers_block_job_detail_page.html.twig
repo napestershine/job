@@ -1,0 +1,50 @@
+<div class="dashboard-section-dropdown dashboard-bg-color job-detail-blk  {{ settings.additionalClass }}">
+    <h1 class="show-hide-blk dropdown-h1-title untoggable-title">
+        <i class="fa fa-bookmark" aria-hidden="true"></i>
+        &nbsp;super employers</h1>
+    <ul class=" profile-below-blk">
+        <div class="cntc-acc-manager-blk job-detail-company-blk clearfix">
+            <div class="col-md-12 col-sm-12 inner-super-emp-wrap">
+                <ul class="inner-super-emp">
+                    <li>
+                        {% if superEmployers|length %}
+                            {% for employer in superEmployers %}
+                                <div class="span3">
+                                    <div class="icon-slider-img-blk">
+                                        <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':employer.slug}) }}">
+                                            <img src="{{ organization_profile_image(employer)|imagine_filter('thumb_small') }}"
+                                                 alt="Image">
+                                        </a>
+                                    </div>
+                                    <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':employer.slug}) }}">
+                                        <h1>{{ employer.name }}</h1></a>
+                                    <span>{{ employer.address }}</span>
+                                    <p>
+                                        <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':employer.slug}) }}"><i
+                                                    class="fa fa-briefcase" aria-hidden="true"></i>
+                                            &nbsp;{{ count_jobs_by_organization(employer) }} Jobs</a></p>
+                                    <div class="span3-btm clearfix">
+                                        <div class="col-md-6 col-sm-12 col-xs-6">
+                                            {{ render_follow_button(employer, app.user) }}
+                                        </div>
+                                        <div class="col-md-6 col-sm-12 col-xs-6">
+                                            <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':employer.slug}) }}"
+                                               class="apply">
+                                                <i class="fa fa-pencil-square-o"
+                                                   aria-hidden="true"></i>
+                                                &nbsp;apply now
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            {{ ys_no_contents('Super Employer does not exist.') }}
+                        {% endif %}
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </ul>
+</div>

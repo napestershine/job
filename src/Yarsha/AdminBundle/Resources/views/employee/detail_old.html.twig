@@ -1,0 +1,230 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Employee{% endblock %}
+
+{% block page_description %}{{ seeker.firstName~' '~ seeker.lastName }}{% endblock %}
+
+{% block action_block %}
+    <a href="{{ path('yarsha_admin_jobseeker_edit', {'id':seeker.id}) }}" class="btn btn-primary btn-xs">
+        <i class="fa fa-pencil"></i> EDIT Employee
+    </a>
+
+    <a href="{{ path('yarsha_admin_jobseekers_appliedjobs', {'id':seeker.id}) }}" class="btn btn-warning btn-xs">
+        <i class="fa fa-list"></i> Applied Job
+    </a>
+    <a href="{{ path('yarsha_admin_jobseekers_appliedcompany', {'id':seeker.id}) }}"
+       class="btn btn-info btn-xs">
+        <i class="fa fa-list"></i>
+        Applied Company
+    </a>
+
+
+    <a href="{{ path('yarsha_admin_jobseekers_followedcompany', {'id':seeker.id}) }}" class="btn btn-warning btn-xs">
+        <i class="fa fa-users"></i> Followed Company
+    </a>
+    {#<a href="#" class="btn btn-danger btn-xs">#}
+    {#<i class="fa fa-times"></i> DELETE#}
+    {#</a>#}
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% set
+                    imagePath = seeker.path
+                    ? 'uploads/seekers/'~seeker.path
+                    : 'images/company_logo_default.jpg' %}
+                    <img
+                            src="{{ asset(imagePath) |imagine_filter('company_profile_pic_large') }}"
+                            alt="{{ seeker.firstName }}" width="100%"
+                    >
+                    <h4>{{ seeker.firstName~' '~seeker.lastName }}</h4>
+                    {#{{ org_status_label(seeker.status) }}#}
+                    <hr>
+                    <p><i class="fa fa-map-marker"></i> {{ seeker.currentAddress }}</p>
+                    <p><i class="fa fa-mobile"></i> {{ seeker.mobile }}</p>
+                    <p><i class="fa fa-at"></i> {{ seeker.email }}</p>
+
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Curriculum Vitae
+                        <button class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#uploadForm">
+                            <i class="fa fa-upload"></i></button>
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    {% if(seeker.curriculumVitaePath) %}
+                        <a target="_blank" class="btn btn-primary btn-xs"
+                           href="{{ asset('/uploads/seekers/')~seeker.curriculumVitaePath }}">Preview
+                            CV</a>
+                    {% else %}
+                        {{ ys_no_contents('Upload your Curriculum Vitae') }}
+                    {% endif %}
+                    <div id="uploadForm" class="col-md-12 collapse">
+                        {{ form_start(form) }}
+                        {{ form_widget(form) }}
+                        <br><input type="submit" name="add" class="btn btn-primary btn-sm" value="upload">
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-9">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#seeker-profile" data-toggle="tab">Personal Information</a></li>
+                <li><a href="#seeker-career" data-toggle="tab">Career & Application Information</a></li>
+                <li><a href="#seeker-general-information" data-toggle="tab">General Information</a></li>
+
+            </ul>
+
+            <div class="tab-content" style="background: #FFF; padding: 10px; border: 1px solid #CCC; border-top: 0;">
+                <div class="tab-pane active" id="seeker-profile">{{ _self.seeker_profile(seeker) }}</div>
+                <div class="tab-pane" id="seeker-career">{{ _self.company_career(seeker) }}</div>
+                <div class="tab-pane" id="seeker-general-information">{{ _self.general_information(seeker) }}</div>
+
+            </div>
+        </div>
+    </div>
+
+    {% macro seeker_profile(seeker) %}
+        <div class="row">
+
+            <div class="col-md-12">
+                {% set details = {
+                'Fullname':seeker.firstName~' '~seeker.middleName~' '~seeker.lastName,
+                'Current Address':seeker.currentAddress,
+                'Contact Email':seeker.contactEmail,
+                'Mobile Number':seeker.mobile,
+                'Gender':seeker.gender,
+                'Date of Birth':seeker.dob|date('M j, Y'),
+                } %}
+
+                {% for k,v in details %}
+                    <div class="col-md-6 form-group info">
+                        <label>{{ k }}</label>
+                        <span class="form-control">{{ v }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    {% endmacro %}
+
+    {% macro general_information(seeker) %}
+        <div class="row">
+            <div class="col-md-12">
+                {% set details = {
+                    'Permanent Address': seeker.permanentAddress,
+                    'Nationality': seeker.nationality,
+                    'Religion': seeker.religion,
+                    'Marital Status': seeker.maritalStatus,
+                    'Home Number': seeker.phone,
+                    'Career Objectives': seeker.objectives
+                } %}
+                {% for k,v in details %}
+                    <div class="col-md-6 form-group info">
+                        <label>{{ k }}</label>
+                        <span class="form-control">{{ v }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endmacro %}
+
+    {% macro company_career(seeker_career) %}
+
+        {% if seeker_career %}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6 form-group info">
+                        <label>Preferred Location</label>
+                            <span class="form-control">
+                                {% if(seeker_career.preferredLocations) %}
+                                    {% for location in seeker_career.preferredLocations %}
+                                        {{ location.name }}
+                                    {% endfor %}
+                                {% else %}
+                                    {{ 'N/A' }}
+                                {% endif %}
+                            </span>
+                    </div>
+                    <div class="col-md-6 form-group info">
+                        <label>Preferred Category</label>
+                            <span class="form-control">
+                                {% for category in seeker_career.preferredCategories %}
+                                    {{ category.title }}
+                                {% endfor %}
+                            </span>
+                    </div>
+                    <div class="col-md-6 form-group info">
+                        <label>Preferred Industry</label>
+                            <span class="form-control">
+                                 {% for industry in seeker_career.preferredIndustries %}
+                                     {{ industry.title }}
+
+                                 {% endfor %}
+                            </span>
+                    </div>
+                    <div class="col-md-6 form-group info">
+                        <label>Minimum Expected Salary</label>
+                            <span class="form-control">
+                               {{ seeker_career.minExpectedSalary ? seeker_career.minExpectedSalary:'N/A' }}
+                            </span>
+                    </div>
+                    <div class="col-md-6 form-group info">
+                        <label>Maximum Expected Salary</label>
+                            <span class="form-control">
+                               {{ seeker_career.maxExpectedSalary ? seeker_career.maxExpectedSalary:'N/A' }}
+                            </span>
+                    </div>
+
+                    <div class="col-md-6 form-group info">
+                        <label>Education Degree</label>
+                            <span class="form-control">
+                               {{ seeker_career.degree ? seeker_career.degree:'N/A' }}
+                            </span>
+                    </div>
+
+                    {% if(seeker_career.hasExperience) %}
+                        <div class="col-md-6 form-group info">
+                            <label>No. of Year</label>
+                            <span class="form-control">
+                               {{ seeker_career.noOfYear ? seeker_career.noOfYear~' Year':'N/A' }}
+                            </span>
+                        </div>
+
+                        <div class="col-md-6 form-group info">
+                            <label>No. of Month</label>
+                            <span class="form-control">
+                               {{ seeker_career.noOfMonth ? seeker_career.noOfMonth~' Month':'N/A' }}
+                            </span>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">
+                No contact person.
+            </div>
+        {% endif %}
+
+    {% endmacro %}
+
+{% endblock content %}
+
+
+        {% block script %}
+
+
+        {% endblock %}

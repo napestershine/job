@@ -1,0 +1,15 @@
+services:
+    yarsha.block.jobs_by_category:
+            class: Yarsha\FrontendBundle\Block\JobCatagoryBlockService
+            arguments:
+                - yarsha.frontend.service.jobcategory
+                - "@templating"
+            tags:
+                - { name: sonata.block }
+    #        Injecting entity manager through setter
+            calls:
+                - [setEntityManager, ['@doctrine.orm.entity_manager']]
+
+    #            Injecting entity manager as property
+    #        properties:
+    #            em: '@doctrine.orm.entity_manager'

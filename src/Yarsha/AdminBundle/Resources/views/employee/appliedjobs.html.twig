@@ -1,0 +1,80 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Applied Jobs{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>
+    </button>
+
+
+{% endblock %}
+
+{% block filter %}
+    <div class="row">
+        <div class="form-group-sm col-md-3">
+            <label for="name">Name</label>
+            <input type="text" name="job_title" value="{{ app.request.get('job_title') }}" placeholder="Job Title"
+                   class="form-control">
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>SN</th>
+                        <th>Jobs Title</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if appliedJobs is not empty %}
+                        {% for appliedJob in appliedJobs %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+
+                                <td>
+                                    <a href="{{ path('yarsha_admin_job_detail', {'id':appliedJob.job.id}) }}">
+                                        {{ appliedJob.job.title }}
+                                    </a>
+                                </td>
+                                <td>{{ appliedJob.type }}</td>
+                                <td>{{ appliedJob.status }}</td>
+
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No Jobs exist.</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+
+                </table>
+
+                {% if appliedJobs.haveToPaginate %}
+                    {{ pagerfanta(appliedJobs, 'twitter_bootstrap3') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+            {% block scripts %}
+              
+            {% endblock %}

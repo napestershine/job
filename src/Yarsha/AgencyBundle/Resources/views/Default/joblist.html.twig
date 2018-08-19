@@ -1,0 +1,52 @@
+{% extends "@YarshaAgency/agency_layout.html.twig" %}
+
+{% block page_title %}Job List{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                {% if jobs is not empty %}
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Job Reference</th>
+                            <th>Job Title</th>
+                            <th>Job Type</th>
+                            <th>Job Location</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% set count = pager_first_index(jobs) %}
+                        {% for job in jobs %}
+                            <tr>
+                                <td>{{ count }}</td>
+                                <td>{{ job.jobReference }}</td>
+                                <td>{{ job.jobTitle }} </td>
+                                <td>{{ job.jobType }}</td>
+                                <td>{{ job.jobLocation }}</td>
+                            </tr>
+                            {% set count = count + 1 %}
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                {% else %}
+                    {{ ys_no_contents('No job found.') }}
+                {% endif %}
+
+                {% if jobs.haveToPaginate %}
+                    {{ pagerfanta(jobs, 'twitter_bootstrap3') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

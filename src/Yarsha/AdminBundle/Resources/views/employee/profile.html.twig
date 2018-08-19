@@ -1,0 +1,63 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+
+{% block content %}
+
+    <h1>Job Seeker Profile</h1>
+    <hr>
+    <div class="col-md-4">
+        <table class="table table-striped table-hover table-condensed">
+            <tr>
+                <td>Name</td>
+                <td>{{ jobseeker.firstName ~' '~ jobseeker.lastName }}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{ jobseeker.email }}</td>
+            </tr>
+            <tr>
+                <td>Gender</td>
+                <td>{{ jobseeker.gender }}</td>
+            </tr>
+            <tr>
+                <td>Current Address</td>
+                <td>{{ jobseeker.currentAddress }}</td>
+            </tr>
+            <tr>
+                <td>Permanent Address</td>
+                <td>{{ jobseeker.permanentAddress }}</td>
+            </tr>
+            <tr>
+                <td>Date of birth</td>
+                <td>{{ jobseeker.dob | date('M d, Y')}}</td>
+            </tr>
+            <tr>
+                <td>Marital Status</td>
+                <td>{{ jobseeker.maritalStatus }}</td>
+            </tr>
+            <tr>
+                <td>Nationality</td>
+                <td>{{ jobseeker.nationality }}</td>
+            </tr>
+            <tr>
+                <td>Religion</td>
+                <td>{{ jobseeker.religion }}</td>
+            </tr>
+            <tr>
+                <td>Phone</td>
+                <td>{{ jobseeker.phone }}</td>
+            </tr>
+            <tr>
+                <td>Office Phone</td>
+                <td>{{ jobseeker.officePhone }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <a href="{{ path('yarsha_admin_jobseeker_list') }}">
+            <button class="btn btn-info">Back</button>
+        </a>
+    </div>
+{% endblock %}

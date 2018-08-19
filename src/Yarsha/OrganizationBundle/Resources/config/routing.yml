@@ -1,0 +1,3 @@
+yarsha_organization:
+    resource: "@YarshaOrganizationBundle/Controller"
+    type: annotation

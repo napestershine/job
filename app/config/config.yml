@@ -1,0 +1,331 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+# Put parameters here that don"t need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+
+framework:
+    #esi:             ~
+    #translator:      { fallbacks: ["%locale%"] }
+    translator: ~
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+        #serializer:      { enable_annotations: true }
+    templating:
+        engines: ["twig"]
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+    fragments:       ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+
+
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   pdo_mysql
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #     path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport:  "%mailer_transport%"
+    host:       "%mailer_host%"
+    port:       "%mailer_port%"
+    username:   "%mailer_user%"
+    password:   "%mailer_password%"
+#    spool:      { type: memory }
+
+# Doctrine migrations bundle
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/DoctrineMigrations"
+    namespace: Application\Migrations
+    table_name: ys_migrations_versions
+    name: Application Migrations
+
+# Rollerworks multiuser bundle
+rollerworks_multi_user:
+    from_email:
+        address: mandip810@gmail.com
+        sender_name: "Yarsha Studio"
+
+# stof doctrine extensions
+stof_doctrine_extensions:
+    default_locale: en_US
+    orm:
+        default:
+            timestampable: true
+            sluggable: true
+
+# JMS DI Extra
+jms_di_extra:
+    locations:
+        all_bundles: false
+        bundles: []
+        directories: ["%kernel.root_dir%/../src"]
+
+hwi_oauth:
+    firewall_names: ["seeker"]
+    resource_owners:
+        facebook:
+            type: facebook
+            client_id: "%facebook_client_id%"
+            client_secret: "%facebook_client_secret%"
+            scope:         "email"
+            options:
+                display: popup
+            infos_url:     "https://graph.facebook.com/me?fields=id,name,first_name,middle_name,last_name,email,picture.type(large),gender,birthday"
+            paths:
+                email:          email
+                profilepicture: picture.data.url
+        linkedin:
+            type: linkedin
+            client_id: "%linkedin_client_id%"
+            client_secret: "%linkedin_client_secret%"
+            infos_url: "https://api.linkedin.com/v1/people/~:(id,formatted-name,first-name,last-name,email-address,picture-urls::(original),headline,public-profile-url,positions)?format=json"
+            paths:
+                 email:          email
+
+        google:
+            type:                google
+            client_id:           "%google_client_id%"
+            client_secret:       "%google_client_secret%"
+            scope:              "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
+            paths:
+                 email: email
+    http_client:
+        verify_peer: false
+
+# LiipImagineBundle
+liip_imagine:
+    cache: default
+    resolvers:
+       default:
+            web_path:
+                web_root: "%kernel.root_dir%/../web" # %kernel.root_dir%/../web
+                cache_prefix: "media/cache" # media/cache
+
+    filter_sets:
+        cache: ~
+        thumb_mini:
+            quality: 100
+            filters:
+                thumbnail: { size: [60, 60], mode: outbound }
+        thumb_small:
+            quality: 100
+            filters:
+                thumbnail: { size: [80, 80], mode: outbound }
+        thumb_medium:
+            quality: 100
+            filters:
+                thumbnail: { size: [130, 130], mode: outbound }
+        thumb_large:
+            quality: 100
+            filters:
+                thumbnail: { size: [250, 165], mode: outbound }
+        company_profile_pic_large:
+            quality: 100
+            filters:
+                thumbnail: { size: [300, 300], mode: outbound }
+        banner_thumb:
+            quality: 100
+            filters:
+                thumbnail: { size: [300, 100], mode: outbound }
+        ad_listing:
+            quality: 100
+            filters:
+                thumbnail: { size: [200, 80], mode: outbound }
+        home_banner:
+            quality: 100
+            filters:
+                thumbnail: { size: [1600, 290], mode: outbound }
+        recent_job_ad:
+            quality: 100
+            filters:
+                thumbnail: {size: [271, 50], mode: outbound}
+        newspaper_job_ad:
+            quality: 100
+            filters:
+                    thumbnail: {size: [325, 90], mode: outbound}
+        hot_job_ad:
+            quality: 100
+            filters:
+                thumbnail: {size: [433, 110], mode: outbound}
+        profile_pic_mini:
+            quality: 100
+            filters:
+                thumbnail: {size: [32, 32], mode: outbound}
+        top-super:
+            quality: 100
+            filters:
+                thumbnail: {size: [270, 167], mode: outbound}
+        cv-search:
+            quality: 100
+            filters:
+                thumbnail: {size: [107, 135], mode: outbound}
+
+#gregwar_image:
+#    cache_dir: "media"
+
+#Sonata block bundle
+
+sonata_block:
+    default_contexts: [sonata_page_bundle]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+
+        #sonata.admin_doctrine_orm.block.audit:
+        #    contexts:   [admin]
+
+        sonata.block.service.text:
+        sonata.block.service.rss:
+        yarsha.frontend.service.job:
+        yarsha.block.jobs_by_category: ~
+        yarsha.block.super_employer: ~
+        yarsha.block.how_it_work:
+        yarsha.block.government.job:
+        yarsha.block.hot.job:
+        yarsha.block.recent_jobs: ~
+        yarsha.block.featured_jobs: ~
+        yarsha.block.article.category:
+
+        yarsha.block.job_post: ~
+        yarsha.block.total_employers: ~
+        yarsha.block.total_seekers: ~
+        yarsha.block.seeker_profile_status: ~
+        yarsha.block.employer_profile_status: ~
+        yarsha.block.seeker_browse_jobs: ~
+        yarsha.block.employer_profile_picture: ~
+        yarsha.block.employer_contact_person: ~
+        yarsha.block.employer_company_information: ~
+        yarsha.block.employer_job_seeker: ~
+        yarsha.block.employer_sidebar: ~
+        yarsha.block.employer_detail_page_job: ~
+        yarsha.block.newspaperjobs: ~
+        yarsha.block.super_employer.job.frontend: ~
+        yarsha.block.seeker_profile: ~
+        yarsha.block.seeker_applied_jobs: ~
+        yarsha.block.seeker_followed_companies: ~
+        yarsha.block.seeker_matched_jobs: ~
+        yarsha.block.top_employer.job.frontend: ~
+        yarsha.block.top_super_employer.job.frontend: ~
+        yarsha.block.relatedjobs: ~
+        yarsha.block.social_media: ~
+        yarsha.block.featured_employer.job.frontend: ~
+        yarsha.block.admin_seeker_profile: ~
+        yarsha.block.hirig_company: ~
+        yarsha.block.search_cv: ~
+
+        # Some specific block from the SonataMediaBundle
+        #sonata.media.block.media:
+        #sonata.media.block.gallery:
+        #sonata.media.block.feature_media:
+
+        # Some block with different templates
+        #acme.demo.block.demo:
+        #    templates:
+        #       - { name: "Simple", template: "AcmeDemoBundle:Block:demo_simple.html.twig" }
+        #       - { name: "Big",    template: "AcmeDemoBundle:Block:demo_big.html.twig" }
+
+
+fm_elfinder:
+    #assets_path: / # default is /assets, this is where css/js elfinder files are
+    instances:
+        default:
+            locale: "%locale%" # defaults to current request locale
+            editor: ckeditor # other options are tinymce, tinymce4, fm_tinymce, form, simple, custom
+#            theme: smoothness # jquery theme, default is "smoothness"
+            include_assets: true # disable if you want to manage loading of javascript and css assets manually
+            connector:
+                debug: true # defaults to false
+                roots:       # at least one root must be defined, defines root filemanager directories
+                    uploads:
+                        #show_hidden: true|false # defaults to false, hides dotfiles
+                        driver: LocalFileSystem
+                        path: uploads/media
+                        upload_allow: ["image/png", "image/jpg", "image/jpeg"]
+                        upload_deny: ["all"]
+                        upload_max_size: 2M # also file upload sizes restricted in php.ini
+                        #attributes: example of setting attributes permission
+                        #    - { pattern: "/(.*?)/", read: true, write: false, locked: true }
+        form:
+            locale: "%locale%"
+            editor: form
+            fullscreen: true
+            include_assets: true
+            connector:
+                debug: false
+                roots:
+                    uploads:
+                        driver: LocalFileSystem
+                        path: uploads/media
+#                        url: "uploads/media"
+                        upload_allow: ["image/png", "image/jpg", "image/jpeg"]
+                        upload_deny: ["all"]
+                        upload_max_size: 2M
+
+ivory_ck_editor:
+    default_config: default
+    configs:
+        default:
+            filebrowserBrowseRoute: elfinder
+            filebrowserBrowserRouteParameters: []
+        simple_editor:
+            toolbar: [ ["Source"], ["Bold", "Italic", "Underline"],["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"], ["NumberedList", "BulletedList", "-", "Outdent", "Indent", "-", "Blockquote"], ["Cut", "Copy", "Paste"], ["Maximize"] ]
+#            uiColor:                "#000000"
+
+knp_snappy:
+    pdf:
+        enabled: true
+        binary: %kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltopdf-amd64
+        options: []
+    image:
+        enabled: true
+        #binary: xvfb-run /usr/bin/wkhtmltopdf
+        binary: %kernel.root_dir%/../vendor/h4cc/wkhtmltopdf-amd64/bin/wkhtmltoimage-amd64
+        options: []
+    temporary_folder: %kernel.cache_dir%/snappy
+
+## app/config/config.yml
+#white_october_breadcrumbs: ~
+
+nelmio_api_doc:
+    name: YarshaStudio API Documentation

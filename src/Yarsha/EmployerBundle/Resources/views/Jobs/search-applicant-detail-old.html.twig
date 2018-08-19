@@ -1,0 +1,362 @@
+{% extends 'YarshaEmployerBundle::employer_layout.html.twig' %}
+{% block content %}
+    <div class="search-job-filter-wrap profile-detail-resume">
+        <div class="clearfix">
+            <div class="row">
+                <div class="profile-detail-resume-cover">
+                    <div class="circle-img">
+                        {% if(detail.path) %}
+                            {% set proImg = asset('uploads/seekers/'~detail.path) %}
+                        {% else %}
+                            {% set proImg = asset('images/20170226125105.png') %}
+                        {% endif %}
+                        <img src="{{ proImg }}"/>
+                    </div>
+                </div>
+                <h2>{{ detail.firstName }}{{ detail.middleName }} {{ detail.lastName }}</h2>
+                <h3>{{ detail.currentAddress }}</h3>
+
+                {% if(detail.hasExperience) %}
+
+                    <span>
+                            Experience: {{ detail.noOfYear? detail.noOfYear~'Y,':'' }} {{ detail.noOfMonth?detail.noOfMonth~'M':'' }}
+                         </span>
+
+                {% endif %}
+
+                {% if(detail.curriculumVitaePath) %}
+
+                    {% set cvFile = asset('uploads/seekers/'~detail.curriculumVitaePath) %}
+
+                    <a target="_blank" href="{{ path('yarsha_employer_cv_download',{'id':detail.id}) }}"
+                       class="btn btn-default">Download CV</a>
+                    <a target="_blank" href="{{ cvFile }}" class="btn btn-default">View Uploaded CV</a>
+                {% else %}
+                    {{ ys_no_contents('No cv uploaded yet.') }}
+                {% endif %}
+                <p>{{ detail.objectives }}</p>
+
+                <div class="profile-detail-resume-brm-bar">
+                    Mobile No: {{ detail.mobile }} | Home Phone: 01 {{ detail.phone }} | Email
+                    Address: {{ detail.email }}
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">Profile Detail</div>
+            </div>
+        </div>
+
+        <div class="posted-jobs-blk-list-blk">
+            <table class="table table-stripe">
+                <tbody>
+
+                <tr>
+                    <td style="width:200px">Name</td>
+                    <td>{{ detail.firstName }}{{ detail.middleName }} {{ detail.lastName }}</td>
+                    <td style="width:200px">Expected Salary</td>
+                    <td>{{ detail.minExpectedSalary }}<br>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Date of Birth</td>
+                    <td>{{ detail.dob|date('M j Y') }}</td>
+                    <td>Marital Status</td>
+                    <td>{{ detail.maritalStatus }}</td>
+
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td>{{ detail.gender }}</td>
+                    <td>Nationality</td>
+                    <td>{{ detail.nationality }}</td>
+
+                </tr>
+                <tr>
+                    <td>Current Address</td>
+                    <td>{{ detail.currentAddress }}</td>
+                    <td>Religion</td>
+                    <td>{{ detail.religion }}</td>
+                </tr>
+                <tr>
+                    <td>Permanent Address</td>
+                    <td>{{ detail.permanentAddress }}</td>
+                    <td>Preferred Locations</td>
+                    <td>
+                        {% for location in detail.preferredLocations %}
+                            {{ location.name }}
+                        {% endfor %}
+
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>Preferred Industries</td>
+                    <td>
+                        {% for industry in detail.preferredIndustries %}
+                            {{ industry.title }}
+                        {% endfor %}
+
+                    </td>
+                    <td>Preferred Categories</td>
+                    <td>
+                        {% for category in detail.preferredCategories %}
+                            {{ category.title }}
+                        {% endfor %}
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">Educations</div>
+            </div>
+        </div>
+
+
+        <div class="posted-jobs-blk-list-blk">
+            {% if(educations|length > 0) %}
+                <table class="table table-stripe">
+                    <thead>
+                    <tr>
+                        <th>Degree</th>
+                        <th>School/College</th>
+                        <th>Board</th>
+                        <th>Per %/CGPA/Grade</th>
+                        <th>Passed Year</th>
+                        <th>country</th>
+                    </tr>
+
+                    </thead>
+                    <tbody>
+
+
+                    {% for education in educations %}
+                        <tr>
+                            <td>{{ education.degree }}</td>
+                            <td>{{ education.institution }}</td>
+                            <td>{{ education.board }}</td>
+                            <td>{{ education.percentage }}</td>
+                            <td>{{ education.year }}</td>
+                            <td>{{ education.country }}</td>
+                        </tr>
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+            {% else %}
+                {{ ys_no_contents('No Educations added.') }}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">Experiences</div>
+            </div>
+        </div>
+
+        <div class="posted-jobs-blk-list-blk">
+            {% if(detail.experiences|length > 0) %}
+                <table class="table table-stripe">
+
+
+                    {% for experience in detail.experiences %}
+                        <tr>
+                            <td style="text-align: center;">
+                                {{ experience.designation }}<br>
+                                {{ experience.jobLevel }}<br>
+                                {{ experience.fromMonth }} {{ experience.fromYear }} -
+                                {{ experience.toMonth }} {{ experience.toYear }}
+
+                            </td>
+                            <td>
+                                <b>{{ experience.organizationName }}</b>
+                                <p class="subDetails">
+                                    Type: {{ experience.employmentType }} time
+                                </p>
+                                <p>{{ experience.country ? experience.country.name : '' }}</p>
+                                <p>{{ experience.roles }}
+                                </p>
+                                <p>Duties and Responsibilities: {{ experience.roles }}</p>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+
+                </table>
+            {% else %}
+                {{ ys_no_contents('No Experiences added.') }}
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">Languages</div>
+            </div>
+        </div>
+
+        <div class="posted-jobs-blk-list-blk">
+
+
+            <div class="row">
+
+                {% if(detail.languages|length > 0) %}
+
+                    {% for language in detail.languages %}
+
+
+                        <div class="col-md-6 lng-rating-blk">
+                            <table>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>{{ language.language }}</th>
+                                </tr>
+                                <tr>
+                                    <td>Reading</td>
+                                    <td>
+
+                                        {% if(language.reading == 'poor') %}
+                                            {% set width1 = '25%' %}
+                                        {% elseif(language.reading == 'average') %}
+                                            {% set width1 = '50%' %}
+                                        {% elseif(language.reading == 'good') %}
+                                            {% set width1 = '75%' %}
+                                        {% else %}
+                                            {% set width1 = '100%' %}
+                                        {% endif %}
+
+                                        <div style="background: #0495D4; width: {{ width1 }}; color: #fff; text-align: center;">
+                                            {{ language.reading }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Writing</td>
+                                    <td>
+
+                                        {% if(language.writing == 'poor') %}
+                                            {% set width2 = '25%' %}
+                                        {% elseif(language.writing == 'average') %}
+                                            {% set width2 = '50%' %}
+                                        {% elseif(language.writing == 'good') %}
+                                            {% set width2 = '75%' %}
+                                        {% else %}
+                                            {% set width2 = '100%' %}
+                                        {% endif %}
+
+                                        <div style="background: #0495D4; width: {{ width2 }}; color: #fff; text-align: center;">
+                                            {{ language.writing }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Speaking</td>
+                                    <td>
+                                        {% if(language.speaking == 'poor') %}
+                                            {% set width3 = '25%' %}
+                                        {% elseif(language.speaking == 'average') %}
+                                            {% set width3 = '50%' %}
+                                        {% elseif(language.speaking == 'good') %}
+                                            {% set width3 = '75%' %}
+                                        {% else %}
+                                            {% set width3 = '100%' %}
+                                        {% endif %}
+                                        <div style="background: #0495D4; width: {{ width3 }}; color: #fff; text-align: center;">
+                                            {{ language.speaking }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    {% endfor %}
+                {% else %}
+
+                    {{ ys_no_contents('No languages added.') }}
+
+                {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">Trainings</div>
+            </div>
+        </div>
+
+        <div class="posted-jobs-blk-list-blk">
+            {% if(detail.trainings|length > 0) %}
+                <table class="table table-stripe">
+                    <thead>
+                    <tr>
+                    <thead>
+                    <th>Title</th>
+                    <th>Institution</th>
+                    <th>Year</th>
+                    <th>Duration</th>
+                    <th>Address</th>
+                    <th>Objective</th>
+                    </thead>
+                    <tbody>
+
+                    {% for training in detail.trainings %}
+                        <tr>
+                            <td>{{ training.title }}</td>
+                            <td>{{ training.institution }}</td>
+                            <td>{{ training.year }}</td>
+                            <td>{{ training.duration }}</td>
+                            <td>{{ training.address }}</td>
+                            <td>{{ training.objective }}</td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+            {% else %}
+                {{ ys_no_contents('No Trainings added.') }}
+            {% endif %}
+
+
+        </div>
+    </div>
+
+    {{ sonata_block_render({'type':'yarsha.block.seeker_followed_companies'},{'title':'Companies Followed', 'seeker':detail}) }}
+
+
+{% endblock content %}
+    {% block script %}
+
+    {% endblock %}

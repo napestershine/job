@@ -1,0 +1,43 @@
+{{ form_start(form, {'attr':{'id':'addReference', 'onsubmit':'return submitReference(this)','data-id':id}}) }}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+<div class="clearfix"></div>
+<div class="col-md-6">
+    {{ form_row(form.name) }}
+</div>
+<div class="col-md-6">
+    {{ form_row(form.designation) }}
+</div>
+
+<div class="col-md-6">
+    {{ form_row(form.organization) }}
+</div>
+<div class="col-md-6">
+    {{ form_row(form.mobile) }}
+</div>
+<div class="col-md-6">
+    {{ form_row(form.email) }}
+</div>
+
+{#<div class="col-md-6">#}
+    {#{{ form_row(form.address) }}#}
+{#</div>#}
+{#<div class="col-md-6">#}
+    {#{{ form_row(form.homePhone) }}#}
+{#</div>#}
+{#<div class="col-md-6">#}
+    {#{{ form_row(form.officePhone) }}#}
+{#</div>#}
+
+
+
+<div class="clearfix"></div>
+
+<div class="modal-footer">
+    <input type="submit" class="btn btn-primary" value="SAVE">
+
+    <button type="button" class="btn btn-danger" data-dismiss="modal">
+        CANCEL
+    </button>
+</div>
+{{ form_end(form) }}

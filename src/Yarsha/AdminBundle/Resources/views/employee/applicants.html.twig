@@ -1,0 +1,101 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+
+{% block page_title %}Applicants{% endblock %}
+{% block page_description %}
+    {% if job is defined %}{{ job.title }}{% elseif organization is defined %}{{ organization.name }}{% endif %}
+{% endblock %}
+
+{% block action_block %}
+    {#<a href="#" class="btn btn-xs btn-default"><i class="fa fa-download"></i> Download</a>#}
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+
+                {% if applicants | length %}
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>SNo</th>
+                            <th>Applicant Name</th>
+                            <th>Gender</th>
+                            <th>Permanent Address</th>
+                            <th>Temporary Address</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Applied Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        {% set count = pager_first_index(applicants) %}
+                        {% for applicant in applicants %}
+                            <tr id="tr_{{ applicant.id }}">
+                                <td>{{ count }}</td>
+                                <td>
+                                    <a href="{{ path('yarsha_admin_seeker_detail',{'id':applicant.employee.id}) }}"> {{ applicant.employee.firstName }} {{ applicant.employee.lastName }}</a>
+                                </td>
+                                <td>{{ applicant.employee.gender }}</td>
+                                <td>{{ applicant.employee.permanentAddress }}</td>
+                                <td>{{ applicant.employee.currentAddress }}</td>
+                                <td>{{ applicant.employee.phone }}</td>
+                                <td>{{ applicant.employee.contactEmail }}</td>
+                                <td>{{ applicant.createdDate|date('Y-m-d') }}</td>
+                                <td>{{ job_is_expired(applicant.job) ? 'Expired' : jobseeker_status(applicant.status) }}</td>
+                                <td>
+                                    <button
+                                            class="btn btn-xs btn-danger deleteApplicant"
+                                            data-employee="{{ applicant.id }}"
+                                    >
+                                        <i class="fa fa-times"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            {% set count = count + 1 %}
+                        {% endfor %}
+                    </table>
+
+                    {% if applicants.haveToPaginate %}
+                        {{ pagerfanta(applicants, 'twitter_bootstrap3') }}
+                    {% endif %}
+
+                {% else %}
+                    {{ ys_no_contents('No applicants for this job.') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
+
+
+{% block scripts %}
+    <script>
+        $('.deleteApplicant').on('click', function (e) {
+
+            if (confirm('Are you sure to delete?')) {
+                var obj = $(this),
+                        employee = obj.data('employee');
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{ path('yarsha_admin_ajax_applicant_delete') }}',
+                    data: {employee: employee},
+                    success: function (res) {
+                        window.location = "";
+                    },
+                    error: function (xhr) {
+                        alert('Something went wrong. Please try again later.');
+                    },
+                    complete: function (xhr) {
+                    }
+                });
+            }
+        });
+
+    </script>
+{% endblock %}

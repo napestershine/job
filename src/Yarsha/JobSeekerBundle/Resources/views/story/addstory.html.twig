@@ -1,0 +1,32 @@
+{% extends '@YarshaJobSeeker/job_seeker_layout.html.twig' %}
+
+{% block page_title %}
+   {% if isUpdating %} Update Story {% else %} Post Your Story {% endif %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="col-md-10">
+            <div class="title">{% if isUpdating %} Update Story {% else %} Post Your Story {% endif %}</div>
+        </div>
+        <div class="col-md-2 pull-right">
+            <a href="{{ path('yarsha_job_seeker_list_story') }}">
+                <button class="btn btn-sm btn-success">View previous stories</button>
+            </a>
+        </div>
+        <div class="posted-jobs-blk-list-blk">
+            {% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+            {{ form_start(form) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.company) }}
+            {{ form_row(form.message) }}
+            {{ form_row(form.file) }}
+            <input type="submit" value="Add" class="btn btn-primary">
+            {{ form_end(form) }}
+        </div>
+
+    </div>
+
+{% endblock %}

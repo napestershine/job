@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- meta viewport -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- title -->
+    {#<title>Kantipur Jobs | {% block page_title %} {% endblock %}</title>#}
+
+    <title> kantipurjob.com | Jobs in Nepal | Recruitment | Post Job | Vacancies | Search Jobs in Nepal | Outsourcing |
+        Human Resource | </title>
+
+    <meta name="description"
+          content="Jobs in Nepal- www.kantipurjob.com is the continuously updated online job site in Nepal where you can post job, vacancies and requirements for free. Being an innovative human resource consulting company, we provide staffing service solutions, recruitment and selection process outsourcing, and call center management services. Job seekers can post their resume for free and explore career opportunities across Nepal."/>
+    <!-- fav icon -->
+    <link rel="shortcut icon" href="{{ asset('bundles/yarshafrontend/images/fav.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('bundles/yarshafrontend/images/fav.png') }}" type="image/x-icon">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <!-- font css path -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- glypicon font path -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('bundles/yarshamain/css/cropper.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/yarshamain/css/cropper-main.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/yarshamain/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/yarshafrontend/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/yarshafrontend/css/respond.css') }}">
+    <style>
+        #crop-avatar {
+            margin-bottom: 8px;
+        }
+
+        .select2-selection.select2-selection--multiple {
+            height: auto !important;
+        }
+    </style>
+
+    {% block stylesheets %} {% endblock %}
+
+    <!-- Google Analytics -->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-40518736-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+    <!-- End Google Analytics -->
+
+
+    <script src="{{ asset('bundles/yarshamain/js/jquery.min.js') }}"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<style>
+    .breadcrumb {
+        padding: 8px 15px;
+        margin-bottom: 0px;
+        list-style: none;
+        background-color: #fff;
+        border-radius: 4px;
+    }
+    .educations-form, .training-form{
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+        box-shadow: 2px 2px 8px 2px;
+    }
+</style>
+
+<body>
+
+<!--[if lt IE 9]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your browsing experience.</p>
+<![endif]-->
+
+{% include "@YarshaFrontend/Includes/navigation_bar.html.twig" %}
+
+<!-- breadcrumb section start -->
+<section class="breadcrumb-wrap-section">
+    <div class="container">
+        <div class="breadcrumb-section">
+            {{ apy_breadcrumb_trail_render('YarshaJobSeekerBundle::includes/breadcrumb.html.twig') }}
+        </div>
+    </div>
+</section>
+
+
+<!-- dashboard wrap section -->
+<section class="dashboard-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-3 dashboard-section-left">
+                <div class="dashboard-section-dp dashboard-bg-color">
+                    <div class="dashboard-section-img-blk jobseeker-pic-blk">
+                        {{ include('@YarshaJobSeeker/includes/profileImageCropper.html.twig') }}
+                        <span style="color:#fff;font-size: 15px;">
+                            {{ app.user.firstName ~ ' ' ~ (app.user.middleName ? app.user.middleName : ' ') ~ ' ' ~ app.user.lastName }}
+                        </span>
+                    </div>
+                    <div class="dashboard-section-img-blk-btm">
+                        <div class="clearfix">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6">
+                                    <input data-toggle="modal" data-target="#avatar-modal" type="submit" name=""
+                                           value="Change Photo">
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <input type="submit" name=""
+                                           onclick="location.href='{{ path('yarsha_job_seeker_profile_detail_view') }}'"
+                                           value="View Profile">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class=" dashboard-section-dropdown dashboard-bg-color">
+
+                    <ul class="profile-below-blk">
+                        <li>
+                            <a href="{{ path('yarsha_job_seeker_homepage') }}">Dashboard</a>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <div class=" dashboard-section-dropdown dashboard-bg-color">
+                    <h1 class="show-hide-blk dropdown-h1-title" data-toggle="collapse" data-target="#myResume">
+                        My Resume
+                    </h1>
+                    <ul id="myResume">
+                        <li>
+                            <a href="#" onclick="uploadResumeForm(event)">
+                                Upload Resume
+                            </a>
+                        </li>
+                        <li><a href="#" onclick="viewEditUploadResume(event)">View/Edit Uploaded Resume</a></li>
+                        <li><a href="{{ path('yarsha_job_seeker_generate_resume') }}">Download Resume</a></li>
+                        <li><a href="{{ path('yarsha_job_seeker_email_resume') }}">Email Resume</a></li>
+                    </ul>
+                </div>
+
+                <div class="dashboard-section-dropdown dashboard-bg-color">
+                    <h1 class="show-hide-blk dropdown-h1-title" data-toggle="collapse" data-target="#profileLinks">
+                        Profile
+                    </h1>
+                    <ul id="profileLinks">
+                        {% set profileStatus = job_seeker_profile_status(app.user, false) %}
+                        {% for info,completion in profileStatus %}
+                            {% set color = (completion < 25)
+                            ? 'text-danger'
+                            : ( completion > 25 and completion < 50 )
+                            ? 'text-info'
+                            : (completion > 50 and completion <= 100) ? 'text-success' : 'text-warning' %}
+                            <li>
+                                <a
+                                        href="{{ path('yarsha_job_seeker_profile_detail_view', {'section':info|replace("_","-")}) }}"
+                                >
+                                    {{ info|replace('_', ' ')|title }}
+                                    <span class="pull-right {{ color }}">({{ completion }}%)</span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="dashboard-section-dropdown dashboard-bg-color">
+                    <h1 class="show-hide-blk dropdown-h1-title" data-toggle="collapse" data-target="#demo">Jobs</h1>
+                    <ul id="demo">
+                        <li>
+                            <a href="{{ path('yarsha_job_seeker_job_list') }}">Applied Jobs</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('yarsha_job_seeker_job_basket_list') }}">Saved Jobs</a>
+                        </li>
+                        <li><a href="{{ path('yarsha_job_seeker_add_story') }}">Post Your Story</a></li>
+                        <li><a href="{{ path('yarsha_job_seeker_notice_list') }}">View Notice</a></li>
+                    </ul>
+                </div>
+
+                <div class="dashboard-section-dropdown dashboard-bg-color ">
+                    <h1 class="show-hide-blk dropdown-h1-title" data-toggle="collapse" data-target="#demo1">user
+                        settings</h1>
+                    <ul id="demo1">
+                        <li>
+                            <a href="{{ path('yarsha_job_seeker_setting_list') }}">Profile Setting</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('yarsha_job_seeker_change_password') }}">Change Password</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('yarsha_job_seeker_security_logout') }}">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+
+
+            <div class="col-md-9 col-sm-9 dashboard-section-right">
+                <div class="company-info-blk dashboard-bg-color jobseeker-search-wrap clearfix">
+                    <div class="title">
+                        <div class="row">
+                            <div class="col-md-9 col-sm-9">search a jobs</div>
+                            <div class="col-md-3 col-sm-3 right"><a href="{{ path('yarsha_frontend_jobs_search') }}"><i
+                                            class="fa fa-search"
+                                            aria-hidden="true"></i> &nbsp;Advance
+                                    Search</a></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <form action="{{ path('yarsha_frontend_jobs_search') }}">
+                            <div class="col-md-3 col-sm-3">
+                                <input type="text" name="title" placeholder="Keywords">
+                            </div>
+                            <div class="col-md-3 col-sm-3">
+                                {{ display_categories(app.request.get('category'), 'Category','category') }}
+                            </div>
+                            <div class="col-md-3 col-sm-3">
+                                {{ display_job_locations(app.request.get('location'), '', 'location') }}
+                            </div>
+                            <div class="col-md-3 col-sm-3">
+                                <input type="submit" name="" value="Search">
+                            </div>
+                        </form>
+                    </div>
+
+
+                </div>
+
+
+                {% for message in app.session.flashBag.get('success') %}
+                    {{ bootstrap_alert_message(message, 'success') | raw }}
+                {% endfor %}
+                {% for message in app.session.flashBag.get('errorMessage') %}
+                    {{ bootstrap_alert_message(message, 'danger') | raw }}
+                {% endfor %}
+
+                {% block content %} {% endblock %}
+                <!-- Modal -->
+                <div class="modal fade" id="myCommonModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel"></h4>
+                            </div>
+                            <div class="modal-body"></div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+</section>
+
+
+<!-- footer section -->
+<footer>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-4">
+                <ul>
+                    <li>who we are</li>
+                    <li>Kantipur Management Private Limited (KMPL) is an
+                        expertise on human resources solutions and has been providing Human Resource Management and
+                        related solutions to organizations across the country since 2012.
+                    </li>
+                    <li><input type="submit" value="LEARN MORE"></li>
+                </ul>
+            </div>
+            <div class="col-md-2 col-sm-2">
+                <ul>
+                    <li>job seekers</li>
+                    <li><a href="#">Advanced Search</a></li>
+                    <li><a href="#">Browse All Jobs</a></li>
+                    <li><a href="#">Register</a></li>
+                    <li><a href="#">Post Resume</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2 col-sm-2">
+                <ul>
+                    <li>employers</li>
+                    <li><a href="#">Post Job</a></li>
+                    <li><a href="#">Search Resume</a></li>
+                    <li><a href="#">Banner Advertisement</a></li>
+                    <li><a href="#">Database Search</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2 col-sm-2">
+                <ul>
+                    <li>services</li>
+                    <li><a href="#">Corporate Services</a></li>
+                    <li><a href="#">Employer Services</a></li>
+                    <li><a href="#">Jobseeker Services</a></li>
+                    <li><a href="#">Why Kantipur</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2 col-sm-2">
+                <ul>
+                    <li>links</li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQ'S</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- footer bottom section -->
+<section class="footer-btm-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-8"><i class="fa fa-map-marker" aria-hidden="true"></i> &nbsp;Naxal-1,
+                Nagpokhari, Kathmandu, Nepal.&nbsp; <i class="fa fa-phone" aria-hidden="true"></i>&nbsp; 00977 1
+                4435619, 4435620. &nbsp;<i class="fa fa-envelope" aria-hidden="true"></i> &nbsp;info@kantipurjob.com
+            </div>
+            <div class="col-md-4 col-sm-4 right">&copy; 2017 Kantipur Management. All Rights Reserved.</div>
+        </div>
+    </div>
+</section>
+
+
+<!-- bootstrap jquery path -->
+<script type="text/javascript" src="{{ asset('bundles/yarshafrontend/js/bootstrap.min.js') }}"></script>
+<!-- custom jquery path -->
+<script src="{{ asset('bundles/yarshamain/js/cropper.min.js') }}"></script>
+<script src="{{ asset('bundles/yarshamain/js/cropper-main.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay.min.js
+"></script>
+<script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay_progress.min.js
+"></script>
+<script>
+
+
+    $('#updateProfile').on('show.bs.modal', function (e) {
+        var modal = $(this);
+        var button = $(e.relatedTarget);
+        var title = button.attr('data-title');
+        modal.find('.modal-title').html(title);
+//        modal.find('.modal-dialog').css({'width': '60%'});
+
+        $.ajax({
+            url: '{{ url('yarsha_ajax_job_seeker_updateProfile') }}',
+            method: 'GET',
+            success: function (data) {
+                modal.find('.modal-body').html(data.template);
+                loadProfileForm(modal);
+            }
+        });
+
+    });
+
+    function loadProfileForm(modal) {
+        modal.find('.modal-body form').on('submit', function (e) {
+            e.preventDefault();
+            submitUpdateProfile($(this), modal);
+        });
+    }
+
+    function submitUpdateProfile(obj, modal) {
+        $.LoadingOverlay('show');
+        var form = $(obj);
+        var dataToSend = form.serialize();
+        var url = "{{ path('yarsha_ajax_job_seeker_updateProfile') }}";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: dataToSend,
+            success: function (res) {
+                if (res.success && res.success == true) {
+                    window.location = ''
+                } else {
+                    modal.find('.modal-body').html(res.template);
+                    loadProfileForm(modal);
+                }
+                $.LoadingOverlay('hide');
+            },
+            error: function (xhr, status, erro) {
+                $.LoadingOverlay('hide');
+            }
+        });
+        return false;
+
+    }
+
+    var educationsLength = "{{ app.user.educations | length }}";
+
+    $('#addEducation').on('show.bs.modal', function (e) {
+        var modal = $(this);
+        var button = $(e.relatedTarget);
+        var companyId = button.attr('data-companyId');
+        var title = button.attr('data-title');
+        var educationId = button.attr('data-educationId');
+        var url = "{{ path('yarsha_job_seeker_ajax_add_education') }}";
+        modal.find('.modal-title').html(title);
+        $.ajax({
+            type: 'get',
+            url: url,
+            data: {'educationId': educationId},
+            success: function (res) {
+                modal.find('.modal-body').html(res.template);
+                var educationWrapper = $("#seekerEducations");
+                var newWidget = educationWrapper.attr('data-prototype');
+                newWidget = newWidget.replace(/__name__/g, educationsLength);
+                console.log(educationsLength);
+                if(educationsLength <= 0){
+                    educationWrapper.append(newWidget);
+                    educationsLength++;
+                }
+                $('.addEducationsBtn').on('click', function(e){
+                    e.preventDefault();
+                    newWidget = educationWrapper.attr('data-prototype');
+                    newWidget = newWidget.replace(/__name__/g, educationsLength);
+                    educationWrapper.append(newWidget);
+                    educationsLength++;
+                    $('.delete-education').on('click', function(e){
+                        e.preventDefault();
+                        $(this).parent().parent().remove();
+                    });
+                });
+                $('.delete-education').on('click', function(e){
+                    e.preventDefault();
+                    $(this).parent().parent().remove();
+                });
+            },
+            error: function (res) {
+                alert(res.message);
+            }
+        });
+    });
+
+    function submitEducation(obj) {
+        $.LoadingOverlay('show');
+        var form = $(obj),
+                dataToSend = form.serialize();
+            var url = "{{ path('yarsha_job_seeker_ajax_add_education') }}"
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: dataToSend,
+            success: function (res) {
+                $.LoadingOverlay('hide');
+                window.location = ''
+            },
+            error: function () {
+                alert('error');
+                $.LoadingOverlay('hide');
+            }
+        });
+        return false;
+    }
+
+    function deleteEducation(e, obj) {
+        e.preventDefault();
+        c = confirm('Are you sure ? ');
+        if (c) {
+            $.LoadingOverlay('show');
+            id = $(obj).attr('data-educationId');
+            url = "{{ path('yarsha_ajax_seeker_education_delete',{'id':'EDUCATION_ID'}) }}";
+            url = url.replace('EDUCATION_ID', id);
+            console.log(url)
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function (data) {
+                    $.LoadingOverlay('hide');
+                    if (data.success) {
+                        $(obj).parent().parent().remove();
+                    }
+                },
+                error: function (res) {
+                    $.LoadingOverlay('hide');
+                    alert('Fail');
+                }
+            })
+        }
+    }
+
+    $('#addLanguage').on('show.bs.modal', function (e) {
+        var modal = $(this);
+        var button = $(e.relatedTarget);
+        var title = button.attr('data-title');
+        var url = "{{ path('yarsha_job_seeker_ajax_add_language') }}";
+        modal.find('.modal-title').html(title);
+        $.ajax({
+            type: 'get',
+            url: url,
+            success: function (res) {
+                modal.find('.modal-body').html(res.template);
+                var languagesLength = "{{ app.user.languages | length  }}";
+                var wrapper = $("#seekerLanguagesWrapper");
+                var newWidget = wrapper.attr('data-prototype');
+                if(languagesLength <= 0){
+                    newWidget = newWidget.replace(/__name__/g, languagesLength);
+                    wrapper.append(newWidget);
+                    languagesLength++;
+                }
+                $('#addLanguageBtn').on('click', function(e){
+                    e.preventDefault();
+                    var newWidget = wrapper.attr('data-prototype');
+                    newWidget = newWidget.replace(/__name__/g, languagesLength);
+                    wrapper.append(newWidget);
+                    languagesLength++;
+
+                    $('.delete-language-btn').on('click', function(e){
+                        e.preventDefault();
+                        $(this).parent().parent().remove();
+                    });
+                });
+                $('.delete-language-btn').on('click', function(e){
+                    e.preventDefault();
+                    $(this).parent().parent().remove();
+                });
+            },
+            error: function (res) {
+                alert(res.message);
+            }
+        });
+    });
+
+    function submitLanguage(obj) {
+        $.LoadingOverlay('show');
+        var form = $(obj),
+                languageId = form.data('id'),
+                dataToSend = form.serialize();
+
+        if (languageId == '') {
+            var url = "{{ path('yarsha_job_seeker_ajax_add_language') }}"
+        } else {
+            var url = "{{ path('yarsha_job_seeker_ajax_update_language', {'languageId':'LANGUAGE_ID'}) }}";
+            var url = url.replace('LANGUAGE_ID', languageId);
+        }
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: dataToSend,
+            success: function (res) {
+                $.LoadingOverlay('hide');
+                window.location = ''
+            },
+            error: function (res) {
+                $.LoadingOverlay('hide');
+                alert('Fail');
+            }
+        });
+        return false;
+    }
+
+    $('#addReference').on('show.bs.modal', function (e) {
+        var modal = $(this);
+        var button = $(e.relatedTarget);
+        var title = button.attr('data-title');
+        var referenceId = button.attr('data-referenceId');
+
+        if (referenceId != '') {
+            var url = "{{ path('yarsha_job_seeker_ajax_update_reference', {'referenceId':'REFERENCE_ID'}) }}";
+            var url = url.replace('REFERENCE_ID', referenceId);
+        } else {
+            var url = "{{ path('yarsha_job_seeker_ajax_add_reference') }}";
+        }
+
+        modal.find('.modal-title').html(title);
+
+        $.ajax({
+            type: 'get',
+            url: url,
+            data: {'referenceId': referenceId},
+            success: function (res) {
+                modal.find('.modal-body').html(res.template);
+
+            },
+            error: function (res) {
+                alert(res.message);
+            }
+        });
+    });
+    function submitReference(obj) {
+        $.LoadingOverlay('show');
+        var form = $(obj),
+                referenceId = form.data('id'),
+                dataToSend = form.serialize();
+
+        if (referenceId == '') {
+            var url = "{{ path('yarsha_job_seeker_ajax_add_reference') }}"
+        } else {
+            var url = "{{ path('yarsha_job_seeker_ajax_update_reference', {'referenceId':'REFERENCE_ID'}) }}";
+            var url = url.replace('REFERENCE_ID', referenceId);
+        }
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: dataToSend,
+            success: function (res) {
+                $.LoadingOverlay('hide');
+                window.location.href = ''
+            },
+            error: function (res) {
+                $.LoadingOverlay('hide');
+                alert('Fail');
+            }
+        });
+        return false;
+    }
+
+    function viewEditUploadResume(e) {
+        e.preventDefault();
+        var modal = $("#myCommonModal");
+        $.ajax({
+            url: '{{ path('yarsha_ajax_job_seeker_upload_resume_form') }}',
+            method: 'GET',
+            success: function (data) {
+                modal.find('.modal-title').html('View/Edit Uploaded Resume')
+                modal.find('.modal-body').html(data.template);
+                modal.modal('toggle');
+            }
+        })
+    }
+
+    function uploadResumeForm(e) {
+        e.preventDefault();
+        var modal = $("#myCommonModal");
+        $.ajax({
+            url: "{{ path('yarsha_ajax_job_seeker_upload_resume_form_template') }}",
+            method: "GET",
+            success: function (data) {
+                modal.find('.modal-title').html('Upload Resume')
+                modal.find('.modal-body').html(data.template);
+                modal.modal('toggle');
+            }
+        });
+    }
+
+    function uploadResumeAction(e, obj) {
+        e.preventDefault();
+        form = new FormData(obj);
+        var fd = new FormData(form);
+        $.ajax({
+            url: '{{ path('yarsha_ajax_job_seeker_upload_cv') }}',
+            method: 'POST',
+            data: form,
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (data) {
+                if (data.success) {
+                    $(obj).children().find("input[type='file']").val('');
+                    $(obj).siblings().find('.text-success').html('Curriculum vitae uploaded.');
+                } else {
+                    $(obj).siblings().find('.text-danger').html(err.message);
+                }
+                console.log(data);
+            },
+            error: function (err) {
+                $(obj).siblings().find('.text-danger').html(err.message);
+                console.log(err);
+            }
+        });
+    }
+
+    function deleteTraining(e, obj) {
+        e.preventDefault();
+        c = confirm('Are you sure ? ');
+        if (c) {
+            $.LoadingOverlay('show');
+            var button = $(obj);
+            id = button.attr('data-id');
+            url = "{{ path('yarsha_ajax_job_seeker_delete_training', {'id':'TRAINING_ID'}) }}";
+            url = url.replace('TRAINING_ID', id);
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function (data) {
+                    $.LoadingOverlay('hide');
+                    if (data.success) {
+                        button.parent().parent().remove();
+                    }
+                },
+                error: function (res) {
+                    $.LoadingOverlay('hide');
+                    alert('Fail');
+                }
+            });
+        }
+
+    }
+
+    function deleteSeekerLanguage(e, obj) {
+        e.preventDefault();
+        c = confirm('Are you sure ? ');
+        if (c) {
+            $.LoadingOverlay('show');
+            var button = $(obj);
+            id = button.attr('data-languageId');
+            url = "{{ path('yarsha_ajax_job_seeker_delete_language', {'id':'LANGUAGE_ID'}) }}";
+            url = url.replace('LANGUAGE_ID', id);
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function (data) {
+                    $.LoadingOverlay('hide');
+                    if (data.success) {
+                        button.parent().parent().remove();
+                    }
+                },
+                error: function (res) {
+                    $.LoadingOverlay('hide');
+                    alert('Fail');
+                }
+            });
+        }
+
+    }
+
+    function deleteReference(e, obj) {
+        e.preventDefault();
+        c = confirm('Are you sure ? ');
+        if (c) {
+            $.LoadingOverlay('show');
+            var button = $(obj);
+            id = button.attr('data-referenceId');
+            url = "{{ path('yarsha_ajax_job_seeker_delete_reference', {'id':'REFERENCE_ID'}) }}";
+            url = url.replace('REFERENCE_ID', id);
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function (data) {
+                    $.LoadingOverlay('hide');
+                    if (data.success) {
+                        button.parent().parent().remove();
+                    }
+                },
+                error: function (res) {
+                    $.LoadingOverlay('hide');
+                    alert('Fail');
+                }
+            });
+        }
+
+    }
+
+
+    $('#updateGeneralInformation').on('show.bs.modal', function (e) {
+        var modal = $(this);
+        var button = $(e.relatedTarget);
+        var title = button.attr('data-title');
+        modal.find('.modal-title').html(title);
+//        modal.find('.modal-dialog').css({'width': '60%'});
+
+        $.ajax({
+            url: '{{ url('yarsha_ajax_job_seeker_general_information') }}',
+            method: 'GET',
+            success: function (data) {
+                modal.find('.modal-body').html(data.template)
+            }
+        });
+
+    });
+
+    function submitGeneralInformation(obj) {
+        $.LoadingOverlay('show');
+        var form = $(obj);
+        var dataToSend = form.serialize();
+        var url = "{{ path('yarsha_ajax_job_seeker_general_information') }}";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: dataToSend,
+            success: function (res) {
+                $.LoadingOverlay('hide');
+                window.location = ''
+            },
+            error: function (res) {
+                $.LoadingOverlay('hide');
+               // alert('Fail');
+            }
+        });
+        return false;
+
+    }
+
+
+</script>
+
+{% block scripts %}{% endblock %}
+
+<!-- Start Alexa Certify Javascript -->
+<script>
+    _atrk_opts =
+        { atrk_acct:"peBLp1IW1d10em", domain:"kantipurjob.com",dynamic: true};
+    (function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+
+<noscript>
+    <img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=peBLp1IW1d10em" style="display:none" height="1" width="1" alt="" />
+</noscript>
+<!-- End Alexa Certify Javascript -->
+
+</body>
+</html>

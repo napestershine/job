@@ -1,0 +1,3 @@
+yarsha_tags_homepage:
+    type:  annotation
+    resource: '@YarshaTagsBundle/Controller'

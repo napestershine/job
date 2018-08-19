@@ -1,0 +1,62 @@
+{% extends "@YarshaFrontend/frontend_layout.html.twig" %}
+{% import '@YarshaFrontend/Macros/frontend_design_macros.html.twig' as frontendDesignMacro %}
+
+{% block content %}
+
+    {% include "@YarshaFrontend/Includes/search_bar.html.twig" %}
+
+    <!-- jobs section -->
+    <section class="hot-jobs-btm-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 hot-jobs-btm-section-blk" id="recentJobsSectionIndex"></div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+
+        $(document).ready(function () {
+            var blockDatas = [
+                {
+                    url: "{{ path('yarsha_frontend_ajax_hotjobs_render') }}",
+                    id: "hotJobsSectionIndex"
+                },
+                {
+                    url: "{{ path('yarsha_frontend_ajax_render_recent_jobs') }}",
+                    id: "recentJobsSectionIndex"
+                },
+                {
+                    url: "{{ path('yarsha_frontend_ajax_render_featured_jobs') }}",
+                    id: "featuredJobsSectionIndex"
+                },
+                {
+                    url: "{{ path('yarsha_frontend_ajax_render_newspaper_jobs') }}",
+                    id: "newspaperJobsSectionIndex"
+                }
+            ];
+            blockDatas.map(function (block) {
+                renderBlock(block.id, block.url);
+            });
+        });
+
+        function renderBlock(blockId, url) {
+            var url = url;
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function (data) {
+                    $('#' + blockId).html(data.template);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+    </script>
+{% endblock %}
+

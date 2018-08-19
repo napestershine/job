@@ -1,0 +1,161 @@
+{% extends 'YarshaAdminBundle::admin_layout.html.twig' %}
+
+{% block page_title %} Job Level {% endblock %}
+
+{% block page_description %} List {% endblock %}
+
+
+{% block action_block %}
+    <a href="#"
+       class="btn btn-primary btn-xs"
+       onclick="showJobLevelForm(event, this)"
+       data-id = ""
+    >
+        <i class="fa fa-plus"></i> &nbsp; Add New
+    </a>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                {% if jobLevels | length %}
+                    <table class="table sortable">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="sortableJobLevel">
+                        {% for level in jobLevels %}
+                            <tr draggable="true" id="item_{{ level.id }}">
+                                <td>
+                                    <i class="fa fa-arrows"></i>
+                                </td>
+                                <td>{{ level.name }}</td>
+                                <td>
+                                    <a href="#" onclick="showJobLevelForm(event, this)" data-id = {{ level.id }}>
+                                        <button class="btn btn-info">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                    </a>
+                                    <a href="#" onclick="deleteJobLevel(event, this)" data-id = "{{ level.id }}">
+                                        <button class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    {{ ys_no_contents('No job levels added.') }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+
+        $( "#sortableJobLevel" ).sortable({
+            axis:'y',
+            update: function (event, ui) {
+                var data = $("#sortableJobLevel").sortable('serialize');
+                console.log(data);
+                $.ajax({
+                    data: data,
+                    type: 'POST',
+                    url: '{{ path('yarsha_ajax_admin_job_level_sort') }}',
+                    success: function(data){
+                        console.log(data);
+                    }
+                });
+
+            }
+        });
+
+        function showJobLevelForm(e, obj){
+            e.preventDefault();
+            var modal = $("#myModal");
+            id = $(obj).attr('data-id');
+            var title;
+            if(id.length == 0 || isNaN(id)){
+                title = "Add Job Level";
+                url = '{{ path('yarsha_admin_ajax_job_level_create') }}';
+            }   else    {
+                title = "Edit Job Level";
+                url = "{{ path('yarsha_admin_ajax_job_level_update',{'id':'LEVEL_ID'}) }}";
+                url = url.replace('LEVEL_ID', id);
+            }
+            $.ajax({
+                url:url,
+                method: 'GET',
+                success: function(data){
+                    modal.find('.modal-title').html(title);
+                    modal.find('.modal-body').html(data.template);
+                    modal.modal('toggle');
+                }
+            });
+        }
+
+        function submitJobLevelForm(e, obj) {
+            e.preventDefault();
+            var form = $(obj);
+            id = form.serializeArray()[1].value;
+            if(isNaN(id)){
+                url = "{{ path('yarsha_admin_ajax_job_level_update',{'id':'LEVEL_ID'}) }}";
+                url = url.replace('LEVEL_ID', id);
+            }   else {
+                url = '{{ path('yarsha_admin_ajax_job_level_create') }}';
+            }
+
+            $.ajax({
+                url: url,
+                data: form.serialize(),
+                type: 'post',
+                success: function(res){
+                    if(res.status == true)
+                    {
+                        window.location = window.location;
+                    }else{
+                        $('#myModal').find('modal-body').html(res.template);
+                    }
+                },
+                error: function(err){}
+            });
+
+            return false;
+        }
+
+        function deleteJobLevel(e, obj){
+            e.preventDefault();
+            c = confirm('Are you sure ?');
+            if(c){
+                id = $(obj).data('id');
+                url = "{{ path('yarsha_ajax_admin_job_level_delete', {'id':'LEVEL_ID'}) }}";
+                url = url.replace('LEVEL_ID', id);
+                $.ajax({
+                    url:url,
+                    method: 'GET',
+                    success: function(data){
+                        if(data.success){
+                            $(obj).parent().parent().remove();
+                        }
+                    }
+                });
+            }
+        }
+
+    </script>
+
+{% endblock %}

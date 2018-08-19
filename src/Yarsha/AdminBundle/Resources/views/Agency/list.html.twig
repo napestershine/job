@@ -1,0 +1,138 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Agency{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>&nbsp; Filter
+    </button>
+
+    <a href="{{ path('yarsha_admin_agency_add') }}" class="btn btn-info btn-xs">
+        <i class="fa fa-plus"></i> Add New Agency
+    </a>
+    <a href="{{ path('yarsha_admin_agency_job_list') }}" class="btn btn-info btn-xs">
+        <i class="fa fa-list"></i> Job List
+    </a>
+
+{% endblock %}
+
+{% block filter %}
+    <div class="row">
+        <div class="form-group-sm col-md-3">
+            <label for="name">Name</label>
+            <input type="text" name="name" value="{{ app.request.get('name') }}" placeholder="Seeker name"
+                   class="form-control">
+        </div>
+
+        <div class="form-group-sm col-md-3">
+            <label for="name">Email</label>
+            <input type="text" name="email" value="{{ app.request.get('email') }}"
+                   placeholder="Contact Email"
+                   class="form-control">
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                {% if agencies is not empty %}
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Full name</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Contact Person Details</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% set count = pager_first_index(agencies)  %}
+                        {% for agency in agencies %}
+
+                            <tr>
+                                <td>{{ count }}</td>
+                                <td>{{ agency.name }} </td>
+                                <td>{{ agency.email }}</td>
+                                <td>{{ agency.address }}</td>
+                                <td>{{ agency.phone }}</td>
+                                <td>
+                                    {% if(agency.contactPersonName) %}
+                                        <b>Name:</b> {{ agency.contactPersonName }}<br>
+                                        <b>Email:</b> {{ agency.contactPersonEmail }}<br>
+                                        <b>Phone:</b> {{ agency.contactPersonPhone }}
+                                    {% else %}
+                                        {{ 'None' }}
+                                     {% endif %}
+                                </td>
+
+                                <td>
+                                    <a href="{{ path('yarsha_admin_agency_edit',{'id':agency.id}) }}"
+                                       class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                                    <button
+                                            class="btn btn-xs btn-danger deleteAgency"
+                                            data-agency="{{ agency.id }}"
+                                    >
+                                        <i class="fa fa-times"></i> Delete
+                                    </button>
+                                    <a href="{{ path('yarsha_admin_agency_job_list',{'agency':agency.id}) }}"
+                                       class="btn btn-xs btn-success"><i class="fa fa-list"></i> Jobs</a>
+                                </td>
+                            </tr>
+                            {% set count = count + 1  %}
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                {% else %}
+                    {{ ys_no_contents('No agency found.') }}
+                {% endif %}
+
+                {% if agencies.haveToPaginate %}
+                    {{ pagerfanta(agencies, 'twitter_bootstrap3') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+    $('.deleteAgency').on('click', function (e) {
+
+        if (confirm('Are you sure to delete?')) {
+            var obj = $(this),
+                agency = obj.data('agency');
+
+            $.ajax({
+                type: 'post',
+                url: '{{ path('yarsha_admin_ajax_agency_delete') }}',
+                data: {agency: agency},
+                success: function (res) {
+                    window.location = window.location;
+                },
+                error: function (xhr) {
+                    alert('Something went wrong. Please try again later.');
+                },
+                complete: function (xhr) {
+                }
+            });
+        }
+    });
+
+</script>
+
+{% endblock %}

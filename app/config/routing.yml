@@ -1,0 +1,63 @@
+yarsha_tags:
+    resource: "@YarshaTagsBundle/Resources/config/routing.yml"
+    prefix:   /
+
+yarsha_main_bundle:
+    resource: "@YarshaMainBundle/Resources/config/routing.yml"
+    prefix: /
+
+yarsha_article_bundle:
+    resource: "@YarshaArticleBundle/Resources/config/routing.yml"
+    prefix:   /
+
+yarsha_organization_bundle:
+    resource: "@YarshaOrganizationBundle/Resources/config/routing.yml"
+    prefix:   /
+
+yarsha_jobs_bundle:
+    resource: "@YarshaJobsBundle/Resources/config/routing.yml"
+    prefix:   /
+
+yarsha_frontend_bundle:
+    resource: "@YarshaFrontendBundle/Resources/config/routing.yml"
+    prefix:   /
+
+yarsha_admin_bundle_routing:
+    resource: "@YarshaAdminBundle/Resources/config/routing/routing.yml"
+    prefix: /
+
+yarsha_employer_bundle_routing:
+    resource: "@YarshaEmployerBundle/Resources/config/routing/routing.yml"
+    prefix: /
+
+yarsha_job_seeker_bundle_routing:
+    resource: "@YarshaJobSeekerBundle/Resources/config/routing/routing.yml"
+    prefix: /
+
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /connect
+
+facebook_login:
+    path: /check-facebook
+
+linkedin_login:
+    path: /check-linkedin
+
+google_login:
+    path: /check-google
+
+elfinder:
+    resource: "@FMElfinderBundle/Resources/config/routing.yml"
+
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
+yarsha_agency_bundle_routing:
+    resource: "@YarshaAgencyBundle/Resources/config/routing/routing.yml"
+    prefix: /
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
+

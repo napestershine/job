@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- meta viewport -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- title -->
+    <title>Seeker Resume</title>
+</head>
+
+
+<style>
+    body {
+        font-size: 12px;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: #444;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .posted-jobs-blk-list-blk table {
+        width: 100%;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .text-blue {
+        color: #0396d5;
+    }
+
+    .text-bold {
+        font-weight: bold;
+    }
+
+    .text-aligned {
+        text-align: justify
+    }
+
+    .mgb-5 {
+        margin-bottom: 5px;
+    }
+
+    p {
+        line-height: 20px;
+    }
+
+    .pull-left {
+        float: left;
+    }
+
+    .pull-right {
+        float: right !important;
+    }
+
+    .search-job-filter-wrap.profile-detail-resume {
+        text-align: center;
+        padding: 0 0 1% 0 !important;
+        border-bottom: 1px solid #ccc;
+        box-shadow: none !important;
+    }
+
+    .search-job-filter-wrap {
+        background: #fff;
+        margin-bottom: 8px;
+    }
+
+    .profile-detail-resume-cover {
+        background: #efefef;
+        width: 100%;
+        height: 100px;
+        position: relative;
+        margin-bottom: 60px;
+        margin-top: 4px;
+    }
+
+    .circle-img {
+        position: absolute;
+        left: 50%;
+        margin-left: -50px;
+        bottom: -50px;
+        height: 100px;
+        width: 100px;
+        border-radius: 50px;
+        border: 3px #fff solid;
+    }
+
+    .circle-img img {
+        border-radius: 50px;
+        width: 100px;
+        height: 100px;
+    }
+
+    h4.title {
+        color: #0396d5;
+        font-size: 16px;
+        font-weight: normal;
+        margin-bottom: 10px;
+        margin-top: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-spacing: 0;
+        border-collapse: collapse;
+        page-break-inside: avoid
+    }
+
+    table tr th {
+        text-align: left;
+        font-weight: 600
+    }
+
+    table.lang tr th {
+        font-weight: 500;
+    }
+
+    table tr th, table tr td {
+        padding: 5px;
+        border: 0.05em solid #ccc;
+    }
+
+    .table-ul ul {
+        margin-left: 20px;
+        list-style-type: square;
+    }
+
+    .language-wrap {
+        width: 49%;
+        float: left;
+    }
+
+    .language-wrap table {
+        margin-bottom: 5px;
+    }
+
+    td.no-pad {
+        padding: 0 !important;
+        border: none !important;
+        margin: 0 !important;
+    }
+
+    .lang-bar {
+        background: #0495D4;
+        color: #fff;
+        text-align: center;
+        height: 17px;
+        border-top: #0495D4 4px solid;
+        border-bottom: #0495D4 4px solid;
+    }
+
+    .hait-wrapper {
+        margin-bottom: 20px;
+        float: left;
+        width: 100%;
+        page-break-inside: auto
+    }
+
+    .lh20 {
+        line-height: 20px;
+    }
+</style>
+
+<body>
+
+{% set proImg = (detail.path) ? asset('uploads/seekers/'~detail.path) : asset('images/20170226125105.png') %}
+
+<div class="search-job-filter-wrap profile-detail-resume">
+    <div class="clearfix">
+        <div class="">
+            <div class="profile-detail-resume-cover">
+                <div class="circle-img">
+                    <img src="{{ proImg|imagine_filter('thumb_medium') }}"/>
+                </div>
+            </div>
+            <div class="text-center mgb-5" style="font-size: 20px; font-weight:100">{{ detail.fullname|title }}</div>
+            <div class="text-center mgb-5">{{ detail.currentAddress }}</div>
+            {% if(detail.hasExperience or detail.noOfYear or detail.noOfMonth) %}
+                <div class="text-center mgb-5">
+                    Total
+                    Experience: {{ detail.noOfYear? detail.noOfYear~'Y,':'0Y' }} {{ detail.noOfMonth?detail.noOfMonth~'M':'0M' }}
+                </div>
+            {% endif %}
+            <div class="text-center text-blue mgb-5">
+                {% set gotPrevious = false %}
+
+                {% if detail.mobile %}
+                    Mobile No: {{ detail.mobile }}
+                    {% set gotPrevious = true %}
+                {% endif %}
+
+                {% if detail.phone %}
+                    {{ gotPrevious ? '&nbsp; | &nbsp; ' }}
+                    Home Phone: {{ detail.phone }}
+                    {% set gotPrevious = true %}
+                {% endif %}
+
+                {% if detail.contactEmail %}
+                    {{ gotPrevious ? '&nbsp; | &nbsp; ' }}
+                    Email Address: {{ detail.contactEmail }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{#<div style="width: 90%; margin:0 5%">#}
+<div>
+    <h4 class="title">CAREER OBJECTIVES</h4>
+    <p class="text-aligned">{{ detail.objectives|raw }}</p>
+
+    <h4 class="title">PROFILE DETAIL</h4>
+    <table>
+        <tr>
+            <th>Name</th>
+            <td>{{ detail.fullname|title }}</td>
+            <th>Religion</th>
+            <td>{{ detail.religion|title }}</td>
+        </tr>
+        <tr>
+            <th>Date Of Birth</th>
+            <td>{{ detail.dob ? detail.dob|date('Y-m-d') : '' }}</td>
+            <th>Marital Status</th>
+            <td>{{ detail.maritalStatus|title }}</td>
+        </tr>
+        <tr>
+            <th>Gender</th>
+            <td>{{ detail.gender|title }}</td>
+            <th>Nationality</th>
+            <td>{{ detail.nationality|title }}</td>
+        </tr>
+        <tr>
+            <th>Expected Salary</th>
+            <td>
+
+                {% set hasMin = false %}
+
+                {% if detail.minExpectedSalary %}
+                    {{ detail.maxExpectedSalary ? '' : 'Starting From ' }}
+                    {{ detail.minExpectedSalary }}
+                    {% set hasMin = true %}
+                {% endif %}
+
+                {% if detail.maxExpectedSalary %}
+                    {{ hasMin ? ' - ' : 'Upto ' }}
+                    {{ detail.maxExpectedSalary }}
+                {% endif %}
+            </td>
+            <th>Driving License</th>
+            <td>
+                {% set setting = job_seeker_settings(detail) %}
+                {{ (setting and setting.haveLicense) ? 'Yes' : 'No' }}
+            </td>
+        </tr>
+        <tr>
+            <th>Current Address</th>
+            <td colspan="3">{{ detail.currentAddress|title }}</td>
+        </tr>
+        <tr>
+            <th>Permanent Address</th>
+            <td colspan="3">{{ detail.permanentAddress|title }}</td>
+        </tr>
+        <tr>
+            <th>Preferred Locations</th>
+            <td colspan="3">{{ detail.preferredLocations|join(', ') }}</td>
+        </tr>
+        <tr>
+            <th>Preferred Industries</th>
+            <td colspan="3">{{ detail.preferredIndustries|join(', ') }}</td>
+        </tr>
+        <tr>
+            <th>Preferred Categories</th>
+            <td colspan="3">{{ detail.preferredCategories|join(', ') }}</td>
+        </tr>
+    </table>
+
+
+    {% if detail.educations | length %}
+        <h4 class="title">EDUCATION</h4>
+        <table>
+            <tr>
+                <th>Degree Name</th>
+                <th>School/College</th>
+                <th>Board</th>
+                <th width="50">%/CGPA/Grade</th>
+                <th>Pass Year</th>
+                <th>Country</th>
+            </tr>
+            {% for education in detail.educations %}
+                <tr>
+                    <td>{{ education.degreeName == '' ? education.degree : education.degreeName }}</td>
+                    <td>{{ education.institution }}</td>
+                    <td>{{ education.board }}</td>
+                    <td>{{ education.percentage }}</td>
+                    <td>{{ education.year }}</td>
+                    <td>{{ education.country ? education.country.name : '' }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if detail.experiences | length %}
+        <h4 class="title">EXPERIENCES</h4>
+        <table class="table-ul">
+
+            {% for experience in detail.experiences %}
+                {% set fromTime = '' %}
+                {% if experience.fromDay and experience.fromMonth %}
+                    {% set fromTime = experience.fromMonth ~ ' ' ~ experience.fromDay ~ ', ' %}
+                {% else %}
+                    {% if experience.fromMonth %}
+                        {% set fromTime = experience.fromMonth ~ ', ' %}
+                    {% endif %}
+                {% endif %}
+
+                {% set fromTime = fromTime ~ experience.fromYear %}
+
+                {% set toTime = '' %}
+                {% if experience.toDay and experience.toMonth %}
+                    {% set toTime = experience.toMonth ~ ' ' ~ experience.toDay ~ ', ' %}
+                {% else %}
+                    {% if experience.toMonth %}
+                        {% set toTime = experience.toMonth ~ ', ' %}
+                    {% endif %}
+                {% endif %}
+
+                {% set toTime = toTime ~ experience.toYear %}
+
+
+                {% if experience.currentlyWorking %}
+                    {% set currwork = 'Currently Working ' %}
+                {% else %}
+                    {% set currwork = toTime ? toTime : 'Currently Working' %}
+                {% endif %}
+
+
+                <tr>
+                    <td style="width:25%;">
+                        <span><strong> {{ experience.designation }}
+
+                            </strong></span>
+                        <br>
+                        <span style="text-align: center;">{{ experience.employmentType|capitalize }} Time</span>
+                        <br>
+                        <span>
+                            {#{{ fromTime }} - {{ toTime ? toTime : 'currently working' }}#}
+                            {{ fromTime }} - {{ currwork }}
+                        </span>
+                    </td>
+                    <td>
+                        <strong>{{ experience.organizationName }}</strong> <br>
+                        <span><strong>Job By Function
+                                : </strong>{{ experience.organizationType ? experience.organizationType.title : '' }}</span>
+                        <br>
+                        <span><strong>Country
+                                : </strong>{{ experience.country ? experience.country.name : '' }}</span>
+                        <p>
+                            <strong>Duties and Responsibility: </strong>{{ experience.roles | raw }}
+                        </p>
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if(detail.languages|length > 0) %}
+        <div class="hait-wrapper">
+            <h4 class="title">LANGUAGE</h4>
+            {% set valueWidths = {'poor':'25', 'average':'50', 'good':'75', 'excellent':'100'} %}
+            {% for language in detail.languages %}
+
+                <div class="language-wrap {{ loop.index%2==0 ? 'pull-right' : '' }}">
+                    <table>
+                        <tr>
+                            <th width="25%" class="text-bold">Language</th>
+                            <td>{{ language.language }}</td>
+                        </tr>
+                    </table>
+                    {% for type in ['reading', 'writing', 'speaking'] %}
+                        <table class="lang">
+                            <tr>
+                                <th width="25%">{{ type|title }}</th>
+                                <td class="no-pad">
+                                    <div class="lang-bar"
+                                         style="width: {{ attribute(valueWidths, attribute(language, type)) }}%">
+                                        {{ attribute(language, type) | title }}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    {% endfor %}
+                </div>
+
+                {% if loop.index % 2 == 0 %}
+                    <div class="clearfix"></div> {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if detail.trainings | length %}
+        <h4 class="title">TRAINING</h4>
+        <table class="table-ul">
+            <tr>
+                <th>Title</th>
+                <th>Institution</th>
+                <th style="width: 10%">Duration</th>
+                <th>Objective</th>
+            </tr>
+            {% for training in detail.trainings %}
+                <tr>
+
+                    <td>{{ training.title }}</td>
+                    <td>{{ training.institution }}</td>
+                    <td>{{ training.duration }}</td>
+                    <td>{{ training.objective|raw }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    {% if detail.references | length %}
+        <div class="hait-wrapper lh20">
+            <h4 class="title">REFERENCES</h4>
+            {% for reference in detail.references|slice(0,2) %}
+                <div style="width: 50%;" class="{{ loop.index == 1 ? 'pull-left' : 'pull-right text-right' }}">
+                    <strong>{{ reference.name|title }}</strong> <br>
+                    {{ reference.designation|title }} <br>
+                    {{ reference.organization|title }} <br>
+                    Contact: {{ reference.mobile }} <br>
+                    {{ reference.email }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="clearfix mgb-5" style="margin-top: 20px"></div>
+    <hr class="mgb-5" style="width: 100%; background: #CCC;">
+
+    <div class="pull-left text-blue">
+        This CV is generated from wwww.kantipurjob.com based on user's information.
+    </div>
+
+    <div class="pull-right">
+        <img style="width:100px;" src="{{ absolute_url(asset('bundles/yarshafrontend/images/logo.png')) }}"
+             alt="Kantipurjobs logo">
+    </div>
+</div>
+
+</body>
+</html>

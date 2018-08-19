@@ -1,0 +1,84 @@
+{% extends 'YarshaFrontendBundle::frontend_layout.html.twig' %}
+
+
+{% block seo %}
+
+    {% set imgSrc = ogImages? asset('uploads/employers/'~ogImages.path):asset('images/kantipurjob-cover-foto.jpg') %}
+
+    <meta name="title" content="{{ title }}"/>
+    <meta name="keywords" content="{{ keywords }}"/>
+    <meta name="description" content="{{ set_total_content(description,200) }}"/>
+
+    <link rel="canonical" href="{{ path('yarsha_frontend_job_detail_view',{'slug':job.slug}) }}"/>
+    <meta property="og:locale" content="en_US"/>
+    <meta property="og:type" content="Job"/>
+    <meta property="og:title" content="{{ title }}"/>
+    <meta property="og:description"
+          content="{{ set_total_content(description,200) }}"/>
+    <meta property="og:url" content="{{ path('yarsha_frontend_job_detail_view',{'slug':job.slug}) }}"/>
+    <meta property="og:site_name" content="Kantipur Jobs"/>
+    <meta property="article:section" content="Jobs"/>
+    <meta property="og:image" content="{{ imgSrc }}"/>
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary"/>
+    <meta name="twitter:description"
+          content="{{ set_total_content(description,200) }}"/>
+    <meta name="twitter:title"
+          content="{{ title }}"/>
+    <meta name="twitter:image" content="{{ imgSrc }}"/>
+
+    <!-- Schema.org markup for Google+ -->
+    <meta itemprop="name" content="{{ title }}">
+    <meta itemprop="description" content="{{ set_total_content(description,200) }}">
+    <meta itemprop="image" content="{{ imgSrc }}">
+
+    <!-- Linkedin -->
+
+    <meta prefix="og: http://ogp.me/ns#" property="og:title" content="{{ title }}"/>
+    <meta prefix="og: http://ogp.me/ns#" property="og:type" content="{{ set_total_content(description,200) }}"/>
+    <meta prefix="og: http://ogp.me/ns#" property="og:image" content="{{ imgSrc }}"/>
+    <meta prefix="og: http://ogp.me/ns#" property="og:url"
+          content="{{ path('yarsha_frontend_job_detail_view',{'slug':job.slug}) }}"/>
+
+
+{% endblock %}
+
+
+{% block styles %}
+    <style>
+        .company-info-blk p {
+            line-height: 24px;
+        }
+
+        .login-alert-btn.btn.btn-primary.btn-sm {
+            /*margin-top: 126px;*/
+            display: inline-block;
+        }
+
+    </style>
+{% endblock %}
+
+
+
+
+{% block content %}
+
+    {% set emid =  employer.id %}
+    {% set organization =  job.organization %}
+
+    {% if job.organization and job.organization.isGovermentOrganization %}
+        {{ include("@YarshaFrontend/job/gov_job_detail.html.twig") }}
+    {% elseif (job.type == 'hot') %}
+        {{ include("@YarshaFrontend/job/hot_job_detail.html.twig") }}
+    {% elseif (job.type == 'free') or (job.type == 'newspaper') %}
+        {{ include("@YarshaFrontend/job/free_newspaper_job_detail.html.twig") }}
+    {% elseif (job.type == 'featured') %}
+        {{ include("@YarshaFrontend/job/featured_job_detail.html.twig") }}
+    {% else %}
+        {{ include("@YarshaFrontend/job/free_job_detail.html.twig") }}
+    {% endif %}
+
+    {% include 'YarshaFrontendBundle:Includes:suggesttofriendmodal.html.twig' %}
+{% endblock %}
+

@@ -1,0 +1,44 @@
+{% extends "@YarshaJobSeeker/job_seeker_layout.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/yarshamain/select2/select2.min.css') }}">
+    <style>
+        .dashboard-bg-color {
+            margin-top: 20px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    <div class="company-info-blk dashboard-bg-color jobseeker-search-wrap new-register-form-blk-left-ind clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-9 col-sm-9">Profile update</div>
+            </div>
+        </div>
+        <div class="table-listing-page-wrap">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <h4></h4>
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <input type="submit" value="Save">
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('bundles/yarshamain/select2/select2.min.js') }}"></script>
+    <script>
+        $('.select2').select2({
+            maximumSelectionLength: 3
+        });
+    </script>
+{% endblock %}

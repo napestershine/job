@@ -1,0 +1,95 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Job Detail{% endblock %}
+
+{% block page_description %}{{ job.title|capitalize }}{% endblock %}
+
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="col-md-12 form-group info">
+                                <label>Title</label>
+                                <span class="form-control text-bold">{{ job.title }}</span>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="col-md-6 form-group info">
+                                <label>Job Provider</label>
+                                <span class="form-control text-bold">{{ job.organization.name }}</span>
+                            </div>
+
+                            <div class="col-md-6 form-group info">
+                                <label>Job Status</label>
+                                <span class="form-control text-bold">{{ render_job_status(job.status) }}</span>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                            <div class="col-md-6 form-group info">
+                                <label>Deadline</label>
+                                <span class="form-control text-bold">{{ job.deadline |date('Y-m-d') }}</span>
+                            </div>
+
+                            <div class="clearfix"></div>
+
+
+                            <div class="col-md-12 form-group info">
+                                <label>Job Description</label>
+                                <span class="form-control text-bold">
+                                    {{ job.description ? job.description|raw : 'N/A' }}
+                                </span>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <div class="col-md-12 form-group info">
+                                <label>Vacancy Code</label>
+                                <span class="form-control text-bold">{{ job.vacancyCode ? : '-' }}</span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Positions</label>
+                                <span class="form-control text-bold">{{ job.numberOfVacancies }}</span>
+                            </div>
+
+
+                            <div class="col-md-12 form-group info">
+                                <label>Education Degree</label>
+                                <span class="form-control text-bold">{{ job.educationDegree ? job.educationDegree.name : 'Any' }}</span>
+                            </div>
+
+                            <div class="col-md-12 form-group info">
+                                <label>Year Of Experience</label>
+                                <span class="form-control text-bold">
+                                    Min: {{ job.minimumExperienceYear ? : '0' }} &nbsp; &nbsp;
+                                    Max: {{ job.maximumExperienceYear ? : '0' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="clearfix"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
+{% block script %}
+
+{% endblock %}

@@ -1,0 +1,44 @@
+<div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+    <div class="title">Jobs I have Applied</div>
+    <div class="posted-jobs-blk-list-blk">
+        {% if appliedjobs | length %}
+            <table class="">
+                <tr>
+                    <td>Company and Job Position</td>
+                    <td>Deadline</td>
+                    <td>Applied Date</td>
+                    <td>Status</td>
+                    <td>Actions</td>
+                </tr>
+                {% for job in appliedjobs %}
+                    <tr>
+                        <td>
+                            {#<a href="{{ path('yarsha_frontend_employer_detail_by_slug', {'slug':job.job.organization.slug}) }}">#}
+                            <span style="color:#1C98D4;">
+                                {{ job.job.organization ? job.job.organization.name:'' }}
+                            </span>
+                            {#</a>#}
+                            <br>
+                            <a href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.job.slug}) }}">
+                            <span>
+                                {{ job.job.title }}
+                            </span>
+                            </a>
+                        </td>
+                        <td>{{ job.job.deadline ? job.job.deadline | date('M d, Y') : '' }}</td>
+                        <td>{{ job.createdDate  ? job.createdDate | date('M d, Y') : '' }}</td>
+                        {#<td>{{ job_is_expired(job.job) ? 'Expired' : jobseeker_status(job.status) }}</td>#}
+                        <td>{{ jobseeker_status(job.status) }}</td>
+                        <td>
+                            <a href="{{ path('yarsha_job_seeker_cancel_job_apply', {'slug':job.job.slug}) }}">
+                                <button class="btn btn-danger btn-xs">Delete</button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            {{ ys_no_contents('You have not applied for any jobs.') }}
+        {% endif %}
+    </div>
+</div>

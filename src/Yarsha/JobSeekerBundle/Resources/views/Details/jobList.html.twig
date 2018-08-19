@@ -1,0 +1,11 @@
+{% extends "@YarshaJobSeeker/job_seeker_layout.html.twig" %}
+
+
+{% block content %}
+
+    {% dump(jobs) %}
+    {% for job in jobs | length %}
+        {{ dump(jobs) }}
+    {% endfor %}
+
+{% endblock %}

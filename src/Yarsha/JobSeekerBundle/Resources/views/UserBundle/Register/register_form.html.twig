@@ -1,0 +1,123 @@
+{% extends "@YarshaFrontend/frontend_layout.html.twig" %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ asset('bundles/yarshamain/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/yarshamain/datepicker/datepicker3.css') }}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('bundles/yarshamain/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('bundles/yarshamain/datepicker/bootstrap-datepicker.js') }}"></script>
+    <script>
+        $('.select2').select2({
+            maximumSelectionLength: 3
+        });
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    <section class="navigation-btm-sec login-reg-bg-wrap">
+        <div class="container">
+            <div class="row">
+                <h2>Create Kantipur Jobs Account As Job Seeker</h2>
+                <span class="login-register-quote">
+                    Already have an account? <a href="{{ path('yarsha_job_seeker_security_login') }}">Login</a>
+                </span>
+                <div class="col-md-12 login-reg-wrap">
+
+                    <div class="login-reg-blk" style="width:100%">
+
+                        {% if errorMessage is defined %}
+                            <div class="text-center text-danger alert">
+                                {{ errorMessage }}
+                            </div>
+                        {% endif %}
+
+                        {% form_theme form "bootstrap_3_layout.html.twig" %}
+
+                        {{ form_start(form) }}
+
+                        <h4 class="block-title">Personal Information</h4>
+
+                        <div class="row">
+                            <div class="col-md-4">{{ form_row(form.firstName) }}</div>
+                            <div class="col-md-4">{{ form_row(form.middleName) }}</div>
+                            <div class="col-md-4">{{ form_row(form.lastName) }}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">{{ form_row(form.currentAddress) }}</div>
+                            <div class="col-md-12">{{ form_row(form.permanentAddress) }}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">{{ form_row(form.dob) }}</div>
+                            <div class="col-md-4">{{ form_row(form.gender) }}</div>
+                            <div class="col-md-4">{{ form_row(form.nationality) }}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">{{ form_row(form.mobile) }}</div>
+                            <div class="col-md-4">{{ form_row(form.phone) }}</div>
+                            <div class="col-md-4">{{ form_row(form.contactEmail) }}</div>
+                        </div>
+
+                        <h4 class="block-title">Career Information</h4>
+
+                        <div class="row">
+                            <div class="col-md-12">{{ form_row(form.preferredIndustries) }}</div>
+                            <div class="col-md-12">{{ form_row(form.preferredCategories) }}</div>
+                            <div class="col-md-12">{{ form_row(form.preferredLocations) }}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">{{ form_row(form.hasExperience) }}</div>
+                        </div>
+
+                        <div class="row" id="experience">
+                            <div class="col-md-6">{{ form_row(form.noOfYear) }}</div>
+                            <div class="col-md-6">{{ form_row(form.noOfMonth) }}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">{{ form_row(form.degree) }}</div>
+                            <div class="col-md-12">{{ form_row(form.expectedSalary) }}</div>
+                        </div>
+
+                        <h4 class="block-title">Login Information</h4>
+
+                        <div class="row">
+                            <div class="col-md-12"> {{ form_row(form.username) }}</div>
+                            <div class="col-md-12"> {{ form_row(form.password.first) }}</div>
+                            <div class="col-md-12"> {{ form_row(form.password.second) }}</div>
+                        </div>
+
+                        {{ form_row(form.username, {'attr':{'placeholder':'Email/Mobile'}}) }}
+                        {{ form_row(form.password.first, {'attr':{'placeholder':'Password'}}) }}
+                        {{ form_row(form.password.second, {'attr':{'placeholder':'Confirm Password'}}) }}
+                        <input type="submit" value="REGISTER">
+                        {{ form_end(form) }}
+
+                        <div class="sign-in-with">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 login-reg-blk-left-blk"><h3>Signin with</h3></div>
+                                <div class="col-md-6 col-sm-6 login-reg-blk-right-blk">
+                                    <a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
+                                    <a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>
+                                    <a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

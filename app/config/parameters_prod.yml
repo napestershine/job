@@ -1,0 +1,21 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: db_kantipur_jobs
+    database_user: root
+    database_password: k@ntipur.jobs
+    mailer_transport: smtp
+    mailer_host: smtp.mailgun.org
+    mailer_user: info@kantipurjob.com
+    mailer_password: kantipurjob.com
+    mailer_port: null
+    secret: ThisTokenIsNotSoSecretChangeIt
+    facebook_client_id: 1897088143905143
+    facebook_client_secret: d9a90f69735203a63219b3341e1552a9
+    linkedin_client_id: 81zfl0azegcw86
+    linkedin_client_secret: NmPoYOLMNUiG3H2W
+    google_client_id: 251291223885-6dk9j227u58hvboc4imrbpnpj5ip4dsv.apps.googleusercontent.com
+    google_client_secret: dhIfuFe-POkH3Ad5knUaOfir
+    site.host: kantipurjob.com
+    site.protocol: https

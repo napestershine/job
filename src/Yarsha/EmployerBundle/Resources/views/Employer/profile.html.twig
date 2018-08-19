@@ -1,0 +1,253 @@
+{% extends '@YarshaEmployer/employer_layout.html.twig' %}
+{% block content %}
+
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-10 col-sm-10">Organization Profile Details</div>
+                <div class="col-md-2 col-sm-2 right">
+                    <a href="" data-toggle="modal"
+                       data-target="#editProfile"
+                       data-profileId="{{ employer.id }}"
+                       data-title="Update Profile"
+                    ><input type="submit" value="Update Profile">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .posted-jobs-blk-list-blk table tr th {
+                width: 20% !important;
+            }
+        </style>
+
+        <div class="posted-jobs-blk-list-blk">
+            <table class="table">
+                <tbody>
+                {#<tr>
+                    <th>Industry</th>
+                    <td>{{ employer.industry ? employer.industry.title : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Ownership Type</th>
+                    <td>{{ employer.ownershipType ? employer.ownershipType.name }}</td>
+                </tr>#}
+                <tr>
+                    <th>Profile</th>
+                    <td>{{ filterProfile(company.profile)|raw }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td>{{ employer.phone }}</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>{{ employer.address }}</td>
+                </tr>
+                <tr>
+                    <th>Website</th>
+                    <td>{{ employer.website }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-9 col-sm-9">Contact Person Details</div>
+                <div class="col-md-3 col-sm-3 right">
+                    <a href="" data-toggle="modal"
+                       data-target="#editContact"
+                       data-contactId="{{ contactPerson.id }}"
+                       data-contact-title="Update Contact Person"
+                    ><input type="submit" value="Update Contact Details"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="posted-jobs-blk-list-blk">
+            <table>
+                <tbody>
+                <tr>
+                    <th>Designation</th>
+                    <td>{{ contactPerson.designation }}</td>
+
+                </tr>
+                <tr>
+                    <th>First Name</th>
+                    <td>{{ contactPerson.firstName }}</td>
+                </tr>
+                <tr>
+                    <th>Last Name</th>
+                    <td>{{ contactPerson.lastName }}</td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td>{{ contactPerson.phone }}</td>
+                </tr>
+                <tr>
+                    <th>Mobile</th>
+                    <td>{{ contactPerson.mobile }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ contactPerson.email }}</td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="modal fade" id="editProfile" role="dialog" arial-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" data-dismiss="modal" class="close">&times</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="modal fade" id="editContact" role="dialog" arial-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" data-dismiss="modal" class="close">&times</button>
+                        <h4 class="modal-title contact-title"></h4>
+                    </div>
+                    <div class="modal-body contact-body">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+    {% block scripts %}
+        <script>
+            $('#editProfile').on('show.bs.modal', function (e) {
+                console.log('sdfsdfsdf');
+                var modal = $(this);
+                var button = $(e.relatedTarget);
+                var title = button.attr('data-title');
+                var profileId = button.attr('data-profileId');
+
+                var url = "{{ path('yarsha_employer_ajax_update_profile', {'profileId':'PROFILE_ID'}) }}";
+                var url = url.replace('PROFILE_ID', profileId);
+
+                modal.find('.modal-title').html(title);
+
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    data: {'profileId': profileId},
+                    success: function (res) {
+                        modal.find('.modal-body').html(res.template);
+
+                    },
+                    error: function (res) {
+                        alert(res.message);
+                    }
+                });
+            });
+
+            $('#editContact').on('show.bs.modal', function (e) {
+                console.log('sdfsdfsdf');
+                var modal = $(this);
+                var button = $(e.relatedTarget);
+                var title = button.attr('data-contact-title');
+
+                var contactId = button.attr('data-contactId');
+
+                var url = "{{ path('yarsha_employer_ajax_profile_change_contact_person', {'contactId':'CONTACT_ID'}) }}";
+                var url = url.replace('CONTACT_ID', contactId);
+
+
+                modal.find('.contact-title').html(title);
+
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    data: {'contactId': contactId},
+                    success: function (res) {
+                        modal.find('.contact-body').html(res.template);
+
+                    },
+                    error: function (res) {
+                        alert(res.message);
+                    }
+                });
+            });
+
+
+            function submitProfile(obj) {
+
+                var form = $(obj),
+                        profileId = form.data('id'),
+                        dataToSend = form.serialize();
+
+                var url = "{{ path('yarsha_employer_ajax_update_profile', {'profileId':'PROFILE_ID'}) }}";
+                var url = url.replace('PROFILE_ID', profileId);
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: dataToSend,
+                    success: function (res) {
+                        window.location = window.location
+                    },
+                    error: function (res) {
+
+                    }
+                });
+
+
+                return false;
+
+            }
+
+            function submitContact(obj) {
+
+                var form = $(obj),
+                        contactId = form.data('id'),
+                        dataToSend = form.serialize();
+
+                var url = "{{ path('yarsha_employer_ajax_profile_change_contact_person', {'contactId':'CONTACT_ID'}) }}";
+                var url = url.replace('CONTACT_ID', contactId);
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: dataToSend,
+                    success: function (res) {
+                        window.location = window.location
+                    },
+                    error: function (res) {
+
+                    }
+                });
+
+
+                return false;
+
+            }
+
+
+        </script>
+    {% endblock %}

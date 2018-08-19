@@ -1,0 +1,63 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Settings{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+
+        {% set currentTab = app.request.get('t') ? app.request.get('t') : 'social_links' %}
+
+        <ul class="nav nav-tabs">
+            {% for key,value in options %}
+                {% set nav_class = key == currentTab ? 'active' : '' %}
+                {% set tabTitle = key|replace('_', ' ')|capitalize %}
+                <li class="{{ nav_class }}"><a href="#{{ key }}Setting" data-toggle="tab">{{ tabTitle }} Setting</a></li>
+            {% endfor %}
+        </ul>
+
+        <div class="tab-content">
+            {% for k, v in options %}
+                {% set pan_class = k == currentTab ? 'active' : '' %}
+                <div class="tab-pane {{ pan_class }}" id="{{ k }}Setting">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <form action="{{ path('yarsha_admin_settings', {'t':k}) }}" method="post" >
+                                        {% for key, value in v %}
+                                            <div class="col-md-12 form-group">
+                                                <label for="{{ key }}">{{ value.label }} :</label>
+                                                <input type="text" class="form-control" name="{{ key }}"
+                                                       value="{{ value.default }}">
+                                            </div>
+                                        {% endfor %}
+
+                                        <div class="clearfix"></div>
+
+                                        <div class="col-md-12">
+                                            <input type="submit" class="btn btn-danger add-button pull-right"
+                                                   value="CANCEL">
+                                            <input type="submit" class="btn btn-success add-button pull-right"
+                                                   value="UPDATE">
+
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock %}

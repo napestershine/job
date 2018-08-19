@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- meta viewport -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- title -->
+    <title>Seeker Resume</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('bundles/yarshafrontend/css/style.css')) }}">
+    <!-- responsive path -->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('bundles/yarshafrontend/css/respond.css')) }}">
+
+
+</head>
+
+
+<style>
+    *{
+        margin: 0;
+        padding:0;
+    }
+    .breadcrumb {
+        padding: 8px 15px;
+        margin-bottom: 0px;
+        list-style: none;
+        background-color: #fff;
+        border-radius: 4px;
+    }
+    .modal{
+        display: none;
+    }
+    @media (max-width: 767px){
+        .posted-jobs-blk-list-blk {
+            width: 100%;
+            overflow-x: hidden;
+        }
+    }
+    .container{
+        width: 96%;
+        margin-left: 2%;
+    }
+    .profile-detail-resume-brm-bar{
+        border-top:none;
+        border-bottom: 1px #cccaca solid;
+        margin-bottom:1px;
+    }
+    .profile-detail-resume-cover{
+        background: grey;
+    }
+    .posted-jobs-blk-list-blk table{
+        width: 100%;
+    }
+
+</style>
+
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <section class="dashboard-section">
+                <div class="container">
+                    <div class="row">
+                        <div class="search-job-filter-wrap profile-detail-resume">
+                            <div class="clearfix">
+                                <div class="row">
+                                    <div class="profile-detail-resume-cover">
+                                        <div class="circle-img">
+                                            {% if(detail.path) %}
+                                                {% set proImg = asset('uploads/seekers/'~detail.path) %}
+                                            {% else %}
+                                                {% set proImg = asset('images/20170226125105.png') %}
+                                            {% endif %}
+                                            <img src="{{ absolute_url(proImg) }}"/>
+                                        </div>
+                                    </div>
+                                    <h2>{{ detail.firstName|title }}{{ detail.middleName|title }} {{ detail.lastName|title }}</h2>
+                                    <h3>{{ detail.currentAddress }}</h3>
+
+                                    {% if(detail.hasExperience) %}
+
+                                        <span>
+                                            Experience: {{ detail.noOfYear? detail.noOfYear~'Y,':'' }} {{ detail.noOfMonth?detail.noOfMonth~'M':'' }}
+                                         </span>
+
+                                    {% endif %}
+
+                                    <div class="profile-detail-resume-brm-bar">
+                                        Mobile No: {{ detail.mobile }} | Home Phone: 01 {{ detail.phone }} | Email
+                                        Address: {{ detail.email }}
+                                    </div>
+                                    <h4 style="color: #0084BF;text-align: left;padding: 5px;">CAREER OBJECTIVE</h4>
+                                    <p style="text-align: left;">{{ detail.objectives }}</p>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        {#'personal_information',#}
+                        {#'general_information',#}
+                        {#'education_information',#}
+                        {#'trainings',#}
+                        {#'professional_information'#}
+
+                        {% set profileInfos = [
+                        'education_information',
+                        'trainings',
+                        'professional_information'
+                        ] %}
+
+                        {% for p in profileInfos %}
+                            {% set template = 'YarshaJobSeekerBundle:Blocks/Profile:'~p~'.html.twig' %}
+                            {{ sonata_block_render({'type':'yarsha.block.seeker_profile'}, {'section':p,'template':template, 'seeker':detail, 'employer':true}) }}
+                        {% endfor %}
+
+                        {% if(detail.languages|length > 0) %}
+                        <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+                            <div class="title">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">Languages</div>
+                                </div>
+                            </div>
+
+                            <div class="posted-jobs-blk-list-blk">
+
+
+                                <div class="row">
+
+                                    {% if(detail.languages|length > 0) %}
+
+                                        {% for language in detail.languages %}
+
+
+                                            <div class="col-md-6 lng-rating-blk" style="width: 50%;float: left;">
+                                                <table>
+                                                    <tr>
+                                                        <th style="width: 20%">Language</th>
+                                                        <th>{{ language.language }}</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Reading</td>
+                                                        <td>
+
+                                                            {% if(language.reading == 'poor') %}
+                                                                {% set width1 = '25%' %}
+                                                            {% elseif(language.reading == 'average') %}
+                                                                {% set width1 = '50%' %}
+                                                            {% elseif(language.reading == 'good') %}
+                                                                {% set width1 = '75%' %}
+                                                            {% else %}
+                                                                {% set width1 = '100%' %}
+                                                            {% endif %}
+
+                                                            <div style="background: #0495D4; width: {{ width1 }}; color: #fff; text-align: center;">
+                                                                {{ language.reading | title }}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Writing</td>
+                                                        <td>
+
+                                                            {% if(language.writing == 'poor') %}
+                                                                {% set width2 = '25%' %}
+                                                            {% elseif(language.writing == 'average') %}
+                                                                {% set width2 = '50%' %}
+                                                            {% elseif(language.writing == 'good') %}
+                                                                {% set width2 = '75%' %}
+                                                            {% else %}
+                                                                {% set width2 = '100%' %}
+                                                            {% endif %}
+
+                                                            <div style="background: #0495D4; width: {{ width2 }}; color: #fff; text-align: center;">
+                                                                {{ language.writing | title }}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Speaking</td>
+                                                        <td>
+                                                            {% if(language.speaking == 'poor') %}
+                                                                {% set width3 = '25%' %}
+                                                            {% elseif(language.speaking == 'average') %}
+                                                                {% set width3 = '50%' %}
+                                                            {% elseif(language.speaking == 'good') %}
+                                                                {% set width3 = '75%' %}
+                                                            {% else %}
+                                                                {% set width3 = '100%' %}
+                                                            {% endif %}
+                                                            <div style="background: #0495D4; width: {{ width3 }}; color: #fff; text-align: center;">
+                                                                {{ language.speaking | title }}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+
+                                        {{ ys_no_contents('No languages added.') }}
+
+                                    {% endif %}
+
+
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if detail.references | length %}
+                        <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+                            <div class="title">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">References</div>
+                                </div>
+                            </div>
+
+                            <div class="posted-jobs-blk-list-blk">
+
+
+                                <div class="row">
+                                    {% if detail.references | length %}
+                                        {% for reference in detail.references %}
+                                            <div class="col-md-6">
+                                                <ul style="list-style: none;">
+                                                    <li>{{ reference.name }}</li>
+                                                    <li>{{ reference.organization }}</li>
+                                                    <li>{{ reference.designation }}</li>
+                                                    <li>Contact: {{ reference.mobile ~ ' / ' ~reference.homePhone }}</li>
+                                                    <li>{{ reference.email }}</li>
+                                                </ul>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="col-md-12" style="height: 40px;width: 100%;margin-top: 10px;">
+                            <div class="col-md-8" style="width: 80%;float: left;margin-top:5px;">
+                                <h5 style="text-align: left;color:#0084BF;font-family: Times;">This CV is generated from wwww.kantipurjob.com based on user's information.</h5>
+                            </div>
+                            <div class="col-md-4" style="width: 20%;float: left;height:30px;margin-top:-5px;">
+                                <img style="height:25px;" src="{{ absolute_url(asset('bundles/yarshafrontend/images/logo.png')) }}" alt="Kantipurjobs logo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

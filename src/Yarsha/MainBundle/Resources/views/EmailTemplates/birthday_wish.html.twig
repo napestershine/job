@@ -1,0 +1,30 @@
+{% extends "@YarshaMain/EmailTemplates/email_template_layout.html.twig" %}
+
+{% block header_right_image %}
+    <a href="#"><img src="{{ absolute_url(asset('bundles/yarshamain/images/email/3.jpg')) }}" class="logo-right-image"></a>
+{% endblock %}
+
+{% block email_body %}
+
+    <!-- saluation section -->
+    <section style="background:#F2652A; padding: 1%;">
+        <div class="row">
+            <div class="col-md-12">
+                <span style="font-weight: 600;">Dear {{ seeker.firstname|title }},</span> We hope you have a wonderful
+                day that the year ahead is filled with much love, many wonderful surprises and gives you lasting
+                memories that you
+                will cherish in all the days ahead. Happy Birthday.
+            </div>
+
+        </div>
+    </section>
+
+    <!-- birthday-banner -->
+    <section>
+        <img src="{{ absolute_url(asset('bundles/yarshamain/images/email/happy.png')) }}" style="width: 100%;">
+    </section>
+
+    {#{% include('@YarshaMain/EmailTemplates/profile_detail_section.html.twig') %}#}
+
+
+{% endblock %}

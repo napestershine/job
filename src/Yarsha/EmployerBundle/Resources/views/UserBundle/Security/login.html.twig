@@ -1,0 +1,67 @@
+{% extends "@YarshaFrontend/frontend_layout.html.twig" %}
+
+{% block content %}
+    <section class="navigation-btm-sec login-reg-bg-wrap">
+        <div class="container">
+            <div class="row">
+                <h2>login as employer</h2>
+                {#<span class="login-register-quote">Et omnis referrentur conclusionemque eos</span>#}
+                <div class="col-md-12 login-reg-wrap">
+
+                    <div class="login-reg-blk">
+
+                        {% if error %}
+                            <div class="text-center text-danger alert">
+                                {{ error.messageKey|trans(error.messageData, 'security') }}
+                            </div>
+                        {% endif %}
+
+                        <form action="{{ path("yarsha_employer_security_check") }}" method="post">
+
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+
+                            <input type="text" id="username" name="_username"
+                                   value="{{ last_username }}" required="required" placeholder="Username"
+                            />
+
+                            <input type="password" id="password" name="_password" required="required"
+                                   placeholder="Password" class="form-control"/>
+
+                            <input type="submit" id="_submit" name="_submit" value="Log In"/>
+
+                        </form>
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-6 col-xs-12 login-reg-blk-left-blk">
+                                <a href="{{ path('yarsha_employer_resetting-request') }}">
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                    Forgot Password ?
+                                </a>
+                            </div>
+
+                            <div class="col-md-6 col-sm-6 col-xs-12 login-reg-blk-right-blk">
+                                <a href="{{ path('yarsha_frontend_register_employer') }}">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    Register
+                                </a>
+                            </div>
+                        </div>
+                        {#<div class="sign-in-with">#}
+                        {#<div class="row">#}
+                        {#<div class="col-md-6 col-sm-6 login-reg-blk-left-blk"><h3>Signin with</h3></div>#}
+                        {#<div class="col-md-6 col-sm-6 login-reg-blk-right-blk">#}
+                        {#<a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>#}
+                        {#<a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>#}
+                        {#<a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>#}
+                        {#</div>#}
+                        {#</div>#}
+
+                        {#</div>#}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

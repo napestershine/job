@@ -1,0 +1,177 @@
+{% import '@YarshaFrontend/Macros/job_detail_macros.html.twig' as jobDetailMacro %}
+
+<!-- dashboard wrap section -->
+<section class="dashboard-section">
+    <div class="container">
+        <div class="row">
+            <div class="jobs-detail-cover-wrap clearfix">
+                <div class="col-md-12">
+
+                    <div id="jobDetailCarousel" class="carousel slide">
+                        <div class="carousel-inner">
+                            {% if banners | length > 0 %}
+                                <div class="carousel-inner">
+                                    {% set count = 0 %}
+
+                                    {% for banner in banners %}
+                                        <div class="item {{ count == 0 ? 'active':'' }}" style="">
+                                            {% set imgSrc = banner.path %}
+                                            <img src="{{ asset('uploads/employers/')  ~ imgSrc }}">
+                                        </div>
+                                        {% set count = count + 1 %}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <img src="{{ asset('bundles/yarshafrontend/images/bg.jpg') }}" alt="">
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="overlay">
+
+                        <div class="col-md-2 col-sm-2">
+                            {% set imgSrc = employer.organization.path %}
+                            {% if(imgSrc != null or imgSrc != '') %}
+                                <img src="{{ asset('uploads/employers/') ~ imgSrc }}" alt="Company logo">
+                            {% else %}
+                                <img src="images/default_company_logo.png" alt="Company logo">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6"><h2>{{ job.organization ? job.organization.name : '' }} (Followers {{ follower }})</h2></div>
+                        <!-- <div class="col-md-2 col-sm-2 col-xs-6 cover-follower-blk"><span><i class="fa fa-users" aria-hidden="true"></i> &nbsp;400 Followers</span></div> -->
+                        <div class="col-md-2 col-sm-2 col-xs-12 job-detail-btn-left">
+                            {{ render_follow_button(job.organization, app.user) }}
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12 job-detail-btn-right"><a href="#"><button><i class="fa fa-star" aria-hidden="true"></i> &nbsp;Verified</button></a></div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-9 col-sm-9 dashboard-section-right">
+
+                <div class="company-info-blk dashboard-bg-color clearfix">
+                    <div class="title">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">about us</div>
+                        </div>
+                    </div>
+                    <p>{{ job.organization ? job.organization.profile | raw : '' }}</p>
+                </div>
+
+
+
+                <div class="company-info-blk posted-jobs-blk dashboard-bg-color job-detail-related-blk clearfix">
+                    <div class="title">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">recent jobs </div>
+
+                        </div>
+                    </div>
+
+                    <div class="posted-jobs-blk-list-blk">
+                        <table>
+                            {% for job in recentJobs %}
+                            <tr>
+                                <th>{{ job.title }}
+                                    <span class="posted-jobs-blk-list-blk-span">{{ job.organization ? job.organization.name : '' }}, {{ job.locations | first }}</span>
+                                </th>
+                                <td style="color: #d20808;">
+                                    <i class="fa fa-circle-o" aria-hidden="true"></i> &nbsp;{{ job.availability }}
+                                </td>
+                                <td>
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i> &nbsp;
+                                    {{ job.deadline | date('M d, Y') }}
+                                </td>
+                                <td>
+                                    <a href="{{ path('yarsha_job_seeker_job_apply_online', {'slug':job.slug}) }}">
+                                        <button><i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;Apply
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="company-info-blk posted-jobs-blk dashboard-bg-color job-detail-related-blk clearfix">
+                    <div class="title">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">related company jobs </div>
+
+                        </div>
+                    </div>
+
+                    <div class="posted-jobs-blk-list-blk">
+                        <table>
+                            {% for job in relatedJobs %}
+                                <tr>
+                                    <th>
+                                        <a href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}">
+                                            {{ job.title }}
+                                        </a>
+                                        <span class="posted-jobs-blk-list-blk-span">{{ job.organization ? job.organization.name : '' }}, {{ job.locations | first }}</span>
+                                    </th>
+                                    <td style="color: #d20808;"><i class="fa fa-circle-o" aria-hidden="true"></i> &nbsp;{{ job.availability }}</td>
+                                    <td><i class="fa fa-clock-o" aria-hidden="true"></i> &nbsp;{{ job.deadline | date('M d, Y')}}</td>
+                                    <td>
+                                        <a href="{{ path('yarsha_job_seeker_job_apply_online', {'slug':job.slug}) }}">
+                                            <button>
+                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;Apply
+                                            </button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="col-md-3 col-sm-3 dashboard-section-left">
+
+                {{ jobDetailMacro.aboutCompany(job.organization)  }}
+
+                <div class="dashboard-section-dropdown dashboard-bg-color ">
+                    <h1 class="show-hide-blk dropdown-h1-title" data-toggle="collapse" data-target="#demo"><i class="fa fa-files-o" aria-hidden="true"></i> &nbsp;Current Vacancy</h1>
+                    <ul id="demo" class="collapse in">
+                        {% for job in otherJobs %}
+                            <li>
+                                <a href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}">{{ job.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="dashboard-section-dropdown dashboard-bg-color ">
+                    <h1 class="show-hide-blk dropdown-h1-title" data-toggle="collapse" data-target="#demo1"><i class="fa fa-users" aria-hidden="true"></i> &nbsp;followers</h1>
+                    <ul id="demo1" class="collapse in cv-search-blk clearfix">
+                        {% for follower in followers %}
+                        <li class="col-md-4 col-sm-4 col-xs-4 job-detail-follower-blk">
+                            <a href="#">
+                                {% if follower.path != null or follower.path != '' %}
+                                    {% set imgSrc = asset('uploads/attachments/') ~ follower.path  %}
+                                {% else %}
+                                    {% set imgSrc = asset('images/avatar_default.png')  %}
+                                {% endif %}
+                                <img src="{{ imgSrc }}">
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                {% set template = 'YarshaFrontendBundle:Includes:topemployersblock.html.twig' %}
+                {{ sonata_block_render({"type":"yarsha.block.top_employer.job.frontend"},{'template':template}) }}
+
+            </div>
+
+        </div>
+    </div>
+</section>

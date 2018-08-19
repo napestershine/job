@@ -1,0 +1,36 @@
+<h2>
+    <i class="fa fa-check-square-o" aria-hidden="true"></i>
+    &nbsp;featured jobs
+</h2>
+
+<ul class="hot-job-list">
+
+    {% for k,v in featuredJobs %}
+        {% set e = v.organization %}
+        <li>
+            <div class="row">
+                <div class="col-md-3 col-sm-2 col-xs-3">
+                    <div class="featured-job-img-blk">
+                        <img src="{{ organization_profile_image(e)|imagine_filter('thumb_small') }}" alt="Company logo">
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-10 col-xs-9 hot-job-blk-cnt featured-job-img-right-blk">
+                    <h1 style="color: #c31313;">
+                        {% set path =  path('yarsha_frontend_employer_detail_by_slug', {'slug':e.slug}) %}
+                        {{ set_total_link_content(path, e.name, 30) }}
+                    </h1>
+                    {% for f in v.jobs %}
+                        {#{% set name = f.title > 25 ? set_total_content(f.title, 23) ~ '..' : f.title %}#}
+                        <span>
+                            <i class="fa fa-angle-right" aria-hidden="true"></i> &nbsp;
+                            {% set path = path('yarsha_frontend_job_detail_view', {'slug':f.slug}) %}
+                            {{ set_total_link_content(path, f.title,35) }}
+                        </span>
+                    {% endfor %}
+                    </span>
+                </div>
+            </div>
+
+        </li>
+    {% endfor %}
+</ul>

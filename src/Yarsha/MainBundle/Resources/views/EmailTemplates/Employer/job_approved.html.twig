@@ -1,0 +1,43 @@
+{% extends "@YarshaMain/EmailTemplates/email_notification_layout.html.twig" %}
+
+{% block email_body %}
+
+
+    <p>Dear {{ organization.name }} </p>
+
+    <p>The job requirements placed by you in our job portal kantipurjob.com have been approved. The
+
+        vacancy will now be published. Following are the job requirement details.
+    </p>
+
+    <p>Following are the job requirement details.</p>
+
+    <ul>
+        <li>Job Title: {{ job.title }}</li>
+        <li>Category: {{ job.category ? job.category.title : '' }}</li>
+        <li>Job Level: {{ job.level }}</li>
+        <li>Education: {{ job.educationDegree }}</li>
+        <li>Experience: {{ job.minimumExperienceYear }}</li>
+        <li>Deadline: {{ job.deadline | date('Y-m-d') }}</li>
+        <li>No of Positions: {{ job.numberOfVacancies }}</li>
+    </ul>
+
+    <p>Please follow the link below, to view the vacancy announcement.</p>
+
+    <p>
+        <strong style="text-decoration: underline">Link : </strong>
+        <a href="{{ url('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}">
+            {{ job.title }}
+        </a>
+    </p>
+
+    <p>Please visit your dashboard to view the applicants.</p>
+
+    <p>
+        Thank you <br>
+        Kantipurjob.com Team <br>
+        +977 1 4435619, 4435620 <br>
+    </p>
+
+    <p style="font-size: 80%">This is a Computer generated email. Please do not reply to this message.</p>
+{% endblock %}

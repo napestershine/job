@@ -1,0 +1,145 @@
+{% extends "@YarshaFrontend/frontend_layout.html.twig" %}
+
+{% set isProvider = false %}
+{% set isSeeker = true %}
+
+{% if app.request.get('t') == 'p' %}
+    {% set isProvider = true %}
+    {% set isSeeker = false %}
+{% endif %}
+
+{% block content %}
+    <section class="navigation-btm-sec login-reg-bg-wrap">
+        <div class="container">
+            <div class="login-tab-row">
+                <ul class="nav nav-tabs">
+                    <li {% if isSeeker %}class="active"{% endif %}><a data-toggle="tab" href="#home">Login as Job
+                            Seeker</a></li>
+                    <li {% if isProvider %}class="active"{% endif %} ><a data-toggle="tab" href="#menu1">Login as
+                            Employer</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade {{ isSeeker ? 'in active' : '' }}">
+                        <div class="col-md-12 login-reg-wrap">
+                            <div class="login-reg-blk">
+
+                                {% if isSeeker %}
+                                    {{ _self.flashMessage(error) }}
+                                {% endif %}
+
+                                <form action="{{ path('yarsha_job_seeker_security_check') }}"
+                                      method="post">
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+                                    <input type="text" id="username" name="_username"
+                                           value="{{ last_username }}" required="required" placeholder="Username"
+                                    />
+
+                                    <input type="password" id="password" name="_password" required="required"
+                                           placeholder="Password" class="form-control"/>
+
+                                    <input type="submit" id="_submit" name="_submit" value="Log In"/>
+                                </form>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 login-reg-blk-left-blk">
+                                        <a href="{{ path('yarsha_job_seeker_resetting-request') }}"><i
+                                                    class="fa fa-exclamation-triangle" aria-hidden="true"></i>Forgot
+                                            Password ?</a></div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 login-reg-blk-right-blk">
+                                        <a href="{{ path('yarsha_frontend_register_as_seeker') }}"><i
+                                                    class="fa fa-pencil-square-o" aria-hidden="true"></i>Register
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="sign-in-with">
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6 login-reg-blk-left-blk"><h3>Signin with</h3>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 login-reg-blk-right-blk">
+                                            <a href="{{ path('hwi_oauth_service_redirect', {'service':'facebook'}) }}">
+                                                <i class="fa fa-facebook-square" aria-hidden="true"></i>
+                                            </a>
+
+                                            <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}">
+                                                <i class="fa fa-google-plus-square" aria-hidden="true"></i>
+                                            </a>
+
+                                            <a href="{{ path('hwi_oauth_service_redirect', {'service':'linkedin'}) }}">
+                                                <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="menu1" class="tab-pane fade {{ isProvider ? 'in active' : '' }}">
+                        <div class="col-md-12 login-reg-wrap">
+                            <div class="login-reg-blk">
+
+                                {% if isProvider %}
+                                    {{ _self.flashMessage(error) }}
+                                {% endif %}
+
+                                <form action="{{ path("yarsha_employer_security_check") }}" method="post">
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+                                    <input type="text" id="username" name="_username"
+                                           value="{{ last_username }}" required="required" placeholder="Username"
+                                    />
+                                    <input type="password" id="password" name="_password" required="required"
+                                           placeholder="Password" class="form-control"/>
+
+                                    <input type="submit" id="_submit" name="_submit" value="Log In"/>
+                                </form>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 login-reg-blk-left-blk"><a
+                                                href="{{ path('yarsha_employer_resetting-request') }}"><i
+                                                    class="fa fa-exclamation-triangle" aria-hidden="true"></i>Forgot
+                                            Password ?</a></div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 login-reg-blk-right-blk">
+                                        <a href="{{ path('yarsha_frontend_register_employer') }}">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>Register
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% macro flashMessage(error) %}
+
+        {% if error %}
+            <div class="text-center text-danger alert">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        {% if app.session.flashbag.peekAll|length > 0 %}
+            {% for type, messages in app.session.flashbag.all %}
+                {% for message in messages %}
+                    {% if type == 'success' %}
+                        {% set alertClass = 'text-success' %}
+                        {% set faClass = 'fa-check-circle' %}
+                    {% elseif type == 'warning' %}
+                        {% set alertClass = 'text-warning' %}
+                        {% set faClass = 'fa-exclamation-triangle' %}
+                    {% else %}
+                        {% set alertClass = 'text-danger' %}
+                        {% set faClass = 'fa-exclamation-triangle' %}
+                    {% endif %}
+
+                    <div class=" alert text-center {{ alertClass }}">
+                        <i class="fa {{ faClass }}"></i> &nbsp;
+                        {{ message|trans({}, domain|default('messages')) }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    {% endmacro %}
+
+{% endblock %}

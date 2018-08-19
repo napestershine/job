@@ -1,0 +1,18 @@
+parameters:
+    database_host: localhost
+    database_port: null
+    database_name: yarsha_jobportal
+    database_user: root
+    database_password: kantipur.jobs1$23
+    mailer_transport: gmail
+    mailer_host: null
+    mailer_port: 465
+    mailer_user: mandip810@gmail.com
+    mailer_password: mandip1018
+    secret: ThisTokenIsNotSoSecretChangeIt
+    facebook_client_id: 1545352662397610
+    facebook_client_secret: 399ee4eca9ed8b63280add48bdee0e5e
+    linkedin_client_id: 819fkvvro690ra
+    linkedin_client_secret: k5FdnbFE8LhfINz5
+    google_client_id: 548160373988-refm6lrmmtjh2k98gvoj3a4s81lfidke.apps.googleusercontent.com
+    google_client_secret: XlyYRPXvMOjftkKArO2gmPrj

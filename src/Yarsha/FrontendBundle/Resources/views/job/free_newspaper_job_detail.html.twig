@@ -1,0 +1,61 @@
+{% import "@YarshaFrontend/Macros/job_detail_macros.html.twig" as jobMacro %}
+
+<!-- dashboard wrap section -->
+<section class="dashboard-section">
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-9 col-sm-9 dashboard-section-right">
+
+                {{ jobMacro.jobDetailPartialBanner(organization, false) }}
+
+                <div class="company-info-blk dashboard-bg-color clearfix">
+                    <div class="title">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                {{ job.organization.name }}
+                                <span class="pull-right">
+                                    {#Visit: {{ organization.visit }}#}
+                                    Visit: {{ job.viewCount }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {{ filterProfile(job.organization.profile)|raw }}
+
+                </div>
+
+                <!-- job application section -->
+                {% include "@YarshaFrontend/job/job_description_section.html.twig" %}
+                {{ sonata_block_render({'type':'yarsha.block.relatedjobs'},{'job':job}) }}
+
+            </div>
+
+            <div class="col-md-3 col-sm-3 dashboard-section-left">
+                {{ jobMacro.aboutCompany(organization) }}
+
+                {% if otherJobs|length %}
+                    <div class="dashboard-section-dropdown dashboard-bg-color ">
+                        <h1 class="show-hide-blk dropdown-h1-title" data-toggle="collapse" data-target="#demo"><i
+                                    class="fa fa-files-o" aria-hidden="true"></i> &nbsp;Current Vacancy</h1>
+                        <ul id="demo" class="collapse in kj-list">
+                            {% for job in otherJobs %}
+                                <li>
+                                    <a href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}">
+                                        {{ job.title }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+
+                {{ sonata_block_render({'type':'yarsha.block.super_employer.job.frontend'}) }}
+
+            </div>
+
+        </div>
+    </div>
+</section>

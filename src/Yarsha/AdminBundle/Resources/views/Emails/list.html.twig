@@ -1,0 +1,92 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Emails{% endblock %}
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+
+    {{ render_show_filter_button() }}
+
+    <a href="{{ path('yarsha_admin_email_create') }}" class="btn btn-success btn-xs">
+        <i class="fa fa-plus"></i> Post New Email
+    </a>
+
+{% endblock %}
+
+
+{% block filter %}
+
+    <div class="row">
+
+        <div class="form-group-sm col-md-6">
+            <label for="email">Email</label>
+            <input type="text" name="email" value="{{ app.request.get('email') }}" placeholder="email" class="form-control">
+        </div>
+
+        <div class="form-group-sm col-md-6">
+            <label for="name">Name</label>
+            <input type="text" name="name" value="{{ app.request.get('name') }}" placeholder="title" class="form-control">
+        </div>
+
+        <div class="clearfix"></div>
+
+    </div>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="panel panel-default">
+
+                {% if emails|length %}
+
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>SNo</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set count = pager_first_index(emails) %}
+                        {% for email in emails %}
+                            <tr id="tr_{{ email.id }}">
+                                <td>{{ count }}</td>
+                                <td>{{ email.name }}</td>
+                                <td>{{ email.email }}</td>
+                                <td>{{ email.phone }}</td>
+                                <td><a href="{{ path('yarsha_admin_email_update',{'id':email.id}) }}"
+                                       class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a>
+                                    <a href="{{ path('yarsha_admin_email_delete',{'id':email.id}) }}"
+                                       class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</a></td>
+
+
+                            </tr>
+                            {% set count = count + 1 %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% if emails.haveToPaginate %}
+                        {{ pagerfanta(emails, 'twitter_bootstrap3') }}
+                    {% endif %}
+
+                {% else %}
+                    {{ ys_no_contents('No posted emails found') }}
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock content %}
+
+

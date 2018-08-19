@@ -1,0 +1,72 @@
+<style>
+    #myCommonModal {
+        z-index: 99999;
+    }
+
+    label.control-label {
+        display: inline-block;
+        margin-top: 16px;
+    }
+
+    .atag {
+        color: red;
+    }
+    label{
+        font-size: 12px;
+    }
+</style>
+{% if not app.user %}
+    {% set value = 'block' %}
+    <p style="text-align: center;">If you already have an account please <a
+                href="{{ path('yarsha_job_seeker_security_login') }}"
+                class="atag">Login</a> or <a class="atag"
+                                             href="{{ path('yarsha_frontend_register_as_seeker') }}">Register</a>.
+    </p>
+{% else %}
+    {% set value = 'none' %}
+{% endif %}
+
+{{ form_start(form,{'attr':{'id':'applyForm'}}) }}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+<div class="col-md-6 col-sm-6 col-xs-12">
+    <label for="" class="control-label required">
+        Your Name: <sup style="color:red;">*</sup>
+    </label>
+    {{ form_widget(form.senderName) }}
+    {#{{ form_row(form.senderName) | raw }}#}
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12">
+    <label for="" class="control-label required">
+        Your Email: <sup style="color:red;">*</sup>
+    </label>
+    {{ form_widget(form.senderEmail) }}
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12">
+    <label for="" class="control-label required">
+        Phone no: <sup style="color:red;">*</sup>
+    </label>
+    {{ form_widget(form.phone) }}
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12">
+    <label for="" class="control-label required">
+        Current Address: <sup style="color:red;">*</sup>
+    </label>
+    {{ form_widget(form.currentAddress) }}
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12" style="display: {{ value }}">
+    <label for="" class="control-label required">
+        Upload your image(JPEG/PNG Format): <sup style="color:red;">*</sup>
+    </label>
+    {{ form_widget(form.image) }}
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12" style="display: {{ value }}">
+    <label for="" class="control-label required">
+        Upload your CV(PDF/Word File ONLY): <sup style="color:red;">*</sup>
+    </label>
+    {{ form_widget(form.cv) }}
+</div>
+{{ form_row(form.body) }}
+<p id="job-slug" class="hidden"></p>
+<input type="submit" class="btn btn-primary" value="Apply">
+
+{{ form_end(form) }}

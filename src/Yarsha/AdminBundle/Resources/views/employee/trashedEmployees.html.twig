@@ -1,0 +1,138 @@
+{% extends '@YarshaAdmin/admin_layout.html.twig' %}
+
+{% block page_title %} Trashed Employee {% endblock %}
+{% block page_description %} List {% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>&nbsp; Filter
+    </button>
+
+    <a href="{{ path('yarsha_admin_jobseeker_add') }}" class="btn btn-info btn-xs">
+        <i class="fa fa-plus"></i> Add New Employee
+    </a>
+
+{% endblock %}
+
+{% block filter %}
+    <div class="row">
+        <div class="form-group-sm col-md-3">
+            <label for="name">Name</label>
+            <input type="text" name="name" value="{{ app.request.get('name') }}" placeholder="Seeker name"
+                   class="form-control">
+        </div>
+
+        <div class="form-group-sm col-md-3">
+            <label for="name">Email</label>
+            <input type="text" name="email" value="{{ app.request.get('email') }}"
+                   placeholder="Contact Email"
+                   class="form-control">
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                {% if trashedSeekers | length %}
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <td>SN</td>
+                        <td>Full name</td>
+                        <td>Email</td>
+                        <td>Actions</td>
+                    </tr>
+                    {% for seeker in trashedSeekers %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ seeker.id }}-{{ seeker.firstName ~ ' ' ~ seeker.middleName ~ ' ' ~ seeker.lastName }}</td>
+                        <td>{{ seeker.contactEmail ? seeker.contactEmail :  '--' }}</td>
+                        <td>
+                            <a href="#" class="btn btn-success" title="Restore user" onclick="restoreUser(event, this, {{ seeker.id }})">
+                                <i class="fa fa-repeat"></i>
+                            </a>
+                            <a href="#" class="btn btn-danger" title="Delete permenently" onclick="deleteUserPermanently(event, this, {{ seeker.id }})">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                    {{ ys_no_contents('No trashed job seekers.') }}
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function restoreUser(e, obj, id){
+            e.preventDefault();
+            modal = $("#myModal");
+            c = confirm('Do you really want to restore this user ??');
+            if(c){
+                var url = "{{ path('yarsha_admin_ajax_restore_job_seeker',{'id':'SEEKER_ID'}) }}";
+                url = url.replace('SEEKER_ID',id);
+                $.ajax({
+                    url:url,
+                    method:'GET',
+                    success:function(data){
+                        modal.find('.modal-title').html('Message');
+                        if(data.success == true){
+                            $(obj).parent().parent().remove();
+                            modal.find('.modal-body').html('<p class="text-success">'+data.message+'</p>');
+                            modal.modal('toggle');
+                        }   else    {
+                            modal.find('.modal-body').html('<p class="text-danger">'+data.errorMessage+'</p>');
+                            modal.modal('toggle');
+                        }
+
+                    },
+                    error:function(data){
+
+                    }
+                });
+            }
+        }
+
+        function showConfirmModal(title, message,action){
+            modal = $("#myModal");
+            modal.find('.modal-title').html(title);
+            modal.find('.modal-title').html('Delete employee permanently??');
+            okButton = "<a href='#' onclick='deleteUserPermanently(event, this)'>";
+            modal.find('.modal-body').html(message);
+        }
+
+        function deleteUserPermanently(e, obj, id){
+            e.preventDefault();
+            modal = $("#myModal");
+            c = confirm("Are you sure?");
+            if(c){
+                url = "{{ path('yarsha_admin_ajax_delete_employee_permenently', {'id':'SEEKER_ID'}) }}";
+                url = url.replace('SEEKER_ID', id);
+                $.ajax({
+                    url:url,
+                    method:"GET",
+                    success:function(data){
+                        modal.find('.modal-title').html('Message');
+                        if(data.success && data.success == true){
+                            modal.find('.modal-body').html(data.message);
+                            $(obj).parent().parent().remove();
+                        }   else    {
+                            modal.find('.modal-body').html(data.errorMessage);
+                        }
+                        modal.modal('toggle');
+                    }
+                });
+            }
+        }
+    </script>
+{% endblock %}

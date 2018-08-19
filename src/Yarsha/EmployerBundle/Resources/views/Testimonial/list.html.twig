@@ -1,0 +1,83 @@
+{% extends 'YarshaEmployerBundle::employer_layout.html.twig' %}
+
+{% block page_title %}Testimonials{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block content %}
+
+<div class="company-info-blk dashboard-bg-color jobseeker-search-wrap clearfix">
+    <form action="" method="get">
+            <div class="title">
+                <div class="row">
+                    <div class="col-md-9 col-sm-9">search a story</div>
+
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-md-3 col-sm-3">
+                        <input type="text" name="title" placeholder="Keywords" value="{{  app.request.get('title') }}">
+                    </div>
+                    <div class="col-md-3 col-sm-3">
+                        {{ testimonial_status(app.request.get('status')) }}
+                    </div>
+                    <div class="col-md-3 col-sm-3">
+                    <input type="submit" name="" value="Search">
+                    </div>
+            </div>
+    </form>
+</div>
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-10 col-sm-10">Testimonials</div>
+                <div class="col-md-2 col-sm-2 right"><a href="{{ path('yarsha_employer_testimonial_create') }}"><input
+                                type="submit" value="+ Post Your Story"></a></div>
+            </div>
+        </div>
+
+        <div class="posted-jobs-blk-list-blk">
+
+            {% if testimonials | length %}
+                <table>
+                    </tbody>
+                    <tr>
+                        <th>S.N</th>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Company</th>
+                        <th>Action</th>
+                    </tr>
+
+                    {% set count = pager_first_index(testimonials) %}
+                    {% for testimonial in testimonials %}
+                        <tr id="">
+                            <td>{{ count }}</td>
+                            <td><img src="{{ asset('uploads/testimonials/' ~ testimonial.path) }}"
+                                     style="width: 100px"/></td>
+                            <td>{{ testimonial.title }}</td>
+                            <td>{{ testimonial.company }}</td>
+                            <td>
+                                <a href="{{ path('yarsha_employer_testimonial_update', {'id':testimonial.id}) }}"
+                                ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                <a href="{{ path('yarsha_employer_testimonial_delete', {'id':testimonial.id}) }}"
+                                ><i class="fa fa-times" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                        {% set count = count + 1 %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                {{ ys_no_contents("No testimonials added yet.") }}
+            {% endif %}
+
+            {% if testimonials.haveToPaginate %}
+                {{ pagerfanta(testimonials, 'twitter_bootstrap3') }}
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock content %}

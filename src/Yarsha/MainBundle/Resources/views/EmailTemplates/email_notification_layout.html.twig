@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- meta viewport -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- title -->
+    <title>Kantipur Jobs - Email Notification</title>
+    <!-- stylesheet -->
+    <style type="text/css">
+        body{background: #e3e3e3;margin:0;padding:0;}
+        .table-header{background:rgba(242, 101, 42, 0.45);}
+        table{width: 600px;border-spacing: 0;border-collapse: collapse;}
+        img.logo-right-image {width: 50%;margin-top: 6px;}
+        tr.table-header td {border: 1px #e3e3e3 solid;padding: 12px;}
+        .personalInfo-table td,.personalInfo-table th{border:1px #b7b7b7 solid;padding: 10px;text-align: left;}
+        table.dear-blk td {padding: 16px;}
+        table.personalInfo-table td {color: #ef4600;font-style: italic;}
+        table.personalInfo-table th {color: #383838;font-style: italic;font-weight: bold;}
+        table.personalInfo-table td a{color:#0041ff;text-decoration: none;}
+        a.update-anchor {display: block;text-decoration: none;background: transparent;padding: 8px;border-radius:2px;color: #fff;text-transform: uppercase;font-size: 12px;padding-top: 9px;
+            border:1px #e3e3e3 solid;}
+        .requestAcall-blk td{border:1px #b7b7b7 solid;}
+        table.requestAcall-blk td {
+            padding: 20px;text-align: center;font-size: 11px;line-height: 20px;font-weight: bold;color: #1A98D3;text-transform: uppercase;}
+        table.requestAcall-blk td a{ text-decoration: none;color: #0041ff;}
+        table.recruiters-table td {border: 1px #b7b7b7 solid;text-align: center;padding: 9px;font-size: 14px;}
+        table.recruiters-table {background: #1A98D3;color: #fff;margin-top: 5px;}
+        table.footer tr {border: 1px #b7b7b7 solid;font-size: 12px;font-style: italic;}
+        table.footer tr td {padding: 9px;line-height: 17px;}
+    </style>
+
+</head>
+
+
+<body>
+
+<center>
+    <table style="border:1px solid rgba(242, 101, 42, 0.45);">
+        <tbody>
+        <tr class="table-header">
+            <td style="text-align: center;"><img src="{{ asset('images/logo.png') }}"></td>
+            <td style="text-align: center;"><img src="{{ asset('images/1.jpg') }}" class="logo-right-image"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table style="background: #1A98D3; color: #fff;">
+        <tr>
+            <td style="text-align: center;padding:2px;line-height:20px;font-size: 14px;font-style: italic;padding-top:7px;padding-bottom:7px;">Please add this email jobalert@kantipurjob.com to your contact list to prevent future job alerts from being directed to your junk/spam/bulk folder</td>
+        </tr>
+    </table>
+
+    <table class="personalInfo-table">
+        <tr>
+            <td>
+                {% block email_body %}{% endblock %}
+            </td>
+        </tr>
+    </table>
+
+    {% block email_legacy_content %} {% endblock %}
+
+    <table class="requestAcall-blk">
+        <tr>
+            <td><a href="{{ path('yarsha_frontend_services') }}">Read More</a> about our Resume Services</td>
+            <td><a href="#">Request a Call Back</a></td>
+            <td>Call us on +977 1 4435619, 4435620 (10 AM - 5 PM)</td>
+        </tr>
+    </table>
+
+    <table class="recruiters-table">
+        <tr>
+            <td>Get more Recruiters to view your Profile</td>
+        </tr>
+        <tr>
+            <td>Showcase the best of your professionalism with a Professional Resume and Cover Letter</td>
+        </tr>
+    </table>
+
+    <table class="footer">
+        <tr>
+            <td>
+                <span style="color:#F2652A;"><b>Disclaimer:</b></span>
+                You have received this mail because you are registered member on kantipurjob.com.
+                This is a system generated email, please dont reply to this message.
+                For <a href="{{ path('yarsha_frontend_terms') }}">Terms and Conditions</a> and
+                other legal disclaimers, please visit <a href="{{ path('yarsha_frontend_homepage') }}">kantipurjob.com</a>.
+                {#If you do not want to receive thi mailer, <a href="#">Unsubscribed.</a>#}
+            </td>
+        </tr>
+    </table>
+
+
+</center>
+
+
+</body>
+</html>

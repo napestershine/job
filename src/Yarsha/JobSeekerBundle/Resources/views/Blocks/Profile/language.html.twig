@@ -1,0 +1,164 @@
+<div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix" id="profile_{{ setting.section }}">
+    <div class="title">
+        <div class="row">
+            <div class="col-md-10 col-sm-10">Language</div>
+            <div class="col-md-2 col-sm-2 right">
+                {% if setting.employer == false %}
+                <input type="submit" data-toggle="modal"
+                       data-target="#addLanguage"
+                       data-languageId=""
+                       data-title="Add Language"
+                       value="+ Add Language">
+                {% endif %}
+            </div>
+        </div>
+    </div><div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix" id="profile_{{ setting.section }}">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-10 col-sm-10">Language</div>
+                <div class="col-md-2 col-sm-2 right">
+                    {% if setting.employer == false %}
+                        <input type="submit" data-toggle="modal"
+                               data-target="#addLanguage"
+                               data-languageId=""
+                               data-title="Add Language"
+                               value="+ Add Language">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="posted-jobs-blk-list-blk">
+            {% if data.languages | length %}
+                <table class="table">
+                    <tr>
+
+                        <th>Language</th>
+                        <th>Reading</th>
+                        <th>Writing</th>
+                        <th>Speaking</th>
+                        {% if setting.employer == false %}
+                            <th>Action</th>
+                        {% endif %}
+                    </tr>
+                    {% for l in data.languages %}
+                        <tr>
+
+                            <td>{{ l.language }}</td>
+                            <td>{{ l.reading }}</td>
+                            <td>{{ l.writing }}</td>
+                            <td>{{ l.speaking }}</td>
+                            {% if setting.employer == false %}
+                                <td>
+                                    <a href="" data-toggle="modal"
+                                       data-target="#addLanguage"
+                                       data-languageId="{{ l.id }}"
+                                       data-title="Update Language"
+                                       data-toggle="tooltip" title="Edit">
+
+                                        <i class="fa fa-edit"></i>
+
+                                    </a>
+                                    <a href="#" onclick="deleteSeekerLanguage(event, this)"
+                                       data-languageId="{{ l.id }}"
+                                       data-title="Delete Language"
+                                       data-toggle="tooltip" title="Delete">
+
+                                        <i class="fa fa-trash"></i>
+
+                                    </a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                {{ ys_no_contents('No language added.') }}
+            {% endif %}
+
+
+        </div>
+        <div class="modal fade" id="addLanguage" role="dialog" arial-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" data-dismiss="modal" class="close">&times</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="posted-jobs-blk-list-blk">
+        {% if data.languages | length %}
+        <table class="table">
+            <tr>
+
+                <th>Language</th>
+                <th>Reading</th>
+                <th>Writing</th>
+                <th>Speaking</th>
+                {% if setting.employer == false %}
+                <th>Action</th>
+                {% endif %}
+            </tr>
+                {% for l in data.languages %}
+                    <tr>
+
+                        <td>{{ l.language }}</td>
+                        <td>{{ l.reading }}</td>
+                        <td>{{ l.writing }}</td>
+                        <td>{{ l.speaking }}</td>
+                        {% if setting.employer == false %}
+                        <td>
+                            <a href="" data-toggle="modal"
+                               data-target="#addLanguage"
+                               data-languageId="{{ l.id }}"
+                               data-title="Update Language"
+                               data-toggle="tooltip" title="Edit">
+
+                                <i class="fa fa-edit"></i>
+
+                            </a>
+                            <a href="#" onclick="deleteSeekerLanguage(event, this)"
+                               data-languageId="{{ l.id }}"
+                               data-title="Delete Language"
+                               data-toggle="tooltip" title="Delete">
+
+                                <i class="fa fa-trash"></i>
+
+                            </a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+        </table>
+        {% else %}
+            {{ ys_no_contents('No language added.') }}
+        {% endif %}
+
+
+    </div>
+    <div class="modal fade" id="addLanguage" role="dialog" arial-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" class="close">&times</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

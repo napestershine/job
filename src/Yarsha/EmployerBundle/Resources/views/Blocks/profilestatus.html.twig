@@ -1,0 +1,15 @@
+{% block content %}
+
+    <div class="employer-profile-status">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ setting.title }} | {{ Status.Overall | round ~ '%' }}
+            </div>
+            <div class="panel-body">
+                <p>Organization Information: {{ Status.OrganizationInformation  | round ~ '%' }}</p>
+                <p>Contact Person: {{ Status.ContactPersonInformation ~ '%' }}</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

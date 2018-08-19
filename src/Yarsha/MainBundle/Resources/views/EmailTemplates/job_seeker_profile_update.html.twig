@@ -1,0 +1,60 @@
+{% extends "@YarshaMain/EmailTemplates/email_notification_new.html.twig" %}
+
+{% block email_body %}
+<table class="dear-blk" style="background: rgb(66, 66, 66);color: #fff;margin-top: 5px;padding: 12px;">
+    <tr>
+        <td><b>Dear Alok,</b> Your profile not updated in kantipur.com from .... Date</td>
+        <td><a href="#" style="color: #1A98D3;text-transform: uppercase;font-size: 12px;font-weight: bolder;text-decoration: underline;font-style: italic;">Update Profile</a></td>
+    </tr>
+</table>
+
+<table class="personalInfo-table">
+    <tr>
+        <th>Profile Summary</th>
+        <th>&nbsp;</th>
+        <th>Mr. Paras Kharel</th>
+    </tr>
+    <tr>
+        <td>Personal Information</td>
+        <td style="background: #1A98D3; color: #fff;text-align: center;">50%</td>
+        <td>Profile Visits</td>
+    </tr>
+    <tr>
+        <td>General Information</td>
+        <td style="background: #1A98D3; color: #fff;text-align: center;">10%</td>
+        <td>Mobile: 9845589625 <a href="#">(Edit)</a></td>
+    </tr>
+    <tr>
+        <td>Education</td>
+        <td style="background: #1A98D3; color: #fff;text-align: center;">75%</td>
+        <td>Email: xyz@gmail.com <a href="#">(Edit)</a></td>
+    </tr>
+    <tr>
+        <td>Training</td>
+        <td style="background: #1A98D3; color: #fff;text-align: center;">50%</td>
+        <td>Last Login Date: Feb 14th, 2017</td>
+    </tr>
+    <tr>
+        <td>Personal Summary</td>
+        <td style="background: #1A98D3; color: #fff;text-align: center;">100%</td>
+        <td>Last Profile Upadate: Jan 28, 2017</td>
+    </tr>
+    <tr>
+        <td>Other Summary</td>
+        <td style="background: #1A98D3; color: #fff;text-align: center;">70%</td>
+        <td>-</td>
+    </tr>
+</table>
+
+<table style="background: rgba(154, 53, 53, 0.82);color: #fff;margin-top: 5px;">
+    <tr style="width: 100%;">
+        <td style="width: 70%;padding-top: 20px;padding-bottom: 20px;padding-left: 12px;padding-right: 12px;">
+            Employers look for the most recently updated profiles in their searches. To stay active, online and updated.
+        </td>
+        <td style="width: 30%; text-align: center;padding-right:12px;padding-left:12px;background: rgba(165, 52, 52, 0.82); color:#fff;">
+            <a href="{{ path('yarsha_job_seeker_profile_detail_view',{section:'personal_information'}) }}" class="update-anchor">Update Now</a>
+        </td>
+    </tr>
+</table>
+
+{% endblock %}

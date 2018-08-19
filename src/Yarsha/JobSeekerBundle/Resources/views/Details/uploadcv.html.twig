@@ -1,0 +1,35 @@
+{% extends 'YarshaJobSeekerBundle::job_seeker_layout.html.twig' %}
+
+{% block content %}
+    {% for message in app.session.flashBag.get('success') %}
+        {{ bootstrap_alert_message(message, 'success') | raw }}
+    {% endfor %}
+    {% for message in app.session.flashBag.get('errorMessage') %}
+        {{ bootstrap_alert_message(message, 'danger') | raw }}
+    {% endfor %}
+
+    <div class="clearfix"></div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Upload Curriculum vitae:
+        </div>
+        <div class="panel-body">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+            {#<form action="" method="POST" enctype="multipart/form-data">#}
+            {#<input type="file" name="cv">#}
+            {#<input type="submit" name="btnSubmit" value="Upload" class="btn btn-primary">#}
+            {#</form>#}
+        </div>
+        <div class="panel-footer">
+            {% set cv = app.user.curriculumVitaePath %}
+            {% if(cv) %}
+                <a href="{{ path('yarsha_job_seeker_cv_download') }}" class="btn btn-info"
+                   target="_blank">
+                    Download CV
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

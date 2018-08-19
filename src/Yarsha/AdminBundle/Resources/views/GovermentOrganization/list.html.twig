@@ -1,0 +1,169 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Goverment Organization{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>
+    </button>
+
+    {#<a href="#" class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i> Export</a>#}
+
+    <a href="{{ path('yarsha_admin_goverment_organization_new') }}" class="btn btn-info btn-xs">
+        <i class="fa fa-plus"></i> Add New
+    </a>
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                {% if organizations | length %}
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Logo</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% set count = pager_first_index(organizations) %}
+                        {% for organization in organizations %}
+                            <tr id="org-{{ organization.id }}">
+                                <td>{{ count }}</td>
+                                <td><img src="{{ asset('uploads/employers/' ~ organization.path) }}" alt="img"
+                                         width="50"></td>
+                                <td>{{ organization.name }}</td>
+                                <td>
+                                    <div class="dropdown" style="margin-bottom: 5px">
+                                        <span class="statusTd">{{ org_status_label(organization.status) }}</span>
+                                        <span
+                                                class="label label-default dropdown-toggle"
+                                                data-toggle="dropdown" aria-expanded="false"
+                                                title="Change Status"
+                                        >
+                                            <i class="fa fa-angle-down"></i>
+                                        </span>
+                                        <ul class="dropdown-menu statusButtons">
+                                            {{ org_status_buttons(organization.status, organization.id) }}
+                                        </ul>
+                                    </div>
+                                </td>
+
+
+                                <td>
+                                    <a href="#" onclick="viewOrganization(this)"
+                                       data-gov-id="{{ organization.id }}"
+                                       data-toggle="modal" data-target="myModal" class="btn btn-info btn-xs">
+                                        <i class="fa fa-eye"></i> &nbsp;
+                                        View
+                                    </a>
+                                    <a href="{{ path('yarsha_admin_goverment_organization_update', {'id':organization.id}) }}"
+                                       class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i>Edit</a>
+                                    <a href="#" class="btn btn-xs btn-danger"
+                                       onclick="deleteGovOrgJob({{ organization.id }})"
+                                    >
+                                        <i class="fa fa-times"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            {% set count = count + 1 %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    {{ ys_no_contents('No goverment organizations added.') }}
+                {% endif %}
+
+                <div class="clearfix"></div>
+
+                {% if organizations.haveToPaginate %}
+                    {{ pagerfanta(organizations, 'twitter_bootstrap3') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
+
+{% block scripts %}
+
+    <script type="text/javascript">
+
+        function changeOrganizationStatus(_obj) {
+            if (confirm('Are you sure to change status?')) {
+                var self = $(_obj);
+                var nextStatus = self.data('next-status'),
+                        orgId = self.data('org'),
+                        currentRow = $('#org-' + orgId);
+
+                $.ajax({
+                    type: 'get',
+                    url: '{{ path('yarsha_ajax_change_organization_status') }}',
+                    data: {status: nextStatus, org: orgId},
+                    success: function (res) {
+                        currentRow.find('.statusButtons').html(res.buttons);
+                        currentRow.find('.statusTd').html(res.label);
+                    },
+                    error: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+        }
+
+        function deleteGovOrgJob(id) {
+            var trId = 'org-' + id;
+            var result = confirm('Are you sure ?');
+            if (result) {
+                var remoteUrl = "{{ url('yarsha_admin_goverment_organization_delete', {'id': 'ORGID'}) }}";
+                var remoteUrl = remoteUrl.replace('ORGID', id);
+
+                $.ajax({
+                    type: 'post',
+
+                    url: remoteUrl,
+                    success: function (res) {
+                        if (res && res.status == 'success') {
+                            $("#" + trId).remove();
+                        }
+                    }
+                });
+            }
+        }
+
+        function viewOrganization(obj) {
+            tId = $(obj).data('gov-id');
+            url = "{{ path('yarsha_goverment_organization_ajax_view', {'id':'ORG_ID'}) }}"
+            url = url.replace('ORG_ID', tId)
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function (data) {
+                    if (data.success) {
+                        $("#myModalLabel").html('View Goverment Organization');
+                        $('#myModal').find('.modal-body').html(data.organizationdata)
+                    }
+                },
+                error: function () {
+                    console.log('error')
+                }
+            });
+            $("#myModal").modal('toggle');
+        }
+
+
+    </script>
+{% endblock %}

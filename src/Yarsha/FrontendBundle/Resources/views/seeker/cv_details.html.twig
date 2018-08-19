@@ -1,0 +1,522 @@
+{% extends 'YarshaFrontendBundle::frontend_layout.html.twig' %}
+{% block styles %}
+<style>
+    .mainhire .hire{
+        display:none;
+    }
+    #loadMore {
+        color:green;
+        cursor:pointer;
+    }
+    #loadMore:hover {
+        color:black;
+    }
+    #showLess {
+        color:red;
+        cursor:pointer;
+    }
+    #showLess:hover {
+        color:black;
+    }
+
+    .cv-request a{
+        color: #0084BF;
+        border: 1px #0084BF solid;
+        font-weight: 600;
+        font-size: 12px;
+        border-radius: 2px;
+        display: inline-block;
+        padding: 4px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+    .staticText{
+        color: #fff;
+        font-size: 16px;
+    }
+
+    .staticText span{
+        font-style: italic;
+    }
+
+    .search-job-filter-wrap.profile-detail-resume .profileview{
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        color: white;
+    }
+
+
+
+</style>
+
+    <link href="{{ asset('bundles/yarshafrontend/css/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/yarshafrontend/css/owl.theme.default.min.css') }}" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+        {% set bannerImg = asset('bundles/yarshafrontend/images/cv-bg.jpg') %}
+
+<section class="navigation-btm-sec" style="background: url({{ bannerImg }}); background-size: cover;height: 175px;">
+
+    <h2>Search CVs</h2>
+    <p class="staticText">Get an access to thousands of CVs for free of cost. We are happy to connect you to your potential employees. <span>“Hire Character, Train Skill”</span></p>
+
+
+</section>
+
+    <section id="cvPersonDetail">
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-9 col-sm-12 dashboard-section-right">
+                        <div class="search-job-filter-wrap profile-detail-resume">
+                            <div class="clearfix">
+                                <div class="row">
+                                    <div class="profile-detail-resume-cover">
+                                        <div class="circle-img">
+                                            {% if(seeker.path) %}
+                                                {% set proImg = check_path(seeker.path) %}
+                                            {% else %}
+                                                {% set proImg = asset('bundles/yarshaadmin/images/user.png') %}
+                                            {% endif %}
+                                            <img src="{{ proImg }}"/>
+                                        </div>
+                                        <p class="profileview">Profile Viewed: {{ seeker.profileVisits }}</p>
+
+                                    </div>
+                                    <h2>{{ seeker.getFullName() }}</h2>
+                                    <h3>{{ seeker.currentAddress }}</h3>
+
+                                    {% if(seeker.hasExperience) %}
+                                          <span>
+                                               Experience: {{ seeker.noOfYear? seeker.noOfYear~'Y,':'' }} {{ seeker.noOfMonth?seeker.noOfMonth~'M':'' }}
+                                          </span>
+                                    {% endif %}
+                                  <div class="cv-request">
+                                        {% if app.user and ('ROLE_EMPLOYER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles) %}
+                                            <a href="#" class="requestSeekerCv" data-seeker-id="{{ seeker.id }}">
+                                                REQUEST CV
+                                            </a>
+                                            <a href="#" onclick="sendMessageCvModal(event)">Send Message</a>
+                                        {% else %}
+                                            {{ render_login_alert_button('request_cv') }}
+                                        {% endif %}
+
+
+                                  </div>
+                                    <p>{{ seeker.objectives }}</p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        {% set profileInfos = [
+                        'personal_information',
+                        'education_information',
+                        'trainings'
+                        ] %}
+
+                        {% for p in profileInfos %}
+                            {% set template = 'YarshaJobSeekerBundle:Blocks/Profile:'~p~'.html.twig' %}
+                            {{ sonata_block_render({'type':'yarsha.block.seeker_profile'}, {'section':p,'template':template, 'seeker':seeker, 'employer':true}) }}
+                        {% endfor %}
+
+                        <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+                            <div class="title">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">Experiences</div>
+                                </div>
+                            </div>
+
+                            <div class="posted-jobs-blk-list-blk">
+                                {% if(seeker.experiences|length > 0) %}
+                                    <table class="table table-stripe">
+
+
+                                        {% for experience in seeker.experiences %}
+                                            <tr>
+                                                <td style="width: 20%">
+                                                    <b>{{ experience.designation }}</b><br>
+                                                    {{ experience.employmentType|title }} Time<br>
+                                                    {{ experience.fromDay }} {{ experience.fromMonth~',' }} {{ experience.fromYear }} -
+                                                    {{ experience.toDay }} {{ experience.toMonth~',' }} {{ experience.toYear }}
+
+                                                </td>
+                                                <td>
+                                                    <b>{{ experience.organizationName }}</b>
+                                                    <p class="subDetails">
+                                                    <p><b>Job by
+                                                            function:</b> {{ experience.organizationType ? experience.organizationType.title : '' }}
+                                                    </p>
+                                                    <p><b>Country:</b> {{ experience.country ? experience.country.name : '' }}</p>
+
+                                                    </p>
+                                                    <p><strong>Duties and Responsibilities:</strong> {{ experience.roles|raw }}</p>
+                                                </td>
+                                            </tr>
+
+                                        {% endfor %}
+
+
+                                    </table>
+                                {% else %}
+                                    {{ ys_no_contents('No Experiences added.') }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+                            <div class="title">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">Languages</div>
+                                </div>
+                            </div>
+
+                            <div class="posted-jobs-blk-list-blk">
+
+
+                                <div class="row">
+
+                                    {% if(seeker.languages|length > 0) %}
+
+                                        {% for language in seeker.languages %}
+
+
+                                            <div class="col-md-6 lng-rating-blk">
+                                                <table>
+                                                    <tr>
+                                                        <th style="width: 20%">Language</th>
+                                                        <th>{{ language.language }}</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Reading</td>
+                                                        <td>
+
+                                                            {% if(language.reading == 'poor') %}
+                                                                {% set width1 = '25%' %}
+                                                            {% elseif(language.reading == 'average') %}
+                                                                {% set width1 = '50%' %}
+                                                            {% elseif(language.reading == 'good') %}
+                                                                {% set width1 = '75%' %}
+                                                            {% else %}
+                                                                {% set width1 = '100%' %}
+                                                            {% endif %}
+
+                                                            <div style="background: #0495D4; width: {{ width1 }}; color: #fff; text-align: center;">
+                                                                {{ language.reading | title }}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Writing</td>
+                                                        <td>
+
+                                                            {% if(language.writing == 'poor') %}
+                                                                {% set width2 = '25%' %}
+                                                            {% elseif(language.writing == 'average') %}
+                                                                {% set width2 = '50%' %}
+                                                            {% elseif(language.writing == 'good') %}
+                                                                {% set width2 = '75%' %}
+                                                            {% else %}
+                                                                {% set width2 = '100%' %}
+                                                            {% endif %}
+
+                                                            <div style="background: #0495D4; width: {{ width2 }}; color: #fff; text-align: center;">
+                                                                {{ language.writing | title }}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Speaking</td>
+                                                        <td>
+                                                            {% if(language.speaking == 'poor') %}
+                                                                {% set width3 = '25%' %}
+                                                            {% elseif(language.speaking == 'average') %}
+                                                                {% set width3 = '50%' %}
+                                                            {% elseif(language.speaking == 'good') %}
+                                                                {% set width3 = '75%' %}
+                                                            {% else %}
+                                                                {% set width3 = '100%' %}
+                                                            {% endif %}
+                                                            <div style="background: #0495D4; width: {{ width3 }}; color: #fff; text-align: center;">
+                                                                {{ language.speaking | title }}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+
+                                        {{ ys_no_contents('No languages added.') }}
+
+                                    {% endif %}
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        {{ sonata_block_render({'type':'yarsha.block.seeker_followed_companies'},{'title':'Companies Followed', 'seeker':seeker}) }}
+
+                    </div>
+                <div class="col-md-3 col-sm-12">
+                    <div class="hire-me-searchSideBar">
+                        <div class="row mainhire">
+                            <div class="col-sm-12">
+                                <div class="jobs-hire-me-title">
+                                    <h2><i class="fa fa-asterisk" aria-hidden="true"></i>
+                                        <span>Recommended Cvs</span>
+                                    </h2>
+                                </div>
+                            </div>
+
+                            {% if(jobSeekers|length > 0) %}
+                                {% for jobSeeker in jobSeekers %}
+                                    <div class="col-sm-12 hire" >
+                                        <div class="hire-me-detail">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="hire-me-sm-thumb">
+                                                        {% if(jobSeeker.path) %}
+                                                            {% set proImg = check_path(jobSeeker.path) %}
+                                                        {% else %}
+                                                            {% set proImg = asset('bundles/yarshaadmin/images/user.png') %}
+                                                        {% endif %}
+                                                        <a href="{{ path('yarsha_frontend_seeker_cv_search',{'slug':jobSeeker.username}) }}"><img src="{{ proImg }}"/></a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <h3>{{ jobSeeker.getFullname() }}</h3>
+                                                    <p>Education: <span>{{ jobSeeker.degree?jobSeeker.degree.name:'' }}</span></p>
+                                                    <p>Experience: {% if(jobSeeker.hasExperience) %}
+                                                        <span>
+                                                       {{ jobSeeker.noOfYear? jobSeeker.noOfYear~'Y,':'' }} {{ jobSeeker.noOfMonth?jobSeeker.noOfMonth~'M':'' }}
+                                                      </span>
+                                                            {% endif %}
+                                                    </p>
+                                                    <p>Categories:<span>{{ jobSeeker.preferredCategories|first }}</span></p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            {% endfor %}
+                            {% endif %}
+
+
+                            {% if(jobSeekers|length > 6) %}
+                            {% if app.user and ('ROLE_EMPLOYER' in app.user.roles or 'ROLE_ADMIN' in app.user.roles) %}
+                                    <div class="col-sm-12 text-center">
+                                            <div class="btn-seeMore"  id="loadMore">See More <span> <i class="fa fa-chevron-down" aria-hidden="true"></i></span> </div>
+                                            <div class="btn-seeMore" id="showLess">Show less <span> <i class="fa fa-chevron-up" aria-hidden="true"></i></span></div>
+                                        </div>
+                                {% else %}
+                                     <div class="col-sm-12 text-center">
+                                        {{ render_login_alert_button('cv_view_more') }}
+                                     </div>
+                                {% endif %}
+                            {% endif %}
+                            <div class="col-sm-12 text-center">
+                                <div id="serch-more-cv">
+                                    <p>Search Thousand of CVs for free</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{ sonata_block_render({ 'type': 'yarsha.block.hirig_company' }) }}
+
+                    {% if superEmployers|length > 0%}
+
+                    <div class="super-employee">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h2><i class="fa fa-bookmark" aria-hidden="true"></i>Super Employers</h2>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="owl-carousel" id="owl-carousel-wrapper">
+                                    {% for employer in superEmployers %}
+                                        <div class="span3">
+                                            <div class="icon-slider-img-blk">
+                                                <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':employer.slug}) }}">
+                                                    <img src="{{ organization_profile_image(employer)|imagine_filter('thumb_small') }}"
+                                                         alt="Image">
+                                                </a>
+                                            </div>
+                                            <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':employer.slug}) }}">
+                                                <h1>{{ employer.name }}</h1></a>
+                                            <span>{{ employer.address }}</span>
+                                            <p>
+                                                <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':employer.slug}) }}"><i
+                                                            class="fa fa-briefcase" aria-hidden="true"></i>
+                                                    &nbsp;{{ count_jobs_by_organization(employer) }} Jobs</a></p>
+                                            <div class="span3-btm clearfix">
+                                                <div class="col-md-6 col-sm-12 col-xs-6">
+                                                    {{ render_follow_button(employer, app.user) }}
+                                                </div>
+                                                <div class="col-md-6 col-sm-12 col-xs-6">
+                                                    <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':employer.slug}) }}"
+                                                       class="apply">
+                                                        <i class="fa fa-pencil-square-o"
+                                                           aria-hidden="true"></i>
+                                                        &nbsp;apply now
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+{% endif %}
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="clearfix"></div>
+    {% include '@YarshaFrontend/Includes/commonmodal.html.twig' %}
+{% endblock content %}
+
+
+{% block scripts %}
+
+    <script src="{{ asset('bundles/yarshafrontend/js/owl.carousel.js') }}"></script>
+    <script src="{{ asset('bundles/yarshafrontend/js/notify.min.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#owl-carousel-wrapper").owlCarousel({
+                lazyLoad: false,
+                lazyFollow: true,
+                loop: false,
+                navigation: true,
+                pagination: false,
+                items: 1,
+                itemsDesktop: [1199, 1],
+                itemsDesktopSmall: [980, 1],
+                itemsTablet: [768, 1],
+                itemsTabletSmall: false,
+                itemsMobile: [479, 1],
+                singleItem: false
+
+            });
+
+        $('#showLess').hide()
+        size_li = $(".mainhire .hire").size();
+        x = 6;
+        $('.mainhire .hire:lt(' + x + ')').show();
+
+        $('#loadMore').click(function () {
+            x = (x + 6 <= size_li) ? x + 6 : size_li;
+            $('.mainhire .hire:lt(' + x + ')').show();
+            if (x >= size_li) {
+                $('#loadMore').hide();
+                $('#showLess').show();
+            }
+        });
+
+        $('#showLess').click(function () {
+            x = 6;
+            $('.mainhire .hire').not(':lt(' + x + ')').hide();
+            $('#loadMore').show()
+            $('#showLess').hide();
+        });
+
+        $('.requestSeekerCv').on('click', function(e){
+            $(this).LoadingOverlay('show');
+            var self = this;
+            e.preventDefault();
+            id = $(this).data('seeker-id');
+            url = "{{ path('yarsha_ajax_employer_request_cv', {'seekerId':'SEEKER_ID'}) }}";
+            url = url.replace('SEEKER_ID', id);
+            $.ajax({
+                url:url,
+                method:"GET",
+                success:function(data){
+                    if(data.success){
+                        $.notify('CV requested', 'success');
+                    }   else    {
+                        $.notify('Unable to request CV.', 'error');
+                    }
+                    $(self).LoadingOverlay('hide', true);
+                },
+                error:function(){
+                    $(self).LoadingOverlay('hide', true);
+                }
+            });
+        });
+
+
+
+
+    });
+
+        function sendMessageCvModal(e) {
+            e.preventDefault();
+            var myModal = $("#myCommonModal");
+            $.ajax({
+                url: "{{ path('yarsha_ajax_employer_get_send_message_form') }}",
+                method: "GET",
+                success: function (data) {
+                    myModal.modal('toggle');
+                    myModal.find('.my-modal-content').html(data.template);
+                }
+            });
+        }
+
+
+        function sendMessageToSeeker(e, obj) {
+            e.preventDefault();
+            $.LoadingOverlay("show");
+            var myModal = $("#myCommonModal");
+            url = "{{ path('yarsha_ajax_employer_send_message', {'seekerId':'SEEKER_ID'}) }}";
+            url = url.replace('SEEKER_ID', {{ seeker.id }});
+            fd = new FormData(obj);
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    $.LoadingOverlay("hide");
+                    myModal.modal('toggle');
+                    $("#thankyouModal").modal('toggle');
+                    $("#thankyouModal").find('.modal-title').html('Message to Seeker');
+                    if (data.success) {
+                        $("#thankyouModal").find('.content-message').html('Your message has been sent to Job seeker.');
+                    } else {
+                        $("#thankyouModal").find('.content-message').html("Something went wrong. Unable to send message.");
+                    }
+                },
+                error: function (data) {
+                    $.LoadingOverlay("hide")
+                    myModal.modal('toggle');
+                    $("#thankyouModal").modal('toggle');
+                    $("#thankyouModal").find('.modal-title').html('Message to Seeker');
+                    $("#thankyouModal").find('.content-message').html("Something went wrong. Unable to send message.");
+                }
+            });
+        }
+</script>
+
+
+{% endblock %}
+

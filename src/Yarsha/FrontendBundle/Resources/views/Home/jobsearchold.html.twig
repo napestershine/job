@@ -1,0 +1,83 @@
+{% extends "YarshaFrontendBundle::frontend_layout.html.twig" %}
+
+{% block content_title %} Job Search {% endblock %}
+
+{% block content %}
+
+    <section class="dashboard-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-3 dashboard-section-left">
+
+                    <div class="dashboard-section-dropdown dashboard-bg-color advanced-jov-search-sec">
+                        <h1 class="show-hide-blk dropdown-h1-title">advanced search job</h1>
+                        <ul class=" cv-search-blk">
+                            <li>
+                                <form action="" method="GET">
+                                    {{ render_organization_select(app.request.get('organization')) }}
+                                    {{ display_categories(app.request.get('category'), '','category') }}
+                                    {{ display_categories(app.request.get('industry'), '','industry') }}
+                                    {{ display_job_levels(app.request.get('level'), '') }}
+                                    {{ display_job_description_types(app.request.get('type'), '') }}
+                                    {{ display_job_availability_types(app.request.get('availability'), '') }}
+                                    {{ display_education_degrees(app.request.get('education'), '') }}
+                                    {{ display_job_locations(app.request.get('location'), '') }}
+                                    <input type="text" placeholder="Job title" name="title"
+                                           value="{{ app.request.get('title') }}"
+                                           id="title">
+                                    <div class="clearfix">
+                                        <div class="row">
+                                            <div class="col-md-4 col-sm-4 search-left-blk">
+                                                <input name="" value="Search" type="submit">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-9 col-sm-9 dashboard-section-right">
+
+                    <div class="company-info-blk dashboard-bg-color clearfix">
+                        <div class="title">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">job list</div>
+                            </div>
+                        </div>
+
+                        {% for job in jobs %}
+                            <div class="clearfix job-list-search-cnt">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2">
+                                        {% set imgSrc = job.organization.path %}
+                                        <img src="{{ asset('uploads/employers/')  ~ imgSrc }}" alt="Company Logo">
+                                    </div>
+                                    <div class="col-md-10 col-sm-10">
+                                        <h2>
+                                            <a href="{{ path('yarsha_frontend_job_detail_view', {'slug':job.slug}) }}">
+                                                {{ job.title }}
+                                            </a>
+                                        </h2>
+                                        <span>Education: {{ job.educationDegree }} |
+                                        Experience: {{ job.minimumExperienceYear }} </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        {% if jobs.haveToPaginate %}
+                            {{ pagerfanta(jobs, 'twitter_bootstrap3') }}
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

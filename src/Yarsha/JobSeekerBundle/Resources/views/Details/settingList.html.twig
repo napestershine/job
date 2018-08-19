@@ -1,0 +1,94 @@
+{% extends "@YarshaJobSeeker/job_seeker_layout.html.twig" %}
+{% block stylesheets %}
+    <style>
+        label.control-label {
+            display: inline-block;
+        }
+        .radio{
+            margin-top: -13px;
+        }
+        .job-seeker-setting .col-md-12{
+            padding: 1px;
+        }
+        div .well{
+            padding: 19px!important;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix job-seeker-setting">
+
+
+        <div class="title">
+            <div class="row">
+                <div class="col-md-10 col-sm-10">Setting</div>
+            </div>
+        </div>
+        {% form_theme form 'bootstrap_3_layout.html.twig' %}
+        {{ form_start(form) }}
+        <div class="col-md-12">
+            <div class="col-md-4">{{ form_label(form.travelForJob) }}</div>
+            <div class="col-md-4">{{ form_widget(form.travelForJob) }}</div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4">{{ form_label(form.haveLicense) }}</div>
+            <div class="col-md-4">{{ form_widget(form.haveLicense) }}</div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="col-md-4">{{ form_label(form.haveLicenseOf) }}</div>
+            <div class="col-md-4">{{ form_widget(form.haveLicenseOf) }}</div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="col-md-4">{{ form_label(form.willingToRelocation) }}</div>
+            <div class="col-md-4">{{ form_widget(form.willingToRelocation) }}</div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="col-md-4">{{ form_label(form.haveVehicle) }}</div>
+            <div class="col-md-4">{{ form_widget(form.haveVehicle) }}</div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="col-md-4">{{ form_label(form.vehicleType) }}</div>
+            <div class="col-md-4">{{ form_widget(form.vehicleType) }}</div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="col-md-4">{{ form_label(form.profile_searchable) }}</div>
+            <div class="col-md-4">{{ form_widget(form.profile_searchable) }}</div>
+        </div>
+
+        <div class="well col-md-12">
+            <p>
+                <strong>Searchable:</strong> all the registered employer can view your profile except the contact details.
+            </p>
+            <p>
+                <strong>Unsearchable:</strong> only the organization you have applied to can view your complete details.
+            </p>
+            <p>
+                For more oppotunities, we recommend you to make it yes. This helps any employer
+                to check if you fit in their job opportunities.
+            </p>
+        </div>
+
+        <div class="col-md-12">
+            <div class="col-md-4">{{ form_label(form.job_alert_table) }}</div>
+            <div class="col-md-4">{{ form_widget(form.job_alert_table) }}</div>
+        </div>
+        <div class="col-md-12">
+            <p>
+                (Job alerts are sent to your email and includes information on
+                job opportunities that match your profile.)
+            </p>
+
+        </div>
+
+        <input type="submit" class="btn btn-success" value="save">
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}

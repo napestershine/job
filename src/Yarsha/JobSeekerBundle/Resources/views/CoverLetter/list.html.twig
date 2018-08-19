@@ -1,0 +1,78 @@
+{% extends 'YarshaJobSeekerBundle::job_seeker_layout.html.twig' %}
+
+{% block content %}
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-9 col-sm-9">JOB SEEKER | Cover letters</div>
+                <div class="col-md-3 col-sm-3 right">
+                    <input type="submit" value="+ Add cover
+        letter" onclick="return location.href = '{{ path('yarsha_job_seeker_add_cover_letter') }}'">
+
+                </div>
+            </div>
+        </div>
+        <div class="posted-jobs-blk-list-blk">
+            {% if coverLetters |length %}
+            <table class="">
+                <tr>
+                    <td>SN</td>
+                    <td>Title</td>
+                    <td>Default</td>
+                    <td>Actions</td>
+                </tr>
+                {% for coverLetter in coverLetters %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ coverLetter.title }}</td>
+                        <td>
+                            <input type="checkbox" {{ coverLetter.default == 1 ? 'checked' : '' }}
+                                   id="coverLetter{{ coverLetter.id }}"
+                                   cover-letter-id="{{ coverLetter.id }}"
+                                   class="default-cover-letter" status="{{ coverLetter.default == 1 ? 1:0 }}">
+                        </td>
+                        <td>
+                            <a href="{{ path('yarsha_job_seeker_update_cover_letter', {'id':coverLetter.id}) }}">
+                                <button class="btn btn-primary">Edit</button>
+                            </a>
+                            <a href="{{ path('yarsha_job_seeker_delete_cover_letter', {'id':coverLetter.id}) }}">
+                                <button class="btn btn-danger">Delete</button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+                {{ ys_no_contents('No cover letter added.') }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $('.default-cover-letter').on('change', function () {
+            id = $(this).attr('cover-letter-id')
+            $this = $(this)
+
+            if (id) {
+                parent = $(this).parent().parent()
+                $tbody = parent.parent()
+                url = "{{ path('yarsha_frontend_ajax_set_default_cover_letter', {'id':'COVERLETTER_ID'}) }}"
+                url = url.replace('COVERLETTER_ID', id)
+                $.ajax({
+                    method: 'POST',
+                    url: url,
+                    success: function (data) {
+                        if (data.success) {
+                            $coverLetter = $tbody.find('.default-cover-letter')
+                            $coverLetter.not('#coverLetter' + id).removeAttr('checked')
+                        }
+                    }
+                });
+
+            }
+
+        });
+    </script>
+{% endblock %}

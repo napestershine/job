@@ -1,0 +1,88 @@
+{% extends '@YarshaFrontend/frontend_static_layout.html.twig' %}
+
+{% block static_content_title %}{{ title }}{% endblock %}
+
+{% block static_content %}
+
+    <br><br>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-8">
+                <div class="panel panel-default article-wrap article-listing-wrap">
+                    <div class="panel-heading article-block-title"><i class="fa fa-list-ul" aria-hidden="true"></i>
+                        &nbsp;{{ category | split('-') | join(' ') | title }}</div>
+                    <div class="">
+                        <ul class="hot-job-list list-list">
+                            {% for article in articles %}
+                                <li>
+                                    <h4>
+                                        <a href="{{ path('yarsha_frontend_article_detail', {'category':category,'slug':article.slug}) }}">
+                                            {{ article.title }}
+                                        </a>
+                                    </h4>
+
+                                    {% if article.image %}
+                                        <div class="pull-left listing-image">
+                                            <img src="{{ article.image|imagine_filter('thumb_small') }}" alt="">
+                                        </div>
+                                    {% endif %}
+
+                                    {{ article.content|striptags|slice(0, 400)|raw }} ...
+
+                                    <div class="clearfix"></div>
+                                </li>
+                            {% else %}
+                                {{ ys_no_contents('No news posted yet.') }}
+                            {% endfor %}
+                        </ul>
+
+                        {% if articles.haveToPaginate %}
+                            <div class="col-md-12">
+                                <div class="col-md-8 text-right">
+                                    {{ pagerfanta(articles, 'twitter_bootstrap3') }}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="row">
+                    {% macro renderSideBlock(title, iconClass, categoryId) %}
+                        {{ sonata_block_render({'type':'yarsha.block.article.category'}, {
+                            'title':title,
+                            'iconClass':iconClass,
+                            'wrapperClass': 'col-md-12 col-sm-12',
+                            'category':categoryId,
+                            'limit':4,
+                            'template':'YarshaFrontendBundle:Block:article_list_inner_block.html.twig'
+                        }) }}
+                    {% endmacro %}
+
+                    {% if category != 'news' %}
+                        {{ _self.renderSideBlock('Latest News', 'fa-newspaper-o', 10 ) }}
+                    {% endif %}
+
+                    {% if category != 'career-resources' %}
+                        {{ _self.renderSideBlock('Career Resources', 'fa-lightbulb-o', 5 ) }}
+                    {% endif %}
+
+                    {% if category != 'resources-center' %}
+                        {{ _self.renderSideBlock('Resources Center - Loksewa', 'fa-lightbulb-o', 9 ) }}
+                    {% endif %}
+
+                </div>
+
+                <div class="clearfix"></div>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

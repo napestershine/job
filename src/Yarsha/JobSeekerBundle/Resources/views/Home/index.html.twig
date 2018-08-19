@@ -1,0 +1,98 @@
+{% extends "@YarshaJobSeeker/job_seeker_layout.html.twig" %}
+
+{% block stylesheets %}
+    <style>
+        ul.bar-guide-blk-ul li {
+            margin-bottom: 16px;
+            margin-top: 10px;
+            background: rgba(0, 0, 0, 0.62);
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="dashboard-cover-btm-sec clearfix">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3 col-sm-3 dashboard-cover-btm-sec-blk blk1">
+                    <a href="{{ path('yarsha_job_seeker_setting_list') }}">
+                        <h3>User Settings</h3>
+                        <span><i class="fa fa-cogs" aria-hidden="true"></i></span>
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-3 dashboard-cover-btm-sec-blk blk2">
+                    {% set cv = app.user.curriculumVitaePath %}
+                    {% if cv %}
+                        <a href="{{ path('yarsha_job_seeker_generate_resume') }}">
+                            <h3>Download Resume</h3>
+                            <span><i class="fa fa-file-text" aria-hidden="true"></i></span>
+                        </a>
+                    {% else %}
+                        <a href="#" onclick="uploadResumeForm(event)">
+                            <h3>Upload Resume</h3>
+                            <span><i class="fa fa-file-text" aria-hidden="true"></i></span>
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="col-md-3 col-sm-3 dashboard-cover-btm-sec-blk blk3">
+                    <a href="{{ path('yarsha_job_seeker_job_basket_list') }}">
+                        <h3>My Jobs Basket</h3>
+                        <span><i class="fa fa-shopping-basket" aria-hidden="true"></i></span>
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-3 dashboard-cover-btm-sec-blk blk4">
+                    <a href="{{ path('yarsha_job_seeker_notice_list') }}">
+                        <h3>My Notices</h3>
+                        <span><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- profile summary block -->
+    <div class="profile-user-blk dashboard-bg-color">
+        <div class="row">
+            {{ sonata_block_render({'type':'yarsha.block.seeker_profile_status'}) }}
+            <div class="col-md-6 col-sm-6 company-info-blk profile-user-blk-single">
+                <div class="title">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-8">user information</div>
+                    </div>
+                </div>
+                <div>
+                    <p class="info">
+                        <label class="col-md-5">Profile Visit</label>
+                        {{ app.user.profileVisits }}
+                    </p>
+                    <p class="info clearfix">
+                        <label class="col-md-5">Mobile</label>
+                        {{ app.user.mobile }}
+                    </p>
+                    <p class="info clearfix">
+                        <label class="col-md-5">Email</label>
+                        {{ app.user.contactEmail }}
+                    </p>
+                    <p class="info clearfix">
+                        <label class="col-md-5">Last Login Date</label>
+                        {{ app.user.lastLogin | date('d M, Y') }}
+                    </p>
+                    <p class="info clearfix">
+                        <label class="col-md-5">Last Profile Updated</label>
+                        {{ app.user.lastProfileUpdate | date('d M, Y') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ sonata_block_render({'type':'yarsha.block.seeker_applied_jobs'}) }}
+
+    {{ sonata_block_render({'type':'yarsha.block.seeker_followed_companies'}, {'seeker':app.user}) }}
+
+    {{ sonata_block_render({'type':'yarsha.block.seeker_matched_jobs'}) }}
+
+    {% include 'YarshaJobSeekerBundle:Details:setting-new.html.twig' %}
+
+{% endblock %}

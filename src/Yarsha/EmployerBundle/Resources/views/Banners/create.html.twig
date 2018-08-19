@@ -1,0 +1,54 @@
+{% extends "@YarshaEmployer/employer_layout.html.twig" %}
+
+
+{% block content %}
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">Add Banner Images</div>
+            </div>
+        </div>
+
+        <div class="table-listing-page-wrap">
+            <p>{{ form_errors(form.file) }}</p>
+            <div class="row">
+                {{ form_start(form) }}
+                <div class="col-md-3 col-sm-3">
+                    Cover Picture
+                </div>
+                <div class="col-md-9 col-sm-9">
+                    {{ form_widget(form.file) }}
+                </div>
+
+                <div class="col-md-3 col-sm-3">
+                    Caption
+                </div>
+                <div class="col-md-9 col-sm-9">
+                    {{ form_widget(form.caption) }}
+
+                </div>
+                <div class="col-md-3 col-sm-3">
+                    Order
+                </div>
+                <div class="col-md-9 col-sm-9">
+                    {{ form_widget(form.order) }}
+                </div>
+                <div class="col-md-3 col-sm-3">
+                    Status
+                </div>
+                <div class="col-md-9 col-sm-9">
+                    {{ form_widget(form.status) }}
+                </div>
+                <div class="col-md-2 col-sm-2">
+                    <input type="submit" value="Add Banner" class="btn btn-primary">
+                </div>
+
+                {{ form_end(form) }}
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+

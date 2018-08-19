@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- meta viewport -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- title -->
+    <title>Kantipur Jobs - Email Notification</title>
+    <!-- stylesheet -->
+    <style type="text/css">
+        body {
+            background: #f3f3f3;
+            margin: 0;
+            padding: 0;
+            padding-top: 20px;
+        }
+
+        .table-header {
+            background: #fff;
+        }
+
+        table {
+            width: 600px;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        img.logo-right-image {
+            width: 50%;
+            margin-top: 6px;
+        }
+
+        tr.table-header td {
+            border: 1px #e3e3e3 solid;
+            padding: 24px 15px;
+        }
+
+        .personalInfo-table td, .personalInfo-table th {
+            border: 1px #b7b7b7 solid;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table.dear-blk td {
+            padding: 16px;
+        }
+
+        table.personalInfo-table td {
+            color: #ef4600;
+            font-style: italic;
+        }
+
+        table.personalInfo-table th {
+            color: #383838;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        table.personalInfo-table td a {
+            color: #0041ff;
+            text-decoration: none;
+        }
+
+        a.update-anchor {
+            display: block;
+            text-decoration: none;
+            background: transparent;
+            padding: 8px;
+            border-radius: 2px;
+            color: #404040;
+            text-transform: uppercase;
+            font-size: 12px;
+            padding-top: 9px;
+            border: 1px #1A98D3 solid;
+            text-align: center;
+        }
+
+        .requestAcall-blk td {
+            border: 1px #b7b7b7 solid;
+        }
+
+        table.requestAcall-blk td {
+            padding: 20px;
+            text-align: center;
+            font-size: 11px;
+            line-height: 20px;
+            font-weight: bold;
+            color: #1A98D3;
+            text-transform: uppercase;
+        }
+
+        table.requestAcall-blk td a {
+            text-decoration: none;
+            color: #0041ff;
+        }
+
+        table.recruiters-table td {
+            border: 1px #b7b7b7 solid;
+            text-align: center;
+            padding: 9px;
+            font-size: 14px;
+        }
+
+        table.recruiters-table {
+            background: #1A98D3;
+            color: #fff;
+            margin-top: 5px;
+        }
+
+        table.footer tr {
+            border: 1px #d8d2d2 solid;
+            font-size: 12px;
+            font-style: italic;
+            background: #f1f1f1;
+        }
+
+        table.footer tr td {
+            padding: 9px;
+            line-height: 17px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+<center>
+    <table style="border:1px solid rgba(242, 101, 42, 0.45);">
+        <tbody>
+        <tr class="table-header">
+            <td style="text-align: left;">
+                <a href="{{ url('yarsha_frontend_homepage') }}">
+                    <img src="{{ absolute_url(asset('bundles/yarshamain/images/email/logo.png')) }}"
+                         style="width: auto;">
+                </a>
+            </td>
+            <td style="text-align: right;">
+                {% block header_right_image %}{% endblock %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table style="background: #efefef; color: #0a318e;">
+        <tr>
+            <td style="text-align: center;padding:2px;line-height:17px;font-size: 13px;font-style: normal;padding-top:4px;padding-bottom:5px;">
+                Please add this email jobalert@kantipurjob.com to your contact list to prevent future job alerts from
+                being directed to your jink/bulk folder
+            </td>
+        </tr>
+    </table>
+
+    <table class="dear-blk" style="background: #fff;color: #404040;padding: 12px;border-bottom:1px #e3e3e3 solid;">
+        <tr>
+            <td>
+                {% block email_body %} {% endblock %}
+            </td>
+
+        </tr>
+    </table>
+
+    {% block email_content %} {% endblock %}
+
+    <table class="footer">
+        <tr>
+            <td>
+                <span style="color:#F2652A;"><b>Disclaimer:</b></span> You have received this mail because you are
+                registered member on kantipurjob.com. This is a system generated email, please dont reply to this
+                message. For <a href="{{ url('yarsha_frontend_terms') }}">Terms and Conditions</a> and other legal
+                disclaimers, please visit
+                kantipurjob.com. If you do not want to receive thi mailer, <a href="#">Unsubscribed.</a>
+            </td>
+        </tr>
+    </table>
+
+</center>
+
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+{% extends "@YarshaMain/Emails/email_layout.html.twig" %}
+{% import "@YarshaMain/EmailTemplates/emailMacros.html.twig" as emailMacro%}
+
+{% block header_right_image %}
+    <td style="text-align: center;">
+        <img src="{{ asset('images/1.jpg') }}" class="logo-right-image">
+    </td>
+{% endblock %}
+
+{% block email_body %}
+
+    {{ emailMacro.jobSeekerJobEmailAction(seeker,message,jobs) }}
+
+    {% include('@YarshaMain/EmailTemplates/profile_detail_section.html.twig') %}
+
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'YarshaEmployerBundle::employer_layout.html.twig' %}
+
+{% block content %}
+
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-10 col-sm-10">Notice List</div>
+                <div class="col-md-2 col-sm-2 right"><a href="{{ path('yarsha_employer_notice_create') }}"><input
+                                type="submit" value="+ Add Notice"></a></div>
+            </div>
+        </div>
+        <div class="posted-jobs-blk-list-blk">
+            {% if(notices) | length %}
+            <table class="table table-striped table-hover table-condensed">
+                <tr>
+                    <td>SN</td>
+                    <td>Title</td>
+                    <td>Status</td>
+                    <td>Actions</td>
+                </tr>
+                    {% for notice in notices %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ notice.title }}</td>
+                            <td>{{ notice.status == 1 ? '<span class="label label-success">Draft</span>' : '<span class="label label-primary">Published</span>' }}</td>
+                            <td>
+                                <a href="{{ path('yarsha_employer_notice_edit', {id: notice.id}) }}">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </a> |
+                                <a href="{{ path('yarsha_employer_notice_delete', {id: notice.id}) }}">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+            </table>
+            {% else %}
+                {{ ys_no_contents('No notice available.') }}
+            {% endif %}
+            {% if notices.haveToPaginate %}
+                {{ pagerfanta(notices, 'twitter_bootstrap3') }}
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock %}

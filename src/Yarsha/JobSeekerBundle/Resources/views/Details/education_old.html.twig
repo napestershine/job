@@ -1,0 +1,41 @@
+{{ form_start(form, {'attr': {'onsubmit':'return submitEducation(this)'}}) }}
+{#{{ form_start(form, {'attr': {'action':path('yarsha_job_seeker_ajax_add_education')}}) }}#}
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+<div id="seekerEducations" class="col-md-12" data-prototype="{{ _self.renderAddEducationForm(form.educations.vars.prototype) | e}}">
+    {% for education in form.educations %}
+        {{ _self.renderAddEducationForm(education) }}
+    {% endfor %}
+    <div class="clearfix"></div>
+</div>
+<div class="modal-footer">
+    <a href='#' class='addEducationsBtn btn btn-primary pull-left'>Add More Educations</a>
+    <input type="submit" class="btn btn-primary" value="SAVE">
+
+    <button type="button" class="btn btn-danger" data-dismiss="modal">
+        CANCEL
+    </button>
+</div>
+{{ form_end(form) }}
+
+{% macro renderAddEducationForm(form) %}
+    <div class="row educations-form">
+        <div class="col-md-3">{{ form_row(form.degree) }}</div>
+        <div class="col-md-3">{{ form_row(form.degreeName) }}</div>
+        <div class="col-md-2">{{ form_row(form.year) }}</div>
+        <div class="col-md-3">{{ form_row(form.institution) }}</div>
+        <div class="col-md-1" style="margin-top: 25px;">
+            <a class="btn btn-danger btn-xs delete-education">Delete</a>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-3">{{ form_row(form.board) }}</div>
+        <div class="col-md-2">{{ form_row(form.percentage) }}</div>
+        <div class="col-md-3">{{ form_row(form.specification) }}</div>
+        <div class="col-md-3">{{ form_row(form.country) }}</div>
+    </div>
+{% endmacro %}
+
+<style>
+    .modal-dialog{
+        width: 80%;
+    }
+</style>

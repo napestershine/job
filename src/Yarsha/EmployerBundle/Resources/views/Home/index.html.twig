@@ -1,0 +1,37 @@
+{% extends "@YarshaEmployer/employer_layout.html.twig" %}
+
+
+{% block content %}
+
+    {% if company %}
+
+        {#{{ sonata_block_render({"type":"yarsha.block.employer_profile_picture"}, {'organization':company}) }}#}
+
+        <div class="company-info-blk dashboard-bg-color clearfix">
+            <div class="title">
+                <div class="row">
+                    <div class="col-md-10 col-sm-10">company information</div>
+                    <div class="col-md-2 col-sm-2 right">
+                        {#<a href="{{ path('yarsha_employer_profile_change') }}">#}
+                        {#<i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;Edit#}
+                        {#</a>#}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                {% if company %}
+                    <p>{{ filterProfile(company.profile)|raw }}</p>
+                {% endif %}
+            </div>
+
+        </div>
+
+        {{ sonata_block_render({"type":"yarsha.block.employer_company_information"}, {'organization':company}) }}
+
+        {#{{ sonata_block_render({"type":"yarsha.block.employer_profile_status"}) }}#}
+
+        {#{{ sonata_block_render({"type":"yarsha.block.employer_job_seeker"}) }}#}
+    {% endif %}
+
+
+{% endblock %}

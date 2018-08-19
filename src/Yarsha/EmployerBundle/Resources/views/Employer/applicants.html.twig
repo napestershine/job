@@ -1,0 +1,146 @@
+{% extends 'YarshaEmployerBundle::employer_layout.html.twig' %}
+
+
+{% block content %}
+    <div class="company-info-blk posted-jobs-blk dashboard-bg-color clearfix">
+        <div class="title">
+            <div class="row">
+                <div class="col-md-10 col-sm-10">Applicants</div>
+            </div>
+        </div>
+
+        <div class="posted-jobs-blk-list-blk">
+
+            <table>
+                <tr>
+                    <th>S.N</th>
+                    <th>Profile</th>
+                    <th>Name</th>
+                    <th>Experience</th>
+                    <th>Education</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                {% if applicants | length %}
+                    {% set count = pager_first_index(applicants) %}
+                    {% for applicant in applicants %}
+
+                        {% if(applicant.employee.path) %}
+                            {% set imgSrc = check_path(applicant.employee.path) %}
+                        {% else %}
+                            {% set imgSrc = asset('bundles/yarshaadmin/images/user.png') %}
+                        {% endif %}
+
+
+                        <tr id="tr_{{ applicant.id }}">
+                            <td>{{ count }}</td>
+                            <td><img src="{{ imgSrc|imagine_filter('thumb_mini') }}"
+                                /></td>
+                            <td>
+                                <a target="_blank"
+                                   href="{{ path('yarsha_employer_job_applicants_details',{'jobId':applicant.job.slug ,'id': applicant.employee.username}) }}"
+                                   data-toggle="tooltip"
+                                   title="View Details">{{ applicant.employee.firstName }} {{ applicant.employee.lastName }}
+                                </a>
+                            </td>
+                            <td>
+                                {% if(applicant.employee.hasExperience) %}
+                                    {{ applicant.employee.noOfYear ? applicant.employee.noOfYear~ 'Year' : 'N/A' }}
+                                    {{ applicant.employee.noOfMonth ? applicant.employee.noOfMonth~ 'Month' : 'N/A' }}
+                                {% else %}
+                                    {{ 'N/A' }}
+                                {% endif %}
+                            </td>
+                            {#<td>#}
+                            {#Tel: {{ applicant.employee.phone }}<br>#}
+                            {#Mob: {{ applicant.employee.mobile }}#}
+                            {#</td>#}
+                            {#<td>{{ applicant.employee.currentAddress }}</td>#}
+                            <td>{{ applicant.employee.degree }}</td>
+                            <td id="td_{{ applicant.id }}">
+                                {{ jobseeker_status(applicant.status) }}
+                                {#<span class="label label-warning">{{ applicant.status }}</span>#}
+                            </td>
+                            <td>
+                                <a target="_blank"
+                                   href="{{ path('yarsha_employer_job_applicants_details',{'jobId':applicant.job.slug ,'id': applicant.employee.username}) }}"
+                                   data-toggle="tooltip" title="View Details"><i
+                                            class="fa fa-eye"></i></a> | {{ jobApplied_status(applicant.id) }}
+                                {#<a target="_blank"#}
+                                {#href="{{ asset('uploads/attachments/')~applicant.employee.curriculumVitaePath }}">View#}
+                                {#CV</a>#}
+                            </td>
+
+                        </tr>
+                        {% set count = count + 1 %}
+                    {% endfor %}
+                {% else %}
+                    <p>No result found.</p>
+                {% endif %}
+            </table>
+
+        </div>
+    </div>
+
+    {% if applicants.haveToPaginate %}
+        {{ pagerfanta(applicants, 'twitter_bootstrap3') }}
+    {% endif %}
+{% endblock content %}
+
+
+{% block scripts %}
+    <script>
+
+
+        $(".changeStatus").on('change', function (e) {
+
+
+            var result = confirm('Are you sure ?');
+            if (result) {
+                var status = this.value;
+                var appId = $(this).data('app-id');
+                var tdId = 'td_' + appId;
+
+                $.ajax({
+                    type: 'get',
+                    url: '{{ path('yarsha_ajax_update_jobApplied_status') }}',
+                    data: {'status': status, 'appId': appId},
+
+                    success: function (res) {
+                        var value = res.status
+
+                        if (value == 'selected') {
+                            var cla = 'success';
+                            var val = 'SELECTED';
+                        } else if (value == 'rejected') {
+                            var cla = 'danger';
+                            var val = 'REJECTED';
+                        } else if (value == 'shortlisted') {
+                            var cla = 'warning';
+                            var val = 'SHORTLISTED';
+                        } else if (value == 'hired') {
+                            var cla = 'info';
+                            var val = 'HIRED';
+                        } else {
+                            var cla = 'primary';
+                            var val = 'PENDING';
+                        }
+                        var data = '<span class="label label-' + cla + '">' + val
+                                + '</span>';
+                        if (res && res.message == 'success') {
+                            $("#" + tdId).html(data);
+                        }
+                    },
+                    error: function (res) {
+
+                    }
+                });
+            }
+        });
+
+
+    </script>
+
+
+
+{% endblock %}

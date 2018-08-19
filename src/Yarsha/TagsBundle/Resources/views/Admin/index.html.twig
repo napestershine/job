@@ -1,0 +1,119 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Tags{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-md-8 col-xs-12 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <button class="btn btn-default pull-right margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+                        <i class="fa fa-filter"></i>
+                    </button>
+
+                    <div class="clearfix margin"></div>
+
+                    <div class="collapse {{ ys_show_filter(app.request) ? 'in' : '' }}" id="filter">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Filter</h4>
+                            </div>
+                            <div class="panel-body">
+                                <form action="">
+                                    <div class="form-group-sm col-md-3">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" name="name" value="{{ app.request.get('name') }}">
+                                    </div>
+
+                                    <div class="form-group-sm col-md-9">
+                                        <label for="">&nbsp;</label><br>
+                                        <input type="submit" class="btn btn-primary" value="SEARCH">
+                                        <input type="button" class="btn btn-danger resetForm" value="CLEAR">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix margin"></div>
+
+                    {% if tags|length %}
+                        <table class="table table-stripped">
+                            <tr>
+                                <th>#</th>
+                                <th>{{ pager_sort('Name','yarsha_admin_tags_list', 'name') }}</th>
+                                <th>Slug</th>
+                                <th>{{ pager_sort('Count','yarsha_admin_tags_list', 'count') }}</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            {% set count = pager_first_index(tags) %}
+                            {% for tag in tags %}
+                                <tr>
+                                    <td>{{ count }}</td>
+                                    <td>{{ tag.name }}</td>
+                                    <td>{{ tag.slug }}</td>
+                                    <td>{{ tag.contentCount }}</td>
+                                    <td>
+                                        <a
+                                                href="{{ path('yarsha_admin_tags_update', {'id':tag.id}) }}"
+                                                title="edit"
+                                        >
+                                            <i class="fa fa-edit text-primary"></i>
+                                        </a>
+                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            &nbsp;
+                                            <a
+                                                    href="{{ path('yarsha_admin_tags_delete', {'id':tag.id}) }}"
+                                                    onclick="return confirm('Are you sure to delete tag?')"
+                                                    title="delete"
+                                            >
+                                                <i class="fa fa-trash text-danger"></i>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% set count = count + 1 %}
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        {{ ys_no_contents('No Tags Added Yet') }}
+                    {% endif %}
+
+                    {% if tags.haveToPaginate %}
+                        {{ pagerfanta(tags, 'ys_pager') }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4 class="panel-title">Popular Tags</h4></div>
+                <div class="panel-body">
+                    {% set textSize = [14, 18, 22, 26] %}
+                    {% for pt in popularTags %}
+                        <span style="font-size: {{ random(textSize) }}px" class="margin">{{ pt.name }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4 class="panel-title">Add new tag</h4></div>
+                <div class="panel-body">
+                    {% form_theme form "bootstrap_3_layout.html.twig" %}
+                    {{ form_start(form) }}
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.slug, {'attr':{'placeholder':'leave blank for auto generation'}}) }}
+                        <input type="submit" class="btn btn-primary" value="ADD TAG">
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="clearfix"></div>
+
+
+{% endblock %}

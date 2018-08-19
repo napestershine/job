@@ -1,0 +1,6 @@
+<div class="panel panel-default">
+    <div class="panel-heading">{{ article.title }} | Categoty: {{ article_category_type(article.category) }}</div>
+    <div class="panel-body">
+        <p>{{ article.content | raw }}</p>
+    </div>
+</div>

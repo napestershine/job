@@ -1,0 +1,47 @@
+{% extends "@YarshaMain/Emails/email_layout.html.twig" %}
+
+
+{% block email_body %}
+    <div>
+        Dear Sir/Madam <br>
+        <p>{{ senderName | title }} has successfully applied for the position of {{ job.title }} via
+            Kantipurjob<span>.</span>
+            com. Please review the candidates's profile and acknowledge the confirmation of application received.</p>
+        <p>Please find the below applicants Overview, Cover Letter, attached profile and attached CV for the position
+            of {{ job.title }}</p>
+        <br>
+        <p><strong>Candidate Name:</strong> {{ senderName }}</p>
+        <p><strong>Email Address:<strong> {{ senderEmail }}</p>
+        <p><strong>Contact Number:</strong> {{ phone }}</p>
+        <p><strong>Current Address:</strong> {{ address }}</p>
+        <p><strong>Applied Position:</strong> {{ job.title }}</p>
+        <p><strong>Applied Company:</strong> {{ job.organization.name }}</p>
+        {% if(profile) %}
+            <p>Profile Picture:<br> <img src="{{ absolute_url(asset(profile)) }}" style="width: 100px;height:auto;"></p>
+        {% endif %}
+
+        <p><strong>Cover Letter</strong></p>
+        <p>Dear Sir/Madam</p>
+        <p>{{ message|raw }}</p>
+
+
+        <p>Please find the attached CV.</p>
+        <p>Regards,<br>{{ senderName }}</p>
+    </div>
+
+{% endblock %}
+{% block other_content %}
+
+    <div style="border:none; background: #e0dfe3; margin-top:4px;color: #1899d3;padding: 15px;
+    font-weight: lighter;
+    font-size: 13px;">
+        <p>Kantipurjob.com is firmly committed jobtitle in Nepal, where you can create your company profile and post
+            your jobs.
+            Being a dedicated and an innovative human resource consulting company, we also provide staffing service,
+            payroll
+            management
+            , recruitment & selection, call center management, and outstanding services.</p>
+    </div>
+{% endblock %}
+
+

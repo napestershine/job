@@ -1,0 +1,96 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}News{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>
+    </button>
+
+    {#<a href="#" class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i> Export</a>#}
+
+    <a href="{{ path('yarsha_admin_news_create') }}" class="btn btn-info btn-xs">
+        <i class="fa fa-plus"></i> Add News
+    </a>
+
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="panel panel-default">
+                {% if news | length %}
+                    <table class="table table-bordered table-striped table-hover">
+                        <tr>
+                            <th>S.N</th>
+                            <th>News Title</th>
+                            <th>News Slug</th>
+                            <th>Action</th>
+                        </tr>
+
+                        {% set count = pager_first_index(news) %}
+                        {% for new in news %}
+                            <tr id="">
+                                <td>{{ count }}</td>
+                                <td>{{ new.title }}</td>
+                                <td>{{ new.slug }}</td>
+                                <td>
+
+                                    <a href="#" onclick="viewNews(this)"
+                                       data-news-id="{{ new.id }}"
+                                       data-toggle="modal" data-target="myModal" class="btn btn-info btn-sm">
+                                        <i class="fa fa-eye"></i> &nbsp;
+                                        View
+                                    </a>
+                                    <a href="{{ path('yarsha_admin_news_update', {'id':new.id}) }}"
+                                       class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>Edit</a>
+                                    <a href="{{ path('yarsha_admin_news_delete', {'id':new.id}) }}"
+                                       class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>Delete</a>
+                                </td>
+                            </tr>
+                            {% set count = count + 1 %}
+                        {% endfor %}
+
+                    </table>
+                {% else %}
+                    {{ ys_no_contents("No news added yet.") }}
+                {% endif %}
+
+                {% if news.haveToPaginate %}
+                    {{ pagerfanta(news, 'twitter_bootstrap3') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+        function viewNews(obj) {
+            tId = $(obj).data('news-id');
+            url = "{{ path('yarsha_news_ajax_view', {'id':'NEWS_ID'}) }}"
+            url = url.replace('NEWS_ID', tId)
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function (data) {
+                    if (data.success) {
+                        $("#myModalLabel").html('View News');
+                        $('#myModal').find('.modal-body').html(data.newsdata)
+                    }
+                },
+                error: function () {
+                    console.log('error')
+                }
+            });
+            $("#myModal").modal('toggle');
+        }
+    </script>
+{% endblock %}

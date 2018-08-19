@@ -1,0 +1,122 @@
+{% extends "@YarshaAdmin/admin_layout.html.twig" %}
+
+{% block page_title %}Articles{% endblock %}
+
+{% block page_description %}List{% endblock %}
+
+{% block action_block %}
+
+    <button class="btn btn-xs btn-default margin-r-5" title="filter" data-toggle="collapse" data-target="#filter">
+        <i class="fa fa-filter"></i>
+    </button>
+
+    {#<a href="#" class="btn btn-warning btn-xs"><i class="fa fa-file-excel-o"></i> Export</a>#}
+
+    <a href="{{ path('yarsha_admin_article_create') }}" class="btn btn-info btn-xs">
+        <i class="fa fa-plus"></i> Add Article
+    </a>
+
+{% endblock %}
+
+
+{% block filter %}
+
+    <div class="row">
+        <div class="form-group-sm col-md-6">
+            <label for="title">Title</label>
+            <input type="text" name="title" value="{{ app.request.get('title') }}" placeholder="title"
+                   class="form-control">
+        </div>
+
+        <div class="form-group-sm col-md-6">
+            <label for="category">Article Category</label><br>
+            {{ render_article_category_list(app.request.get('category')) }}
+        </div>
+
+
+    </div>
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="panel panel-default">
+                {% if articles | length %}
+                    <table class="table table-bordered table-striped table-hover">
+                        <tr>
+                            <th>#</th>
+                            <th>Article Title</th>
+                            <th>Article Slug</th>
+                            <th>Article Category</th>
+                            <th>Action</th>
+                        </tr>
+
+                        {% set count = pager_first_index(articles) %}
+                        {% for article in articles %}
+                            <tr id="">
+                                <td>{{ count }}</td>
+                                <td>{{ article.title }}</td>
+                                <td>{{ article.slug }}</td>
+                                <td>{{ render_article_category(article.category) }}</td>
+                                {#<td>{{ article.category }}</td>#}
+                                <td>
+
+                                    <a href="#" onclick="viewArticle(this)"
+                                       data-article-id="{{ article.id }}"
+                                       data-toggle="modal" data-target="myModal" class="btn btn-info btn-sm">
+                                        <i class="fa fa-eye"></i> &nbsp;
+                                        View
+                                    </a>
+                                    <a href="{{ path('yarsha_admin_article_update', {'id':article.id}) }}"
+                                       class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>Edit</a>
+                                    <a href="{{ path('yarsha_admin_article_delete', {'id':article.id}) }}"
+                                       class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>Delete</a>
+                                </td>
+                            </tr>
+                            {% set count = count + 1 %}
+                        {% endfor %}
+
+                    </table>
+                {% else %}
+                    {{ ys_no_contents("No articles added yet.") }}
+                {% endif %}
+
+                {% if articles.haveToPaginate %}
+                    {{ pagerfanta(articles, 'twitter_bootstrap3') }}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+        function viewArticle(obj) {
+            tId = $(obj).data('article-id');
+            url = "{{ path('yarsha_articles_ajax_view', {'id':'ARTICLE_ID'}) }}"
+            url = url.replace('ARTICLE_ID', tId)
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function (data) {
+                    if (data.success) {
+                        $("#myModalLabel").html('View Article');
+                        $('#myModal').find('.modal-body').html(data.articledata)
+                    }
+                },
+                error: function () {
+                    console.log('error')
+                }
+            });
+            $("#myModal").modal('toggle');
+        }
+    </script>
+{% endblock %}

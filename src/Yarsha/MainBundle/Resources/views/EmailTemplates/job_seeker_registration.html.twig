@@ -1,0 +1,59 @@
+{% extends "@YarshaMain/EmailTemplates/email_notification_new.html.twig" %}
+
+{% block email_body %}
+
+    <!-- saluation section -->
+    <section style="background:#F2652A; width: 100%;">
+        <div style="width: 80%; float: left;">
+            <span style="font-weight: 600;">Dear {{ seeker.firstname|title }},</span> jobs you may be interested based
+            on your kantipurjob profile
+        </div>
+        <div style="text-align: right; width: 20%; float: right;">
+            <a href="{{ url('yarsha_job_seeker_profile_detail_view') }}">(Update Profile)</a>
+        </div>
+        <div class="clear"></div>
+    </section>
+
+
+    <section style="background:#fff; padding:1%;padding-bottom: 20px;">
+
+        <p>Thank you for associating with kantipurjob.com.</p>
+
+        <p style="text-align:center; text-transform: uppercase">
+            PLEASE <a href="{{ confirmation_link }}">CLICK HERE</a> TO CONFIRM YOUR REGISTRATION
+        </p>
+
+        <p>
+            After the confirmation, please login at kantipurjob.com to proceed. We recommend you to update
+
+            your Profile Picture, Personal Information, General Information, Education Information, Professional
+
+            Information, Trainings, and Other Information to make employers find you for relevant job
+
+            opportunities.
+        </p>
+
+        <p>
+            Username: {{ username }} <br>
+            Email Address: {{ email }}
+        </p>
+
+        <p><strong>Why verify the email address?</strong></p>
+        <ul>
+            <li>Confirms you are willing to register at kantipurjob.com with this email address</li>
+            <li>Adds credibility to your profile</li>
+        </ul>
+
+        <p>You will receive the job alerts (if you choose to receive) in above mentioned email address.</p>
+
+        <p>
+            Note: If you have received this account verification email in error, it’s likely that another user entered
+
+            your email address while creating an account. You do not need to take any further action, simply ignore
+
+            the email. The account won’t be verified.
+        </p>
+
+    </section>
+
+{% endblock %}

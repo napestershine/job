@@ -1,0 +1,29 @@
+{% if superandtopEmployers|length > 0 %}
+
+    <section class="inner-pages-footer-top-section  {{ settings.additionalClass }}">
+        <div class="container inner-page-logo-scroll-wrap">
+            <ul id="scroller">
+                {% for employer in superandtopEmployers %}
+
+                    {% if(employer.path) %}
+                        <li>
+                            <a href="{{ path('yarsha_frontend_employer_detail_by_slug',{'slug':employer.slug}) }}"
+                               title="{{ employer.name }}">
+                                <img src="{{ organization_profile_image(employer)|imagine_filter('company_profile_pic_large') }}">
+                            </a>
+                        </li>
+
+                    {% endif %}
+
+
+                {% endfor %}
+
+            </ul>
+
+
+        </div>
+    </section>
+{% endif %}
+
+
+

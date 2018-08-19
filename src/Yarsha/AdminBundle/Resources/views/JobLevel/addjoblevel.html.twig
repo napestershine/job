@@ -1,0 +1,15 @@
+{% form_theme form "bootstrap_3_layout.html.twig" %}
+
+{{ form_start(form, {'attr' :{'onsubmit':'return submitJobLevelForm(event, this)'}}) }}
+
+<div class="col-md-12">{{ form_row(form.name) }}</div>
+{% if levelId is defined %}
+    <input type="hidden" name="jobLevelId" value="{{ levelId }}">
+{% endif %}
+<div class="col-md-12">
+    <input type="submit" class="btn btn-primary" value="SAVE" >
+</div>
+
+{{ form_end(form) }}
+
+<div class="clearfix"></div>

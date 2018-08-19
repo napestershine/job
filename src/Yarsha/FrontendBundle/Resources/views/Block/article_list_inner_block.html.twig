@@ -1,0 +1,40 @@
+<div class="{{ settings.wrapperClass }} my-article-list col-sm-6">
+    <div class=" article-wrap article-wrap-side-list">
+        <h4 class="article-block-title">
+            {#<i class="fa {{ settings.iconClass }}" aria-hidden="true"></i> &nbsp;#}
+            {#<i class="fa bg-red" aria-hidden="true"></i> &nbsp;#}
+            {{ settings.title }}
+        </h4>
+
+        <ul class="hot-job-list">
+            {% for article in articles %}
+                <li>
+                    <h1>
+                        <a href="{{ article_detail_url(article) }}">{{ article.title }}</a>
+                    </h1>
+                    {% if article.image %}
+                        <div class="pull-left listing-image">
+                            <img src="{{ article.image|imagine_filter('thumb_mini') }}" alt="">
+                        </div>
+                    {% endif %}
+                    <p>{{ trim_content(article.content, 120) }} ...</p>
+                    <div class="clearfix"></div>
+                </li>
+
+            {% else %}
+                {{ ys_no_contents('No articles.') }}
+            {% endfor %}
+
+
+        </ul>
+        {% if articles|length %}
+            <span class="view-more-news-blk">
+                <p class="text-right">
+                    <a href="{{ path('yarsha_frontend_article_list', {'category':category}) }}" class="browse-all">View
+                        All</a>
+                </p>
+                <div class="clearfix"></div>
+            </span>
+        {% endif %}
+    </div>
+</div>
